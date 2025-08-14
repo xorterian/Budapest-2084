@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budapest 2084</title>
+    <!-- Use Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #f0f4f8;
+            --primary-color: #4a5568;
+            --secondary-color: #e2e8f0;
+            --accent-color: #38a169;
+            --text-color: #2d3748;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.2);
+            --dead-player-color: #ffcccc;
+            --dead-stranger-color: #f56565;
+            --car-color: #4299e1;
+            --player-car-color: #e53e3e;
+            --bus-color: #fbd38d;
+            --stranger-color: #a0aec0;
+            --player-icon-color: #ffffff;
+            --active-icon-color: #f6e05e;
+            --black-bg-btn: #1a202c;
+            --enabled-btn-bg: #cbd5e0;
+            --duck-color: #964b00;
+            --money-color: #4CAF50;
+            --flag-color: #eeeeee;
+            --bomb-color: #111100;
+            --explosion-color: rgba(255, 0, 0, 0.5);
+            --destroyed-grass-color: #cccc00;
+            --destroyed-road-color: #333333;
+            --destroyed-building-color: #000000;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        #game-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px var(--shadow-medium);
+            max-width: 90%;
+            width: 900px;
+            position: relative;
+        }
+
+        #main-content-area {
+            display: flex;
+            flex-direction: row;
+            gap: 1.5rem;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary-color), var(--text-color));
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px var(--shadow-light);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        #thread-id-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color), var(--text-color));
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-light);
+        }
+        
+        #thread-id-display button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            padding: 0.25rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        #thread-id-display button:hover:not(:disabled) {
+            transform: scale(1.2);
+        }
+        
+        #thread-id-display button:disabled {
+            color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #current-thread {
+            min-width: 50px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 500px;
+            height: 500px;
+            position: relative;
+            box-shadow: inset 0 0 10px var(--shadow-light);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #4CAF50;
+            border: 2px solid #333;
+        }
+        
+        .game-over-backdrop {
+            opacity: 0.9;
+        }
+        
+        .lightning-flash {
+            background-color: #ffffff !important;
+        }
+
+        .grid-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            background-color: #388e3c;
+            border: 1px solid #333;
+            box-sizing: border-box;
+            position: relative;
+        }
+        
+        .road {
+            background-color: #616161;
+        }
+        
+        .dead-player-cell {
+            background-color: var(--dead-player-color) !important;
+            animation: pulse 1s infinite;
+        }
+        
+        .dead-stranger-cell {
+            background-color: var(--dead-stranger-color) !important;
+        }
+
+        .explosion-cell {
+            background-color: var(--explosion-color) !important;
+            animation: flash-red 0.5s;
+        }
+
+        .destroyed-grass { background-color: var(--destroyed-grass-color); }
+        .destroyed-road { background-color: var(--destroyed-road-color); }
+        .destroyed-building { background-color: var(--destroyed-building-color); }
+
+        @keyframes flash-red {
+            from { background-color: var(--explosion-color); }
+            to { background-color: transparent; }
+        }
+
+        @keyframes pulse {
+          0% { box-shadow: 0 0 5px var(--dead-player-color); }
+          50% { box-shadow: 0 0 20px var(--dead-player-color); }
+          100% { box-shadow: 0 0 5px var(--dead-player-color); }
+        }
+        
+        @keyframes red-glow {
+            0% { text-shadow: 0 0 5px var(--dead-stranger-color); }
+            50% { text-shadow: 0 0 15px var(--dead-stranger-color); }
+            100% { text-shadow: 0 0 5px var(--dead-stranger-color); }
+        }
+
+        /* Wall and Fence styles */
+        .wall {
+            background-color: #78716c;
+            border: 2px solid #57534e;
+        }
+        .fence {
+            background-color: #bfa881;
+            border: 1px dashed #57534e;
+        }
+        
+        .flag {
+            /* This rule is now removed for a transparent background */
+        }
+
+        .past-player-one-step-back {
+            opacity: 0.6;
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--player-icon-color);
+        }
+        
+        .other-thread-player {
+            opacity: 0.3;
+            position: absolute;
+            font-size: 1.5rem;
+            color: var(--player-icon-color);
+        }
+        
+        .player-icon {
+            font-size: 1.5rem;
+            color: var(--player-icon-color); /* Player color is now a CSS variable */
+            position: relative;
+            z-index: 2; /* Ensure player is on top of car */
+        }
+        
+        .car-icon, .bus-icon {
+            font-size: 1.5rem;
+            color: var(--car-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .bus-icon { color: var(--bus-color); }
+
+        .destroyed-vehicle {
+            transform: rotate(90deg);
+        }
+
+        .player-car-icon {
+            font-size: 1.5rem;
+            color: var(--player-car-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stranger-icon {
+            font-size: 1.5rem;
+            color: var(--stranger-color);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .duck-icon {
+            font-size: 1.5rem;
+            color: var(--duck-color);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dead-stranger-icon, .dead-duck-icon {
+            transform: rotate(90deg);
+            animation: red-glow 1s infinite;
+        }
+
+        .bomb-icon {
+            font-size: 1.5rem;
+            color: var(--bomb-color);
+            position: relative;
+            z-index: 3;
+        }
+        
+        .wall-icon, .fence-icon, .flag-icon, .money-icon, .info-icon {
+            position: absolute;
+            font-size: 1.5rem;
+        }
+
+        .wall-icon { color: #4a4a4a; opacity: 0.8; }
+        .fence-icon { color: #8c7b64; opacity: 0.8; }
+        .flag-icon { color: var(--flag-color); }
+        .money-icon { color: var(--money-color); }
+        .info-icon { color: #3b82f6; }
+
+        .device-panel {
+            background-color: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px var(--shadow-light);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 350px;
+        }
+        
+        .device-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--primary-color);
+        }
+        
+        .device-section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .device-header.with-btn {
+            gap: 1rem;
+        }
+
+        .device-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .device-icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            transition: all 0.2s ease-in-out;
+            background-color: var(--black-bg-btn);
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .device-icon-btn:not(:disabled) {
+            background-color: var(--enabled-btn-bg);
+            color: var(--black-bg-btn);
+            cursor: pointer;
+        }
+        
+        .device-icon-btn.active:not(:disabled) {
+            background-color: var(--enabled-btn-bg);
+            color: var(--active-icon-color);
+            animation: pulse-glow 1s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0% { text-shadow: 0 0 5px var(--active-icon-color); }
+            50% { text-shadow: 0 0 15px var(--active-icon-color); }
+            100% { text-shadow: 0 0 5px var(--active-icon-color); }
+        }
+
+        .text-input {
+            width: 100%;
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid var(--primary-color);
+        }
+        
+        button {
+            background: linear-gradient(145deg, var(--accent-color), #2d8955);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px var(--shadow-light);
+            transition: all 0.2s ease-in-out;
+        }
+        
+        button#random-generator-btn, button#send-back-btn {
+            background: linear-gradient(145deg, #4299e1, #3182ce);
+        }
+        
+        #throw-thread-btn {
+            background: linear-gradient(145deg, #e53e3e, #c53030);
+        }
+        
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            box-shadow: none;
+            color: #a0aec0;
+            transform: none;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px var(--shadow-light);
+        }
+
+        .fa-house { color: white; }
+        .fa-atom { color: #ffeb3b; }
+        .fa-cube { color: #2196f3; }
+        .fa-hourglass-half { color: #00e676; }
+        
+        #game-over-message, #defuse-modal, #info-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 2rem 4rem;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            display: none;
+            z-index: 100;
+        }
+
+        #defuse-modal, #info-modal {
+            font-size: 1.5rem;
+            z-index: 200;
+        }
+
+        #defuse-modal button, #info-modal button {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+        }
+        
+        #game-win-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 2rem 4rem;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            display: none;
+            z-index: 100;
+        }
+
+        #chronogram-button-group {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        #send-back-btn {
+            width: fit-content;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-wrapper">
+    <div id="stats-container" class="stats-container">
+        <div id="time-counter" class="stat-box">Time: 0</div>
+        <div id="thread-id-display">
+            <button id="prev-thread" disabled><i class="fas fa-minus"></i></button>
+            <span>Thread ID:</span>
+            <span id="current-thread">∅</span>
+            <button id="next-thread" disabled><i class="fas fa-plus"></i></button>
+        </div>
+        <div id="money-counter" class="stat-box"><i class="fas fa-money-bill-alt"></i><span id="money-amount">0</span></div>
+        <div id="level-counter" class="stat-box">Level: 1</div>
+    </div>
+    
+    <div id="main-content-area">
+        <div id="game-board"></div>
+        <div class="device-panel">
+            <div class="device-section">
+                <div class="device-header with-btn">
+                    <span id="qrg-label">QRG</span>
+                    <button id="random-generator-btn" disabled>Branch</button>
+                </div>
+            </div>
+            
+            <div class="device-section">
+                <div class="device-header">
+                    <span id="eigengram-label">Eigengram</span>
+                    <div class="device-controls">
+                        <span>Lifetime: <span id="eigengram-lifetime">0</span></span>
+                        <button id="eigengram-on-btn" class="device-icon-btn" disabled>
+                            <i id="eigengram-icon" class="fas fa-lightbulb"></i>
+                        </button>
+                    </div>
+                </div>
+                <input id="eigengram-message-panel" class="text-input" placeholder="message to the otherself..." disabled />
+            </div>
+            
+            <div class="device-section">
+                <div class="device-header">
+                    <span id="chronogram-label">Chronogram</span>
+                    <div class="device-controls">
+                        <span>Lifetime: <span id="chronogram-lifetime">0</span></span>
+                        <button id="chronogram-on-btn" class="device-icon-btn" disabled>
+                            <i id="chronogram-icon" class="fas fa-lightbulb"></i>
+                        </button>
+                    </div>
+                </div>
+                <input id="chronogram-message-panel" class="text-input" placeholder="message to the post-/preself..." disabled />
+                <div id="chronogram-button-group">
+                    <button id="send-back-btn" disabled>Send Back</button>
+                </div>
+            </div>
+            
+            <div class="device-section">
+                 <button id="throw-thread-btn">Throw thread!</button>
+            </div>
+        </div>
+    </div>
+    <div id="game-over-message">GAME OVER</div>
+    <div id="game-win-message">YOU WIN!</div>
+    <div id="defuse-modal">
+        <h3>Which wire to cut?</h3>
+        <div>
+            <button id="cut-black-wire" style="background-color: #333;">Black (B)</button>
+            <button id="cut-green-wire" style="background-color: var(--accent-color);">Green (G)</button>
+        </div>
+    </div>
+    <div id="info-modal">
+        <h3 id="info-modal-title">Information</h3>
+        <p id="info-modal-text"></p>
+        <button id="info-modal-ok">OK</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const gameWrapper = document.getElementById('game-wrapper');
+        const board = document.getElementById('game-board');
+        const gameOverMessage = document.getElementById('game-over-message');
+        const gameWinMessage = document.getElementById('game-win-message');
+        const timeCounterDisplay = document.getElementById('time-counter');
+        const levelCounterDisplay = document.getElementById('level-counter');
+        const moneyAmountDisplay = document.getElementById('money-amount');
+        const currentThreadDisplay = document.getElementById('current-thread');
+        
+        const prevThreadBtn = document.getElementById('prev-thread');
+        const nextThreadBtn = document.getElementById('next-thread');
+        const throwThreadBtn = document.getElementById('throw-thread-btn');
+        const randomGeneratorBtn = document.getElementById('random-generator-btn');
+
+        const qrgLabel = document.getElementById('qrg-label');
+        const eigengramLabel = document.getElementById('eigengram-label');
+        const chronogramLabel = document.getElementById('chronogram-label');
+
+        const eigengramOnBtn = document.getElementById('eigengram-on-btn');
+        const eigengramIcon = document.getElementById('eigengram-icon');
+        const eigengramLifetimeDisplay = document.getElementById('eigengram-lifetime');
+        const eigengramMessagePanel = document.getElementById('eigengram-message-panel');
+
+        const chronogramOnBtn = document.getElementById('chronogram-on-btn');
+        const chronogramIcon = document.getElementById('chronogram-icon');
+        const chronogramLifetimeDisplay = document.getElementById('chronogram-lifetime');
+        const chronogramMessagePanel = document.getElementById('chronogram-message-panel');
+        const sendBackBtn = document.getElementById('send-back-btn');
+
+        const defuseModal = document.getElementById('defuse-modal');
+        const cutBlackWireBtn = document.getElementById('cut-black-wire');
+        const cutGreenWireBtn = document.getElementById('cut-green-wire');
+
+        const infoModal = document.getElementById('info-modal');
+        const infoModalText = document.getElementById('info-modal-text');
+        const infoModalOkBtn = document.getElementById('info-modal-ok');
+
+        const GRID_SIZE = 8;
+        const CELL_TYPES = {
+            road: 'road',
+            grass: 'grass',
+            wall: 'wall',
+            fence: 'fence',
+            flag: 'flag',
+            trapBuilding: 'trapBuilding'
+        };
+
+        const STARTING_LIFETIME = 5;
+        const DEATH_TIMER = 3;
+        const BOMB_TIMER = 3;
+        
+        let currentLevel = 0;
+        let threadIds = [];
+        let currentThreadIndex = 0;
+        let threadHistory = {};
+        let eigengramMessages = {};
+        let chronogramMessages = {};
+        let eigengramSourceThreadId = null;
+        let isGameOver = false;
+        let playerDesiredMove = null;
+        let activeBombToDefuse = null;
+
+        // --- LEVELS DEFINITION ---
+        const levels = [
+            // Level 1: The ducg crossing the road. 
+            {
+                playerPos: { x: 1, y: 1 },
+                flagLocation: { x: 6, y: 1 },
+                roadLayout: [
+                    { type: 'vertical', x: 4 }
+                ],
+                wallLayout: [
+                ],
+                trapBuildingLayout: [
+                ],
+                fenceLayout: [
+                ],
+                houseLocations: [
+                ],
+                initialMoneyLocations: [
+                ],
+                initialDuckLocations: [
+                    { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
+                ],
+                initialStrangerLocations: [
+                ],
+                initialCarLocations: [
+                ],
+                initialBusLocations: [
+                ],
+                playerCar: { x: -1, y: -1, occupied: false },
+                deviceLocations: { 'R': [], 'E': [], 'T': [] },
+                infoLocations: [{ x: 1, y: 3, text: "Get to the flags!" }]
+            },
+            // Level 2: The ducg crossing the road. 
+            {
+                playerPos: { x: 1, y: 1 },
+                flagLocation: { x: 6, y: 6 },
+                roadLayout: [
+                    { type: 'horizontal', y: 4 }
+                ],
+                wallLayout: [
+                    { x: 7, y: 1 },
+                    { x: 7, y: 2 }
+                ],
+                trapBuildingLayout: [
+                    { x: 2, y: 7 }
+                ],
+                fenceLayout: [
+                ],
+                houseLocations: [
+                ],
+                initialMoneyLocations: [
+                    { x: 6, y: 2 },
+                    { x: 1, y: 6 }
+                ],
+                initialDuckLocations: [
+                    { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
+                ],
+                initialStrangerLocations: [
+                    { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
+                ],
+                initialCarLocations: [
+                ],
+                initialBusLocations: [
+                ],
+                playerCar: { x: -1, y: -1, occupied: false },
+                deviceLocations: { 'R': [{ x: 1, y: 3 } ], 'E': [ ], 'T': [ ] },
+                infoLocations: [{ x: 3, y: 1, text: "Watch out for the building!" }, { x: 5, y: 1, text: "Run away from the bombs!" }]
+            },
+            // Level 2: Poor man running cross the road.
+            {
+                playerPos: { x: 0, y: 1 },
+                flagLocation: { x: 6, y: 6 },
+                roadLayout: [
+                    { type: 'horizontal', y: 3 },
+                    { type: 'horizontal', y: 4 },
+                    { type: 'vertical', x: 3 },
+                    { type: 'vertical', x: 4 }
+                ],
+                wallLayout: [
+                    { x: 5, y: 0 },
+                    { x: 6, y: 0 },
+                    { x: 6, y: 1 },
+                    
+                    { x: 1, y: 5 },
+                    { x: 2, y: 5 },
+                    { x: 1, y: 6 },
+                    { x: 2, y: 6 },
+                    { x: 1, y: 7 },
+                    { x: 2, y: 7 }
+                ],
+                trapBuildingLayout: [
+                    { x: 5, y: 1 },
+                ],
+                fenceLayout: [
+                ],
+                houseLocations: [
+                    { x: 7, y: 0 },
+                ],
+                initialMoneyLocations: [
+                ],
+                initialDuckLocations: [
+                ],
+                initialStrangerLocations: [
+                    { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
+                ],
+                initialCarLocations: [
+                    { x: 7, y: 4, dx: -1, isPlayerCar: false },
+                    { x: 3, y: 3, dx: -1, isPlayerCar: false }
+                ],
+                initialBusLocations: [
+                    { x: 3, y: 2, dy: 1, stopped: false, stopDuration: 0 },
+                    { x: 4, y: 7, dy: -1, stopped: false, stopDuration: 0 }
+                ],
+                playerCar: { x: -1, y: -1, occupied: false },
+                deviceLocations: { 'R': [ { x: 2, y: 0 } ], 'E': [ ], 'T': [ ] },
+                infoLocations: []
+            }
+        ];
+
+
+        const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
+
+
+        // --- FUNCTION ORDER FIX: Define handlers before they are called ---
+
+        function handleRestart(e) {
+            if(e.key === 'r' || e.key === 'R') initGame();
+        }
+
+        function handleKeyDown(e) {
+            if (isGameOver) {
+                handleRestart(e);
+                return;
+            }
+            if (threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0].playerStatus === 'dead') {
+                progressTurn();
+                return;
+            }
+
+            const keyMap = {
+                'ArrowUp': {x:0, y:-1}, 'ArrowDown': {x:0, y:1},
+                'ArrowLeft': {x:-1, y:0}, 'ArrowRight': {x:1, y:0}
+            };
+
+            if (keyMap[e.key]) {
+                e.preventDefault();
+                playerDesiredMove = keyMap[e.key];
+                progressTurn();
+            } else {
+                switch (e.key.toLowerCase()) {
+                    case 'd':
+                        e.preventDefault();
+                        const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                        const playerPos = currentState.playerPos;
+                        const bombOnCell = currentState.bombs.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        if (bombOnCell) {
+                            showDefuseModal(bombOnCell);
+                        } else {
+                            handleCarInteraction();
+                        }
+                        break;
+                    case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
+                    case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
+                    case 'e': e.preventDefault(); if (!eigengramOnBtn.disabled) eigengramOnBtn.click(); break;
+                    case 'c': e.preventDefault();
+                        const state = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                        if (state.chronogram.isOn && !sendBackBtn.disabled) sendBackBtn.click();
+                        else if (!chronogramOnBtn.disabled) chronogramOnBtn.click();
+                        break;
+                }
+            }
+        }
+
+        // --- EVENT HANDLERS & MODALS ---
+        
+        function handleCarInteraction() {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            
+            if (currentState.isDriving) {
+                const { x, y } = currentState.playerPos;
+                const directions = [{x:currentState.lastMoveDirection.x, y:currentState.lastMoveDirection.y},{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+                for (const dir of directions) {
+                    const newX = x + dir.x, newY = y + dir.y;
+                    if (!isObstacle(newX, newY, currentState.grid)) {
+                        currentState.isDriving = false;
+                        currentState.playerPos = {x: newX, y: newY};
+                        break;
+                    }
+                }
+            } else if (currentState.playerPos.x === currentState.playerCar.x && currentState.playerPos.y === currentState.playerCar.y) {
+                currentState.isDriving = true;
+            }
+
+            history.push(currentState);
+            drawGrid();
+        }
+
+        function showDefuseModal(bomb) {
+            activeBombToDefuse = bomb;
+            defuseModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleDefuseKeyPress);
+        }
+
+        function hideDefuseModal() {
+            activeBombToDefuse = null;
+            defuseModal.style.display = 'none';
+            document.removeEventListener('keydown', handleDefuseKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleDefuseAttempt(chosenWire) {
+            if (!activeBombToDefuse) return;
+
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
+
+            if (bomb) {
+                if (bomb.correctWire === chosenWire) {
+                    currentState.bombs = currentState.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+                } else {
+                    triggerExplosion(bomb, currentState);
+                }
+            }
+
+            history.push(currentState);
+            hideDefuseModal();
+            drawGrid();
+        }
+
+        function handleDefuseKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'b') {
+                handleDefuseAttempt('b');
+            } else if (key === 'g') {
+                handleDefuseAttempt('g');
+            }
+        }
+
+        function showInfoModal(text) {
+            infoModalText.textContent = text;
+            infoModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', hideInfoModalOnKeyPress);
+        }
+
+        function hideInfoModal() {
+            infoModal.style.display = 'none';
+            document.removeEventListener('keydown', hideInfoModalOnKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function hideInfoModalOnKeyPress(e) {
+            e.preventDefault();
+            hideInfoModal();
+        }
+
+        // --- GAME LOGIC ---
+
+        function createLevelState(levelIndex) {
+            const level = levels[levelIndex];
+            if (!level) {
+                return null;
+            }
+
+            let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(CELL_TYPES.grass));
+            
+            level.roadLayout.forEach(road => {
+                if (road.type === 'horizontal') {
+                    for (let i = 0; i < GRID_SIZE; i++) grid[road.y][i] = CELL_TYPES.road;
+                } else if (road.type === 'vertical') {
+                    for (let i = 0; i < GRID_SIZE; i++) grid[i][road.x] = CELL_TYPES.road;
+                }
+            });
+
+            level.wallLayout.forEach(wall => grid[wall.y][wall.x] = CELL_TYPES.wall);
+
+
+            const trapBuildings = level.trapBuildingLayout.map(trap => ({...trap}));
+            trapBuildings.forEach(trap => grid[trap.y][trap.x] = CELL_TYPES.trapBuilding);
+
+            level.fenceLayout.forEach(fence => grid[fence.y][fence.x] = CELL_TYPES.fence);
+            grid[level.flagLocation.y][level.flagLocation.x] = CELL_TYPES.flag;
+
+
+            return {
+                grid: grid,
+                playerPos: deepClone(level.playerPos),
+                playerStatus: 'alive',
+                isDriving: false,
+                lastMoveDirection: {x: 0, y: 0},
+                cars: deepClone(level.initialCarLocations),
+                buses: deepClone(level.initialBusLocations),
+                playerCar: deepClone(level.playerCar),
+                strangers: deepClone(level.initialStrangerLocations),
+                ducks: deepClone(level.initialDuckLocations),
+                deadStrangers: [],
+                deadDucks: [],
+                bombs: [],
+                explosions: [],
+                destroyedTiles: [],
+                wallLayout: deepClone(level.wallLayout),
+                fenceLayout: deepClone(level.fenceLayout),
+                trapBuildings: deepClone(level.trapBuildingLayout),//trapBuildings,
+                inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0 },
+                devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T), 'money': deepClone(level.initialMoneyLocations)},
+                deviceLocations: deepClone(level.deviceLocations),
+                infoLocations: deepClone(level.infoLocations),
+                flagLocation: deepClone(level.flagLocation),
+                houseLocations: deepClone(level.houseLocations),
+                eigengram: { isOn: false, lifetime: 0 },
+                chronogram: { isOn: false, lifetime: 0, savedState: null },
+                moveCount: 0
+            };
+        }
+        
+        function initGame() {
+            const levelData = createLevelState(currentLevel);
+            if (!levelData) {
+                gameWinMessage.style.display = 'block';
+                gameWrapper.classList.add('game-over-backdrop');
+                document.removeEventListener('keydown', handleKeyDown);
+                return;
+            }
+
+            threadIds = [''];
+            currentThreadIndex = 0;/*
+            threadHistory = {'': {status: 'alive', history: []}};
+            eigengramMessages = {};
+            chronogramMessages = {};*/
+            threadHistory = {'': {status: 'alive', history: [levelData]}};
+            eigengramMessages = {'': ''};
+            chronogramMessages = {'': ''};
+            eigengramSourceThreadId = null;
+            isGameOver = false;
+
+            threadHistory[''].history.push(levelData);
+            eigengramMessages[''] = '';
+            chronogramMessages[''] = '';
+            
+            gameOverMessage.style.display = 'none';
+            gameWinMessage.style.display = 'none';
+            gameWrapper.classList.remove('game-over-backdrop');
+            
+            document.removeEventListener('keydown', handleRestart);
+            document.addEventListener('keydown', handleKeyDown);
+            
+            // initiate the deterministic random sources
+            levelData.buses.forEach(b => {
+                b.p = .2;
+                b.ranSource = [];
+                for(i=0;i!=20;i++){
+                    b.ranSource.push(Math.random() < b.p);
+                }
+            });
+            levelData.trapBuildings.forEach(tp => {
+                tp.p = .5;
+                tp.ranSource = [];
+                for(i=0;i!=3;i++){
+                    tp.ranSource.push(Math.random() < tp.p);
+                }
+            });
+            levelData.strangers.forEach(s => {
+                s.p = .3;
+                s.ranSource = [{dx:s.dx, dy:s.dy}];
+                const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+                for(i=1;i!=30;i++){
+                    if (Math.random()<s.p){
+                        s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+                    }else{
+                        s.ranSource.push(s.ranSource[i-1]);
+                    }
+                }
+            });
+            levelData.ducks.forEach(s => {
+                s.p = .4;
+                s.ranSource = [{dx:s.dx, dy:s.dy}];
+                const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+                for(i=1;i!=15;i++){
+                    if (Math.random()<s.p){
+                        s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+                    }else{
+                        s.ranSource.push(s.ranSource[i-1]);
+                    }
+                }
+            });
+            //... TODO
+            
+
+            drawGrid();
+            updateStatsDisplay(levelData);
+            updateThreadIdDisplay();
+            updateThreadNavButtons();
+        }
+
+        function drawGrid() {
+            const currentThreadId = threadIds[currentThreadIndex];
+            if (isGameOver || !threadHistory[currentThreadId] || threadHistory[currentThreadId].status === 'dead') {
+                board.innerHTML = '';
+                return;
+            }
+
+            board.innerHTML = '';
+            const currentHistory = threadHistory[currentThreadId].history;
+            //const currentState = currentHistory[currentHistory.length - 1];//?
+            const currentState = threadHistory[currentThreadId].history.slice(-1)[0];
+            
+            if (!currentState) return;
+
+            for (let row = 0; row < GRID_SIZE; row++) {
+                for (let col = 0; col < GRID_SIZE; col++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('grid-cell', currentState.grid[row][col]);
+                    
+                    if (currentState.grid[row][col] === CELL_TYPES.trapBuilding) {
+                        cell.classList.remove(CELL_TYPES.trapBuilding);
+                        cell.classList.add(CELL_TYPES.wall);
+                    }
+
+                    const isDeadStrangerCell = currentState.deadStrangers.some(s => s.x === col && s.y === row);
+                    if (isDeadStrangerCell) cell.classList.add('dead-stranger-cell');
+                    
+                    const isDeadDuckCell = currentState.deadDucks.some(d => d.x === col && d.y === row);
+                    if (isDeadDuckCell) cell.classList.add('dead-stranger-cell');
+                    
+                    if (currentState.grid[row][col] === CELL_TYPES.flag) {
+                        cell.classList.remove(CELL_TYPES.flag);
+                        cell.classList.add('grass');
+                    }
+
+                    const isHouse = currentState.houseLocations.some(h => h.x === col && h.y === row);
+                    if (isHouse) {
+                        const houseIcon = document.createElement('i');
+                        houseIcon.classList.add('fas', 'fa-house');
+                        cell.appendChild(houseIcon);
+                    }
+                    
+                    if (currentState.grid[row][col] === CELL_TYPES.wall || currentState.grid[row][col] === CELL_TYPES.trapBuilding) {
+                        const wallIcon = document.createElement('i');
+                        wallIcon.classList.add('fas', 'fa-building', 'wall-icon');
+                        cell.appendChild(wallIcon);
+                    }
+
+                    if (currentState.grid[row][col] === CELL_TYPES.fence) {
+                        const fenceIcon = document.createElement('i');
+                        fenceIcon.classList.add('fas', 'fa-ruler-horizontal', 'fence-icon');
+                        cell.appendChild(fenceIcon);
+                    }
+
+                    if (currentState.grid[row][col] === CELL_TYPES.flag) {
+                        const flagIcon = document.createElement('i');
+                        flagIcon.classList.add('fas', 'fa-flag-checkered', 'flag-icon');
+                        cell.appendChild(flagIcon);
+                    }
+                    
+                    if (currentState.devicesOnBoard.money.some(m => m.x === col && m.y === row)) {
+                         const moneyIcon = document.createElement('i');
+                         moneyIcon.classList.add('fas', 'fa-money-bill-wave', 'money-icon');
+                         cell.appendChild(moneyIcon);
+                    }
+
+                    if (currentState.devicesOnBoard.R.some(m => m.x === col && m.y === row)) {
+                         const RanIcon = document.createElement('i');
+                         RanIcon.classList.add('fas', 'fa-cube', 'item-r-icon');
+                         cell.appendChild(RanIcon);
+                    }
+                    if (currentState.devicesOnBoard.E.some(m => m.x === col && m.y === row)) {
+                         const EigIcon = document.createElement('i');
+                         EigIcon.classList.add('fas', 'fa-atom', 'item-e-icon');
+                         cell.appendChild(EigIcon);
+                    }
+                    if (currentState.devicesOnBoard.T.some(m => m.x === col && m.y === row)) {
+                         const ChronIcon = document.createElement('i');
+                         ChronIcon.classList.add('fas', 'fa-hourglass-half', 'item-t-icon');
+                         cell.appendChild(ChronIcon);
+                    }
+
+                    const explosion = currentState.explosions.find(ex => ex.x === col && ex.y === row);
+                    if (explosion) {
+                        cell.classList.add('explosion-cell');
+                    }
+                    
+                    if (currentState.infoLocations.some(inf => inf.x === col && inf.y === row)) {
+                         const infoIcon = document.createElement('i');
+                         infoIcon.classList.add('fas', 'fa-info-circle', 'info-icon');
+                         cell.appendChild(infoIcon);
+                    }
+                    //...
+                    
+                    board.appendChild(cell);
+                }
+            }
+
+            if (currentHistory.length > 1) {
+                const previousState = currentHistory[currentHistory.length - 2];
+                const previousPlayer = document.createElement('i');
+                previousPlayer.classList.add('fas', 'fa-person', 'past-player-one-step-back');
+                const prevCell = board.children[previousState.playerPos.y * GRID_SIZE + previousState.playerPos.x];
+                if(prevCell) prevCell.appendChild(previousPlayer);
+            }
+
+            const otherLivingThreads = threadIds.filter(id => id !== currentThreadId && threadHistory[id].status === 'alive');
+            for (const otherThreadId of otherLivingThreads) {
+                if (threadHistory[otherThreadId].history.length > 0) {
+                    const otherState = threadHistory[otherThreadId].history[threadHistory[otherThreadId].history.length - 1];
+                    const otherPlayerIcon = document.createElement('i');
+                    otherPlayerIcon.classList.add('fas', 'fa-person', 'other-thread-player');
+                    const otherCell = board.children[otherState.playerPos.y * GRID_SIZE + otherState.playerPos.x];
+                    if(otherCell) otherCell.appendChild(otherPlayerIcon);
+                }
+            }
+            
+            drawEntities(currentState);
+            
+            updateDevicePanel(currentState);
+            updateStatsDisplay(currentState);
+            updateThreadNavButtons();
+        }
+
+        function drawEntities(currentState) {
+            const carCell = board.children[currentState.playerCar.y * GRID_SIZE + currentState.playerCar.x];
+            if (carCell) {
+                const carIcon = document.createElement('i');
+                carIcon.classList.add('fas', 'fa-car', 'player-car-icon');
+                carCell.appendChild(carIcon);
+            }
+
+            const { x, y } = currentState.playerPos;
+            if (y >= 0 && y < GRID_SIZE && x >= 0 && x < GRID_SIZE) {
+                const playerCell = board.children[y * GRID_SIZE + x];
+                if (playerCell) {
+                    if (!currentState.isDriving) {
+                        const playerIcon = document.createElement('i');
+                        playerIcon.classList.add('fas', 'fa-person', 'player-icon');
+                        playerCell.appendChild(playerIcon);
+                    } else if (playerCell === carCell) {
+                         const playerIcon = document.createElement('i');
+                        playerIcon.classList.add('fas', 'fa-person', 'player-icon');
+                        playerCell.appendChild(playerIcon);
+                    }
+                    if (currentState.playerStatus === 'dead') playerCell.classList.add('dead-player-cell');
+                }
+            }
+            
+            currentState.cars.forEach(car => {
+                const cell = board.children[car.y * GRID_SIZE + car.x];
+                if(cell) {
+                    const carIcon = document.createElement('i');
+                    carIcon.classList.add('fas', 'fa-car', 'car-icon');
+                    cell.appendChild(carIcon);
+                }
+            });
+
+            currentState.buses.forEach(bus => {
+                const cell = board.children[bus.y * GRID_SIZE + bus.x];
+                if(cell) {
+                    const busIcon = document.createElement('i');
+                    busIcon.classList.add('fas', 'fa-bus', 'bus-icon');
+                    cell.appendChild(busIcon);
+                }
+            });
+
+            currentState.strangers.forEach(stranger => {
+                const cell = board.children[stranger.y * GRID_SIZE + stranger.x];
+                if(cell) {
+                    const strangerIcon = document.createElement('i');
+                    strangerIcon.classList.add('fas', 'fa-person-walking', 'stranger-icon');
+                    if (stranger.isDead) strangerIcon.classList.add('dead-stranger-icon');
+                    cell.appendChild(strangerIcon);
+                }
+            });
+            
+            currentState.ducks.forEach(duck => {
+                const cell = board.children[duck.y * GRID_SIZE + duck.x];
+                if(cell) {
+                    const duckIcon = document.createElement('i');
+                    duckIcon.classList.add('fas', 'fa-dog', 'duck-icon');
+                    if (duck.isDead) duckIcon.classList.add('dead-duck-icon');
+                    cell.appendChild(duckIcon);
+                }
+            });
+
+            currentState.bombs.forEach(bomb => {
+                const cell = board.children[bomb.y * GRID_SIZE + bomb.x];
+                if(cell) {
+                    const bombIcon = document.createElement('i');
+                    bombIcon.classList.add('fas', 'fa-bomb', 'bomb-icon');
+                    cell.appendChild(bombIcon);
+                }
+            });
+        }
+
+        function updateStatsDisplay(currentState) {
+            timeCounterDisplay.textContent = `Time: ${currentState.moveCount}`;
+            moneyAmountDisplay.textContent = `${currentState.inventory.money}`;
+            levelCounterDisplay.textContent = `Level: ${currentLevel + 1}`;
+        }
+        
+        function updateThreadIdDisplay() {
+            const currentThreadId = threadIds[currentThreadIndex];
+            currentThreadDisplay.textContent = currentThreadId === '' ? '∅' : currentThreadId;
+        }
+        
+        function getLivingThreads() {
+            return threadIds.filter(id => id !== '' && threadHistory[id].status === 'alive');
+        }
+
+        function updateThreadNavButtons() {
+            prevThreadBtn.disabled = getLivingThreads().length <= 1;
+            nextThreadBtn.disabled = getLivingThreads().length <= 1;
+        }
+
+        function getEigengramMessageForDisplay() {
+            let checkId = threadIds[currentThreadIndex];
+            if (eigengramSourceThreadId === '') return eigengramMessages[''] || '';
+            while (checkId) {
+                if (eigengramMessages[checkId] !== undefined) return eigengramMessages[checkId];
+                checkId = checkId.slice(0, -1);
+            }
+            return '';
+        }
+
+        function updateDevicePanel(currentState) {
+            qrgLabel.textContent = `QRG${currentState.inventory.R > 0 ? ` x ${currentState.inventory.R}` : ''}`;
+            randomGeneratorBtn.disabled = currentState.inventory.R === 0;
+
+            eigengramLabel.textContent = `Eigengram${currentState.inventory.E > 0 ? ` x ${currentState.inventory.E}` : ''}`;
+            eigengramLifetimeDisplay.textContent = currentState.eigengram.isOn ? currentState.eigengram.lifetime : (currentState.inventory.E > 0 ? STARTING_LIFETIME : 0);
+            eigengramIcon.className = `fas ${currentState.eigengram.isOn ? 'fa-bolt' : 'fa-lightbulb'}`;
+            eigengramOnBtn.classList.toggle('active', currentState.eigengram.isOn);
+            eigengramOnBtn.disabled = currentState.inventory.E === 0 || currentState.eigengram.isOn || isGameOver;
+            eigengramMessagePanel.disabled = !currentState.eigengram.isOn || isGameOver;
+            eigengramMessagePanel.value = currentState.eigengram.isOn ? (eigengramMessages[threadIds[currentThreadIndex]] || '') : getEigengramMessageForDisplay();
+
+            chronogramLabel.textContent = `Chronogram${currentState.inventory.T > 0 ? ` x ${currentState.inventory.T}` : ''}`;
+            chronogramLifetimeDisplay.textContent = currentState.chronogram.isOn ? currentState.chronogram.lifetime : (currentState.inventory.T > 0 ? STARTING_LIFETIME : 0);
+            chronogramIcon.className = `fas ${currentState.chronogram.isOn ? 'fa-bolt' : 'fa-lightbulb'}`;
+            chronogramOnBtn.classList.toggle('active', currentState.chronogram.isOn);
+            chronogramOnBtn.disabled = currentState.inventory.T === 0 || currentState.chronogram.isOn || isGameOver;
+            chronogramMessagePanel.disabled = !currentState.chronogram.isOn || isGameOver;
+            sendBackBtn.disabled = isGameOver || !currentState.chronogram.isOn || currentState.chronogram.lifetime <= 0;
+            chronogramMessagePanel.value = chronogramMessages[threadIds[currentThreadIndex]] || '';
+            
+            throwThreadBtn.disabled = false;
+        }
+
+        function flashLightning() {
+            board.classList.add('lightning-flash');
+            setTimeout(() => board.classList.remove('lightning-flash'), 200);
+        }
+        
+        function gameOver() {
+            isGameOver = true;
+            gameOverMessage.style.display = 'block';
+            gameWrapper.classList.add('game-over-backdrop');
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleRestart);
+            updateDevicePanel({
+                inventory: { R: 0, E: 0, T: 0, money: 0 },
+                eigengram: { isOn: false, lifetime: 0 },
+                chronogram: { isOn: false, lifetime: 0, savedState: null },
+            });
+            prevThreadBtn.disabled = true;
+            nextThreadBtn.disabled = true;
+            board.innerHTML = '';
+        }
+
+        function nextLevel() {
+            currentLevel++;
+            initGame();
+        }
+        
+        function handleRestart(e) {
+            if(e.key === 'r' || e.key === 'R') initGame();
+        }
+        
+        function isObstacle(x, y, grid) {
+            if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return true;
+            const cellType = grid[y][x];
+            const isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding;
+            const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            const isHouse = currentState.houseLocations.some(h => h.x === x && h.y === y);
+            return isSolid || isHouse;
+        }
+
+        function checkPlayerCollisions(newState) {
+            const { x, y } = newState.playerPos;
+            if (newState.cars.some(c => c.x === x && c.y === y) || newState.buses.some(b => b.x === x && b.y === y)) {
+                newState.playerStatus = 'dead';
+            }
+            return newState;
+        }
+
+        function checkStrangerCollisions(newState) {
+            newState.strangers.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+            });
+            
+            newState.ducks.forEach(d => {
+                if (d.isDead) return;
+                const hit = newState.cars.some(v => v.x === d.x && v.y === d.y) ||
+                            newState.buses.some(v => v.x === d.x && v.y === d.y) ||
+                            (newState.isDriving && d.x === newState.playerPos.x && d.y === newState.playerPos.y);
+                if (hit) {
+                    d.isDead = true;
+                    d.deathTimer = DEATH_TIMER;
+                    newState.deadDucks.push({ ...d });
+                }
+            });
+            return newState;
+        }
+
+        function checkItemPickup(newState) {
+            const { x, y } = newState.playerPos;
+            /*if (newState.devicesOnBoard.R && x === newState.deviceLocations.R.x && y === newState.deviceLocations.R.y) {
+                newState.inventory.R++;
+                newState.devicesOnBoard.R = false;
+            }
+            if (newState.devicesOnBoard.E && x === newState.deviceLocations.E.x && y === newState.deviceLocations.E.y) {
+                newState.inventory.E++;
+                newState.devicesOnBoard.E = false;
+            }
+            if (newState.devicesOnBoard.T && x === newState.deviceLocations.T.x && y === newState.deviceLocations.T.y) {
+                newState.inventory.T++;
+                newState.devicesOnBoard.T = false;
+            }*/
+            if (x === newState.flagLocation.x && y === newState.flagLocation.y) {
+                nextLevel();
+                return newState;
+            }
+            const moneyIndex = newState.devicesOnBoard.money.findIndex(m => m.x === x && m.y === y);
+            if (moneyIndex !== -1) {
+                newState.inventory.money++;
+                newState.devicesOnBoard.money.splice(moneyIndex, 1);
+            }
+            const RanIndex = newState.devicesOnBoard.R.findIndex(m => m.x === x && m.y === y);
+            if (RanIndex !== -1) {
+                newState.inventory.R++;
+                newState.devicesOnBoard.R.splice(RanIndex, 1);
+            }
+            const EigIndex = newState.devicesOnBoard.E.findIndex(m => m.x === x && m.y === y);
+            if (EigIndex !== -1) {
+                newState.inventory.E++;
+                newState.devicesOnBoard.E.splice(EigIndex, 1);
+            }
+            const ChronIndex = newState.devicesOnBoard.T.findIndex(m => m.x === x && m.y === y);
+            if (ChronIndex !== -1) {
+                newState.inventory.T++;
+                newState.devicesOnBoard.T.splice(ChronIndex, 1);
+            }
+            newState.infoLocations.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    showInfoModal(m.text);
+                    newState.infoLocations.splice(newState.infoLocations.findIndex(w => w.x === x && w.y === y), 1);
+                }
+            });
+            return newState;
+        }
+
+        function triggerExplosion(bomb, state) {
+            for (let ex = -2; ex <= 2; ex++) {
+                for (let ey = -2; ey <= 2; ey++) {
+                    const blastX = bomb.x + ex;
+                    const blastY = bomb.y + ey;
+                    if (blastX >= 0 && blastX < GRID_SIZE && blastY >= 0 && blastY < GRID_SIZE) {
+                        if (!state.explosions.some(exp => exp.x === blastX && exp.y === blastY)) {
+                            state.explosions.push({ x: blastX, y: blastY });
+                        }
+                        if (state.playerPos.x === blastX && state.playerPos.y === blastY) {
+                            state.playerStatus = 'dead';
+                        }
+                        state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
+                        state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) d.isDead = true; });
+                    }
+                }
+            }
+            state.bombs = state.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+        }
+        
+        function progressTurn() {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            if (!threadHistory[currentThreadId] || threadHistory[currentThreadId].status === 'dead') return;
+            
+            const history = threadHistory[currentThreadId].history;
+            let updatedState = deepClone(history.slice(-1)[0]);
+
+            updatedState.explosions = [];
+
+            if (playerDesiredMove) {
+                let { x: dx, y: dy } = playerDesiredMove;
+                let newX = updatedState.playerPos.x + dx;
+                let newY = updatedState.playerPos.y + dy;
+                if (!isObstacle(newX, newY, updatedState.grid)) {
+                    updatedState.playerPos.x = newX;
+                    updatedState.playerPos.y = newY;
+                    updatedState.lastMoveDirection = { x: dx, y: dy };
+                }
+                if (updatedState.isDriving) {
+                    updatedState.playerCar.x = updatedState.playerPos.x;
+                    updatedState.playerCar.y = updatedState.playerPos.y;
+                }
+                playerDesiredMove = null;
+            }
+
+            if (updatedState.playerStatus !== 'dead') {
+                updatedState.cars.forEach(c => {
+                    c.x += c.dx;
+                    if (c.x < 0) c.x = GRID_SIZE - 1;
+                    if (c.x >= GRID_SIZE) c.x = 0;
+                });
+                updatedState.buses.forEach(b => {
+                    if (!b.stopped) {
+                        b.y += b.dy;
+                        if (b.y < 0) b.y = GRID_SIZE - 1;
+                        if (b.y >= GRID_SIZE) b.y = 0;
+                        if (b.ranSource[0]){//(Math.random() < 0.2) {
+                            b.stopped = true;
+                            b.stopDuration = 4;//Math.floor(Math.random() * 5) + 2;
+                        }
+                        b.ranSource.shift();
+                        b.ranSource.push(Math.random()<b.p);
+                    } else if (--b.stopDuration <= 0) b.stopped = false;
+                });
+                updatedState.strangers.forEach(s => {
+                    if (s.isDead) return;
+                    s.dx = s.ranSource[0].dx;
+                    s.dy = s.ranSource[0].dy;
+                    s.ranSource.shift();
+                    const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+                    if (Math.random()<s.p){
+                        s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+                    }else{
+                        s.ranSource.push(s.ranSource[s.ranSource.length-1]);
+                    }
+                    const nX = s.x + s.dx, nY = s.y + s.dy;
+                    if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
+                    else { s.x = nX; s.y = nY; }
+                });
+                updatedState.ducks.forEach(d => {
+                    if (d.isDead) return;
+                    d.dx = d.ranSource[0].dx;
+                    d.dy = d.ranSource[0].dy;
+                    d.ranSource.shift();
+                    const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+                    if (Math.random()<d.p){
+                        d.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+                    }else{
+                        d.ranSource.push(d.ranSource[d.ranSource.length-1]);
+                    }
+                    const nX = d.x + d.dx, nY = d.y + d.dy;
+                    if (isObstacle(nX, nY, updatedState.grid)) { d.dx *= -1; d.dy *= -1; }
+                    else { d.x = nX; d.y = nY; }
+                });
+                updatedState.trapBuildings.forEach(tp => {
+                    if (!tp.stopped) {
+                        if ((Math.abs(updatedState.playerPos.x - tp.x)==1 && updatedState.playerPos.y == tp.y) || (Math.abs(updatedState.playerPos.y - tp.y)==1 && updatedState.playerPos.x == tp.x)){
+                            updatedState.bombs.push({ x: updatedState.playerPos.x, y: updatedState.playerPos.y, timer: 4, correctWire: ((tp.ranSource[0])?'b':'g') });
+                            tp.stopped = true;
+                            tp.stopDuration = 10;
+                            tp.ranSource.shift();
+                            tp.ranSource.push(Math.random()<tp.p);
+                        }
+                    } else if (--tp.stopDuration <= 0) tp.stopped = false;
+                    
+                });
+
+                updatedState.deadStrangers = updatedState.deadStrangers.filter(s => --s.deathTimer > 0);
+                updatedState.deadDucks = updatedState.deadDucks.filter(d => --d.deathTimer > 0);
+
+                const explodingBombs = [];
+                updatedState.bombs = updatedState.bombs.filter(b => {
+                    if (--b.timer <= 0) {
+                        explodingBombs.push(b);
+                        return false;
+                    }
+                    return true;
+                });
+                explodingBombs.forEach(bomb => triggerExplosion(bomb, updatedState));
+
+
+                if (updatedState.eigengram.isOn && --updatedState.eigengram.lifetime <= 0) {
+                    updatedState.eigengram.isOn = false;
+                    eigengramSourceThreadId = null;
+                }
+                if (updatedState.chronogram.isOn && --updatedState.chronogram.lifetime <= 0) {
+                    updatedState.chronogram.isOn = false;
+                }
+            }
+            
+            checkItemPickup(updatedState);
+            checkStrangerCollisions(updatedState);
+            checkPlayerCollisions(updatedState);
+
+            updatedState.moveCount++;
+            history.push(updatedState);
+            
+            drawGrid();
+
+            const livingThreads = getLivingThreads();
+            if (livingThreads.length > 1) {
+                switchThread('next');
+            }
+        }
+
+        function sortThreadIds(ids) {
+            return ids.sort((a, b) => {
+                if (a === '') return -1; if (b === '') return 1;
+                if (a.length !== b.length) return a.length - b.length;
+                return a.localeCompare(b);
+            });
+        }
+        
+        function switchThread(direction) {
+            const livingThreads = getLivingThreads();
+            if (livingThreads.length <= 1) return;
+            const currentId = threadIds[currentThreadIndex];
+            const currentIndexInLiving = livingThreads.indexOf(currentId);
+            let newIndexInLiving = direction === 'next' ? (currentIndexInLiving + 1) % livingThreads.length : (currentIndexInLiving - 1 + livingThreads.length) % livingThreads.length;
+            currentThreadIndex = threadIds.indexOf(livingThreads[newIndexInLiving]);
+            flashLightning();
+            updateThreadIdDisplay();
+            drawGrid();
+        }
+
+        function showDefuseModal(bomb) {
+            activeBombToDefuse = bomb;
+            defuseModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleDefuseKeyPress);
+        }
+
+        function hideDefuseModal() {
+            activeBombToDefuse = null;
+            defuseModal.style.display = 'none';
+            document.removeEventListener('keydown', handleDefuseKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleDefuseAttempt(chosenWire) {
+            if (!activeBombToDefuse) return;
+
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
+
+            if (bomb) {
+                if (bomb.correctWire === chosenWire) {
+                    currentState.bombs = currentState.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+                } else {
+                    triggerExplosion(bomb, currentState);
+                }
+            }
+
+            history.push(currentState);
+            hideDefuseModal();
+            drawGrid();
+        }
+
+        function handleDefuseKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'b') {
+                handleDefuseAttempt('b');
+            } else if (key === 'g') {
+                handleDefuseAttempt('g');
+            }
+        }
+        
+        function handleKeyDown(e) {
+            if (isGameOver) {
+                handleRestart(e);
+                return;
+            }
+            if (threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0].playerStatus === 'dead') {
+                progressTurn();
+                return;
+            }
+
+            const keyMap = {
+                'ArrowUp': {x:0, y:-1}, 'ArrowDown': {x:0, y:1},
+                'ArrowLeft': {x:-1, y:0}, 'ArrowRight': {x:1, y:0}
+            };
+
+            if (keyMap[e.key]) {
+                e.preventDefault();
+                playerDesiredMove = keyMap[e.key];
+                progressTurn();
+            } else {
+                switch (e.key.toLowerCase()) {
+                    case 'd':
+                        e.preventDefault();
+                        const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                        const playerPos = currentState.playerPos;
+                        const bombOnCell = currentState.bombs.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        if (bombOnCell) {
+                            showDefuseModal(bombOnCell);
+                        } else {
+                            handleCarInteraction();
+                        }
+                        break;
+                    case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
+                    case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
+                    case 'e': e.preventDefault(); if (!eigengramOnBtn.disabled) eigengramOnBtn.click(); break;
+                    case 'c': e.preventDefault();
+                        const state = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                        if (state.chronogram.isOn && !sendBackBtn.disabled) sendBackBtn.click();
+                        else if (!chronogramOnBtn.disabled) chronogramOnBtn.click();
+                        break;
+                }
+            }
+        }
+
+        function handleCarInteraction() {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            
+            if (currentState.isDriving) {
+                const { x, y } = currentState.playerPos;
+                const directions = [{x:currentState.lastMoveDirection.x, y:currentState.lastMoveDirection.y},{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+                for (const dir of directions) {
+                    const newX = x + dir.x, newY = y + dir.y;
+                    if (!isObstacle(newX, newY, currentState.grid)) {
+                        currentState.isDriving = false;
+                        currentState.playerPos = {x: newX, y: newY};
+                        break;
+                    }
+                }
+            } else if (currentState.playerPos.x === currentState.playerCar.x && currentState.playerPos.y === currentState.playerCar.y) {
+                currentState.isDriving = true;
+            }
+
+            history.push(currentState);
+            drawGrid();
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        prevThreadBtn.addEventListener('click', () => switchThread('prev'));
+        nextThreadBtn.addEventListener('click', () => switchThread('next'));
+        
+        throwThreadBtn.addEventListener('click', () => {
+            const currentThreadId = threadIds[currentThreadIndex];
+            if (!threadHistory[currentThreadId] || threadHistory[currentThreadId].status === 'dead') {
+                const living = getLivingThreads();
+                if (living.length > 0) {
+                    currentThreadIndex = threadIds.indexOf(living[0]);
+                    updateThreadIdDisplay();
+                    drawGrid();
+                } else gameOver();
+                return;
+            }
+
+            threadHistory[currentThreadId].status = 'dead';
+            const living = getLivingThreads();
+            if (living.length > 0) {
+                currentThreadIndex = threadIds.indexOf(living[0]);
+                updateThreadIdDisplay();
+                drawGrid();
+            } else gameOver();
+        });
+
+        randomGeneratorBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const currentState = threadHistory[currentThreadId].history.slice(-1)[0];
+            if (currentState.inventory.R > 0) {
+                const newId0 = currentThreadId + '0', newId1 = currentThreadId + '1';
+                const parentState = deepClone(currentState);
+                parentState.inventory.R--;
+                threadHistory[newId0] = {status: 'alive', history: [deepClone(parentState)]};
+                threadHistory[newId1] = {status: 'alive', history: [deepClone(parentState)]};
+                eigengramMessages[newId0] = getEigengramMessageForDisplay() || '';
+                eigengramMessages[newId1] = getEigengramMessageForDisplay() || '';
+                chronogramMessages[newId0] = chronogramMessages[currentThreadId] || '';
+                chronogramMessages[newId1] = chronogramMessages[currentThreadId] || '';
+                
+                const newThreadIds = threadIds.filter(id => id !== currentThreadId);
+                newThreadIds.push(newId0, newId1);
+                threadIds = sortThreadIds(newThreadIds);
+                currentThreadIndex = threadIds.indexOf(newId0);
+                
+                updateThreadIdDisplay();
+                drawGrid();
+            }
+        });
+        
+        eigengramOnBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            if (currentState.inventory.E > 0 && !currentState.eigengram.isOn) {
+                currentState.inventory.E--;
+                currentState.eigengram.isOn = true;
+                currentState.eigengram.lifetime = STARTING_LIFETIME;
+                history.push(currentState);
+                eigengramSourceThreadId = currentThreadId;
+                drawGrid();
+            }
+        });
+
+        eigengramMessagePanel.addEventListener('input', (e) => {
+            if (isGameOver) return;
+            const message = e.target.value;
+            const currentThreadId = threadIds[currentThreadIndex];
+            if (threadHistory[currentThreadId].history.slice(-1)[0].eigengram.isOn) {
+                if (eigengramSourceThreadId === '') {
+                    threadIds.forEach(id => eigengramMessages[id] = message);
+                } else {
+                    eigengramMessages[currentThreadId] = message;
+                }
+                drawGrid();
+            }
+        });
+
+        chronogramOnBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            if (currentState.inventory.T > 0 && !currentState.chronogram.isOn) {
+                currentState.inventory.T--;
+                currentState.chronogram.isOn = true;
+                currentState.chronogram.lifetime = STARTING_LIFETIME;
+                currentState.chronogram.savedState = deepClone(currentState);
+                history.push(currentState);
+                drawGrid();
+            }
+        });
+
+        chronogramMessagePanel.addEventListener('input', (e) => {
+            if (isGameOver) return;
+            chronogramMessages[threadIds[currentThreadIndex]] = e.target.value;
+        });
+
+        sendBackBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const currentState = threadHistory[currentThreadId].history.slice(-1)[0];
+            if (currentState.chronogram.isOn && currentState.chronogram.lifetime > 0) {
+                const { savedState } = currentState.chronogram;
+                const messageToSend = chronogramMessagePanel.value;
+                const newPresentId = currentThreadId + '0', newPastId = currentThreadId + '1';
+                
+                const newPresentHistory = deepClone(threadHistory[currentThreadId].history);
+                const newPresentState = newPresentHistory.slice(-1)[0];
+                newPresentState.chronogram.savedState = null;
+                threadHistory[newPresentId] = {status: 'alive', history: newPresentHistory};
+                eigengramMessages[newPresentId] = getEigengramMessageForDisplay() || '';
+                chronogramMessages[newPresentId] = chronogramMessages[currentThreadId] || '';
+                
+                const pastState = deepClone(savedState);
+                pastState.chronogram = { isOn: true, lifetime: STARTING_LIFETIME, savedState: null };
+                pastState.inventory.T ++;
+                chronogramMessages[newPastId] = messageToSend;
+                threadHistory[newPastId] = {status: 'alive', history: [pastState]};
+                eigengramMessages[newPastId] = getEigengramMessageForDisplay() || '';
+
+                const newThreadIds = threadIds.filter(id => id !== currentThreadId);
+                newThreadIds.push(newPresentId, newPastId);
+                threadIds = sortThreadIds(newThreadIds);
+                currentThreadIndex = threadIds.indexOf(newPastId);
+                
+                updateThreadIdDisplay();
+                drawGrid();
+            }
+        });
+        
+        cutBlackWireBtn.addEventListener('click', () => handleDefuseAttempt('b'));
+        cutGreenWireBtn.addEventListener('click', () => handleDefuseAttempt('g'));
+
+        initGame();
+    });
+</script>
+</body>
+</html>
+
