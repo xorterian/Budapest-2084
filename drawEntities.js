@@ -1,0 +1,76 @@
+delete _;
+var _ = (currentState) => {
+    const carCell = board.children[currentState.playerCar.y * GRID_SIZE + currentState.playerCar.x];
+    if (carCell) {
+        const carIcon = document.createElement('i');
+        carIcon.classList.add('fas', 'fa-car', 'player-car-icon');
+        carCell.appendChild(carIcon);
+    }
+
+    const { x, y } = currentState.playerPos;
+    if (y >= 0 && y < GRID_SIZE && x >= 0 && x < GRID_SIZE) {
+        const playerCell = board.children[y * GRID_SIZE + x];
+        if (playerCell) {
+            if (!currentState.isDriving) {
+                const playerIcon = document.createElement('i');
+                playerIcon.classList.add('fas', 'fa-person', 'player-icon');
+                playerCell.appendChild(playerIcon);
+            } else if (playerCell === carCell) {
+                 const playerIcon = document.createElement('i');
+                playerIcon.classList.add('fas', 'fa-person', 'player-icon');
+                playerCell.appendChild(playerIcon);
+            }
+            if (currentState.playerStatus === 'dead') playerCell.classList.add('dead-player-cell');
+        }
+    }
+    
+    currentState.cars.forEach(car => {
+        const cell = board.children[car.y * GRID_SIZE + car.x];
+        if(cell) {
+            const carIcon = document.createElement('i');
+            carIcon.classList.add('fas', 'fa-car', 'car-icon');
+            cell.appendChild(carIcon);
+        }
+    });
+
+    currentState.buses.forEach(bus => {
+        const cell = board.children[bus.y * GRID_SIZE + bus.x];
+        if(cell) {
+            const busIcon = document.createElement('i');
+            busIcon.classList.add('fas', 'fa-bus', 'bus-icon');
+            cell.appendChild(busIcon);
+        }
+    });
+
+    currentState.strangers.forEach(stranger => {
+        const cell = board.children[stranger.y * GRID_SIZE + stranger.x];
+        if(cell) {
+            const strangerIcon = document.createElement('i');
+            strangerIcon.classList.add('fas', 'fa-person-walking', 'stranger-icon');
+            if (stranger.isDead) strangerIcon.classList.add('dead-stranger-icon');
+            cell.appendChild(strangerIcon);
+        }
+    });
+    
+    currentState.ducks.forEach(duck => {
+        const cell = board.children[duck.y * GRID_SIZE + duck.x];
+        if(cell) {
+            const duckIcon = document.createElement('i');
+            duckIcon.classList.add('fas', 'fa-dog', 'duck-icon');
+            if (duck.isDead) duckIcon.classList.add('dead-duck-icon');
+            cell.appendChild(duckIcon);
+        }
+    });
+
+    currentState.bombs.forEach(bomb => {
+        const cell = board.children[bomb.y * GRID_SIZE + bomb.x];
+        if(cell) {
+            const bombIcon = document.createElement('i');
+            bombIcon.classList.add('fas', 'fa-bomb', 'bomb-icon');
+            cell.appendChild(bombIcon);
+        }
+    });
+}
+
+drawEntitiesString = _.toString();
+delete _;

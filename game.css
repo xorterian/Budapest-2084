@@ -1,0 +1,480 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #f0f4f8;
+    --primary-color: #4a5568;
+    --secondary-color: #e2e8f0;
+    --accent-color: #38a169;
+    --text-color: #2d3748;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.2);
+    --dead-player-color: #ffcccc;
+    --dead-stranger-color: #f56565;
+    --car-color: #4299e1;
+    --player-car-color: #e53e3e;
+    --bus-color: #fbd38d;
+    --stranger-color: #a0aec0;
+    --player-icon-color: #ffffff;
+    --active-icon-color: #f6e05e;
+    --black-bg-btn: #1a202c;
+    --enabled-btn-bg: #cbd5e0;
+    --duck-color: #964b00;
+    --money-color: #4CAF50;
+    --flag-color: #eeeeee;
+    --bomb-color: #111100;
+    --explosion-color: rgba(255, 0, 0, 0.5);
+    --destroyed-grass-color: #cccc00;
+    --destroyed-road-color: #333333;
+    --destroyed-building-color: #000000;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#game-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px var(--shadow-medium);
+    max-width: 90%;
+    width: 900px;
+    position: relative;
+}
+
+#main-content-area {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: stretch;
+    width: 100%;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    flex-grow: 1;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    width: 100%;
+}
+
+.stat-box {
+    background: linear-gradient(135deg, var(--primary-color), var(--text-color));
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#thread-id-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--primary-color), var(--text-color));
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+}
+
+#thread-id-display button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    padding: 0.25rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#thread-id-display button:hover:not(:disabled) {
+    transform: scale(1.2);
+}
+
+#thread-id-display button:disabled {
+    color: #a0aec0;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#current-thread {
+    min-width: 50px;
+    text-align: center;
+    color: #ffffff;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 500px;
+    height: 500px;
+    position: relative;
+    box-shadow: inset 0 0 10px var(--shadow-light);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #4CAF50;
+    border: 2px solid #333;
+}
+
+.game-over-backdrop {
+    opacity: 0.9;
+}
+
+.lightning-flash {
+    background-color: #ffffff !important;
+}
+
+.grid-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    background-color: #388e3c;
+    border: 1px solid #333;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.road {
+    background-color: #616161;
+}
+
+.dead-player-cell {
+    background-color: var(--dead-player-color) !important;
+    animation: pulse 1s infinite;
+}
+
+.dead-stranger-cell {
+    background-color: var(--dead-stranger-color) !important;
+}
+
+.explosion-cell {
+    background-color: var(--explosion-color) !important;
+    animation: flash-red 0.5s;
+}
+
+.destroyed-grass { background-color: var(--destroyed-grass-color); }
+.destroyed-road { background-color: var(--destroyed-road-color); }
+.destroyed-building { background-color: var(--destroyed-building-color); }
+
+@keyframes flash-red {
+    from { background-color: var(--explosion-color); }
+    to { background-color: transparent; }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px var(--dead-player-color); }
+  50% { box-shadow: 0 0 20px var(--dead-player-color); }
+  100% { box-shadow: 0 0 5px var(--dead-player-color); }
+}
+
+@keyframes red-glow {
+    0% { text-shadow: 0 0 5px var(--dead-stranger-color); }
+    50% { text-shadow: 0 0 15px var(--dead-stranger-color); }
+    100% { text-shadow: 0 0 5px var(--dead-stranger-color); }
+}
+
+/* Wall and Fence styles */
+.wall {
+    background-color: #78716c;
+    border: 2px solid #57534e;
+}
+.fence {
+    background-color: #bfa881;
+    border: 1px dashed #57534e;
+}
+
+.flag {
+    /* This rule is now removed for a transparent background */
+}
+
+.past-player-one-step-back {
+    opacity: 0.6;
+    position: absolute;
+    font-size: 1.5rem;
+    color: var(--player-icon-color);
+}
+
+.other-thread-player {
+    opacity: 0.3;
+    position: absolute;
+    font-size: 1.5rem;
+    color: var(--player-icon-color);
+}
+
+.player-icon {
+    font-size: 1.5rem;
+    color: var(--player-icon-color); /* Player color is now a CSS variable */
+    position: relative;
+    z-index: 2; /* Ensure player is on top of car */
+}
+
+.car-icon, .bus-icon {
+    font-size: 1.5rem;
+    color: var(--car-color);
+    position: relative;
+    z-index: 1;
+}
+
+.bus-icon { color: var(--bus-color); }
+
+.destroyed-vehicle {
+    transform: rotate(90deg);
+}
+
+.player-car-icon {
+    font-size: 1.5rem;
+    color: var(--player-car-color);
+    position: relative;
+    z-index: 1;
+}
+
+.stranger-icon {
+    font-size: 1.5rem;
+    color: var(--stranger-color);
+    position: relative;
+    z-index: 1;
+}
+
+.duck-icon {
+    font-size: 1.5rem;
+    color: var(--duck-color);
+    position: relative;
+    z-index: 1;
+}
+
+.dead-stranger-icon, .dead-duck-icon {
+    transform: rotate(90deg);
+    animation: red-glow 1s infinite;
+}
+
+.bomb-icon {
+    font-size: 1.5rem;
+    color: var(--bomb-color);
+    position: relative;
+    z-index: 3;
+}
+
+.wall-icon, .fence-icon, .flag-icon, .money-icon, .info-icon {
+    position: absolute;
+    font-size: 1.5rem;
+}
+
+.wall-icon { color: #4a4a4a; opacity: 0.8; }
+.fence-icon { color: #8c7b64; opacity: 0.8; }
+.flag-icon { color: var(--flag-color); }
+.money-icon { color: var(--money-color); }
+.info-icon { color: #3b82f6; }
+
+.device-panel {
+    background-color: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 350px;
+}
+
+.device-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.device-section:last-of-type {
+    border-bottom: none;
+}
+
+.device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.device-header.with-btn {
+    gap: 1rem;
+}
+
+.device-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.device-icon-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    transition: all 0.2s ease-in-out;
+    background-color: var(--black-bg-btn);
+    color: #a0aec0;
+    cursor: not-allowed;
+}
+
+.device-icon-btn:not(:disabled) {
+    background-color: var(--enabled-btn-bg);
+    color: var(--black-bg-btn);
+    cursor: pointer;
+}
+
+.device-icon-btn.active:not(:disabled) {
+    background-color: var(--enabled-btn-bg);
+    color: var(--active-icon-color);
+    animation: pulse-glow 1s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { text-shadow: 0 0 5px var(--active-icon-color); }
+    50% { text-shadow: 0 0 15px var(--active-icon-color); }
+    100% { text-shadow: 0 0 5px var(--active-icon-color); }
+}
+
+.text-input {
+    width: 100%;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--primary-color);
+}
+
+button {
+    background: linear-gradient(145deg, var(--accent-color), #2d8955);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 10px var(--shadow-light);
+    transition: all 0.2s ease-in-out;
+}
+
+button#random-generator-btn, button#send-back-btn {
+    background: linear-gradient(145deg, #4299e1, #3182ce);
+}
+
+#throw-thread-btn {
+    background: linear-gradient(145deg, #e53e3e, #c53030);
+}
+
+button:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    box-shadow: none;
+    color: #a0aec0;
+    transform: none;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px var(--shadow-light);
+}
+
+.fa-house { color: white; }
+.fa-atom { color: #ffeb3b; }
+.fa-cube { color: #2196f3; }
+.fa-hourglass-half { color: #00e676; }
+
+#game-over-message, #defuse-modal, #info-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 2rem 4rem;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    display: none;
+    z-index: 100;
+}
+
+#defuse-modal, #info-modal {
+    font-size: 1.5rem;
+    z-index: 200;
+}
+
+#defuse-modal button, #info-modal button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+}
+
+#game-win-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2rem 4rem;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    display: none;
+    z-index: 100;
+}
+
+#chronogram-button-group {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+#send-back-btn {
+    width: fit-content;
+}
+
