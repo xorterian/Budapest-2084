@@ -76,6 +76,27 @@
             <button id="cut-green-wire" style="background-color: var(--accent-color);">Green (G)</button>
         </div>
     </div>
+    <div id="deal-modal">
+        <h3>In what to invest?</h3>
+        <p>QRG (buy: 1, sell: 1)</p>
+        <div>
+            <button id="get-r" style="background-color: #333;">Buy (R)</button>
+            <button id="sell-r" style="background-color: var(--accent-color);">Sell (F)</button>
+        </div>
+        <p>Eigengram (buy: 5, sell: 3)</p>
+        <div>
+            <button id="get-e" style="background-color: var(--accent-color);">Buy (E)</button>
+            <button id="sell-e" style="background-color: var(--accent-color);">Sell (D)</button>
+        </div>
+        <p>Chronogram (buy: 10, sell: 7)</p>
+        <div>
+            <button id="get-t" style="background-color: var(--accent-color);">Buy (T)</button>
+            <button id="sell-t" style="background-color: var(--accent-color);">Sell (G)</button>
+        </div>
+        <div>
+            <button id="get-out" style="background-color: var(--accent-color);">Quit (Q)</button>
+        </div>
+    </div>
     <div id="info-modal">
         <h3 id="info-modal-title">Information</h3>
         <p id="info-modal-text"></p>
@@ -122,6 +143,14 @@
         const defuseModal = document.getElementById('defuse-modal');
         const cutBlackWireBtn = document.getElementById('cut-black-wire');
         const cutGreenWireBtn = document.getElementById('cut-green-wire');
+        const dealModal = document.getElementById('deal-modal');
+        const getRBtn = document.getElementById('get-r');
+        const getEBtn = document.getElementById('get-e');
+        const getTBtn = document.getElementById('get-t');
+        const sellRBtn = document.getElementById('sell-r');
+        const sellEBtn = document.getElementById('sell-e');
+        const sellTBtn = document.getElementById('sell-t');
+        const getOutBtn = document.getElementById('get-out');
 
         const infoModal = document.getElementById('info-modal');
         const infoModalText = document.getElementById('info-modal-text');
@@ -134,7 +163,23 @@
             wall: 'wall',
             fence: 'fence',
             flag: 'flag',
-            trapBuilding: 'trapBuilding'
+            trapBuilding: 'trapBuilding',
+            tower: 'broadcast-tower', 
+            uni: 'university',
+            door: 'door-closed',
+            gate: 'torii-gate',
+            city: 'city',
+            panel: 'solar-panel',
+            warehouse: 'warehouse',
+            gas: 'gas-pump',
+            desktop: 'desktop',
+            tree: 'tree',
+            plant: 'seedling',
+            death: 'skull-crossbones',
+            eye: 'eye',
+            bio: 'biohazard',
+            radioation: 'radiation',
+            danger: 'exclamation-triangle'
         };
 
         const STARTING_LIFETIME = 5;
@@ -183,16 +228,23 @@
                 playerDesiredMove = keyMap[e.key];
                 progressTurn();
             } else {
+                const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                const playerPos = currentState.playerPos;
                 switch (e.key.toLowerCase()) {
                     case 'd':
                         e.preventDefault();
-                        const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
-                        const playerPos = currentState.playerPos;
                         const bombOnCell = currentState.bombs.find(b => b.x === playerPos.x && b.y === playerPos.y);
                         if (bombOnCell) {
                             showDefuseModal(bombOnCell);
                         } else {
                             handleCarInteraction();
+                        }
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        const dealerOnCell = currentState.strangers_gold.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        if (dealerOnCell) {
+                            showDealModal(currentState.inventory.money);
                         }
                         break;
                     case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
@@ -240,14 +292,14 @@
             document.removeEventListener('keydown', handleKeyDown);
             document.addEventListener('keydown', handleDefuseKeyPress);
         }
-
+        
         function hideDefuseModal() {
             activeBombToDefuse = null;
             defuseModal.style.display = 'none';
             document.removeEventListener('keydown', handleDefuseKeyPress);
             document.addEventListener('keydown', handleKeyDown);
         }
-
+        
         function handleDefuseAttempt(chosenWire) {
             if (!activeBombToDefuse) return;
 
@@ -275,6 +327,60 @@
                 handleDefuseAttempt('b');
             } else if (key === 'g') {
                 handleDefuseAttempt('g');
+            }
+        }
+        
+        function showDealModal(money) {
+            dealModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleDealKeyPress);
+        }
+
+        function hideDealModal() {
+            dealModal.style.display = 'none';
+            document.removeEventListener('keydown', handleDealKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleDealAttempt(chosenOpt) {
+            //if (!activeBombToDefuse) return;
+
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            //const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
+
+            switch(chosenOpt) {
+                case 'r':currentState.inventory.R+=1;break;
+                case 'e':currentState.inventory.E+=1;break;
+                case 't':currentState.inventory.T+=1;break;
+                case 'f':currentState.inventory.R-=1;break;
+                case 'd':currentState.inventory.E-=1;break;
+                case 'g':currentState.inventory.T-=1;break;
+                case 'q':break;
+            }
+
+            history.push(currentState);
+            hideDealModal();
+            drawGrid();
+        }
+
+        function handleDealKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'r') {
+                handleDealAttempt('r');
+            } else if (key === 'e') {
+                handleDealAttempt('e');
+            } else if (key === 't') {
+                handleDealAttempt('t');
+            } else if (key === 'f') {
+                handleDealAttempt('f');
+            } else if (key === 'd') {
+                handleDealAttempt('d');
+            } else if (key === 'g') {
+                handleDealAttempt('g');
+            } else if (key === 'q') {
+                handleDealAttempt('q');
             }
         }
 
@@ -334,6 +440,9 @@
                 buses: deepClone(level.initialBusLocations),
                 playerCar: deepClone(level.playerCar),
                 strangers: deepClone(level.initialStrangerLocations),
+                strangers_blue: deepClone(level.initialStrangerBlueLocations),
+                strangers_black: deepClone(level.initialStrangerBlackLocations),
+                strangers_gold: deepClone(level.initialStrangerGoldLocations),
                 ducks: deepClone(level.initialDuckLocations),
                 deadStrangers: [],
                 deadDucks: [],
@@ -459,11 +568,56 @@
             if (newState.cars.some(c => c.x === x && c.y === y) || newState.buses.some(b => b.x === x && b.y === y)) {
                 newState.playerStatus = 'dead';
             }
+            if (newState.strangers_blue.some(c => c.x === x && c.y === y)) {
+                newState.inventory.money /= 2;
+                newState.inventory.R = 0;
+                newState.inventory.E = 0;
+                newState.inventory.T = 0;
+            }
+            if (newState.strangers_black.some(c => c.x === x && c.y === y)) {
+                newState.playerStatus = 'dead';
+            }
             return newState;
         }
 
         function checkStrangerCollisions(newState) {
             newState.strangers.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+            });
+            
+            newState.strangers_blue.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+            });
+            
+            newState.strangers_black.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+            });
+            
+            newState.strangers_gold.forEach(s => {
                 if (s.isDead) return;
                 const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
                             newState.buses.some(v => v.x === s.x && v.y === s.y) ||
@@ -549,6 +703,9 @@
                             state.playerStatus = 'dead';
                         }
                         state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
+                        state.strangers_blue.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
+                        state.strangers_black.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
+                        state.strangers_gold.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
                         state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) d.isDead = true; });
                     }
                 }
@@ -573,6 +730,9 @@
             const currentIndexInLiving = livingThreads.indexOf(currentId);
             let newIndexInLiving = direction === 'next' ? (currentIndexInLiving + 1) % livingThreads.length : (currentIndexInLiving - 1 + livingThreads.length) % livingThreads.length;
             currentThreadIndex = threadIds.indexOf(livingThreads[newIndexInLiving]);
+            document.documentElement.style.setProperty('--switch-color',(currentThreadIndex==threadIds.indexOf(livingThreads[0]) && threadIds.length>1) ? '#444444' : '#222222');
+            document.documentElement.style.setProperty('--player-dx', '0px');
+            document.documentElement.style.setProperty('--player-dy', '0px');
             flashLightning();
             updateThreadIdDisplay();
             drawGrid();
@@ -622,6 +782,60 @@
             }
         }
         
+        function showDealModal(money) {
+            dealModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleDealKeyPress);
+        }
+
+        function hideDealModal() {
+            dealModal.style.display = 'none';
+            document.removeEventListener('keydown', handleDealKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleDealAttempt(chosenOpt) {
+            //if (!activeBombToDefuse) return;
+
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            //const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
+
+            switch(chosenOpt) {
+                case 'r':currentState.inventory.R+=1;break;
+                case 'e':currentState.inventory.E+=1;break;
+                case 't':currentState.inventory.T+=1;break;
+                case 'f':currentState.inventory.R-=1;break;
+                case 'd':currentState.inventory.E-=1;break;
+                case 'g':currentState.inventory.T-=1;break;
+                case 'q':break;
+            }
+
+            history.push(currentState);
+            hideDealModal();
+            drawGrid();
+        }
+
+        function handleDealKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'r') {
+                handleDealAttempt('r');
+            } else if (key === 'e') {
+                handleDealAttempt('e');
+            } else if (key === 't') {
+                handleDealAttempt('t');
+            } else if (key === 'f') {
+                handleDealAttempt('f');
+            } else if (key === 'd') {
+                handleDealAttempt('d');
+            } else if (key === 'g') {
+                handleDealAttempt('g');
+            } else if (key === 'q') {
+                handleDealAttempt('q');
+            }
+        }
+        
         function handleKeyDown(e) {
             if (isGameOver) {
                 handleRestart(e);
@@ -640,18 +854,42 @@
             if (keyMap[e.key]) {
                 e.preventDefault();
                 playerDesiredMove = keyMap[e.key];
+                var styl = window.getComputedStyle(document.body);
+                const grid_dx = parseInt(styl.getPropertyValue('--grid-window-dim'),10)/styl.getPropertyValue('--grid-dnx');
+                const grid_dy = parseInt(styl.getPropertyValue('--grid-window-dim'),10)/styl.getPropertyValue('--grid-dny');
+                if (playerDesiredMove.x==-1){
+                    document.documentElement.style.setProperty('--player-dx', grid_dx.toString()+'px');
+                }else if (playerDesiredMove.x==1){
+                    document.documentElement.style.setProperty('--player-dx', '-30px');
+                }else{
+                    document.documentElement.style.setProperty('--player-dx', '0px');
+                }
+                if (playerDesiredMove.y==-1){
+                    document.documentElement.style.setProperty('--player-dy', '30px');
+                }else if (playerDesiredMove.y==1){
+                    document.documentElement.style.setProperty('--player-dy', '-30px');
+                }else{
+                    document.documentElement.style.setProperty('--player-dy', '0px');
+                }
                 progressTurn();
             } else {
+                const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                const playerPos = currentState.playerPos;
                 switch (e.key.toLowerCase()) {
                     case 'd':
                         e.preventDefault();
-                        const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
-                        const playerPos = currentState.playerPos;
                         const bombOnCell = currentState.bombs.find(b => b.x === playerPos.x && b.y === playerPos.y);
                         if (bombOnCell) {
                             showDefuseModal(bombOnCell);
                         } else {
                             handleCarInteraction();
+                        }
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        const dealerOnCell = currentState.strangers_gold.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        if (dealerOnCell) {
+                            showDealModal(currentState.inventory.money);
                         }
                         break;
                     case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
@@ -825,6 +1063,14 @@
         
         cutBlackWireBtn.addEventListener('click', () => handleDefuseAttempt('b'));
         cutGreenWireBtn.addEventListener('click', () => handleDefuseAttempt('g'));
+        
+        getRBtn.addEventListener('click', () => handleDealAttempt('r'));
+        getEBtn.addEventListener('click', () => handleDealAttempt('e'));
+        getTBtn.addEventListener('click', () => handleDealAttempt('t'));
+        sellRBtn.addEventListener('click', () => handleDealAttempt('f'));
+        sellEBtn.addEventListener('click', () => handleDealAttempt('d'));
+        sellTBtn.addEventListener('click', () => handleDealAttempt('g'));
+        getOutBtn.addEventListener('click', () => handleDealAttempt('q'));
 
         initGame();
     });

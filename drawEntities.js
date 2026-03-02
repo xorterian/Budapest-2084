@@ -42,12 +42,46 @@ var _ = (currentState) => {
         }
     });
 
+    // Stranger civil
     currentState.strangers.forEach(stranger => {
         const cell = board.children[stranger.y * GRID_SIZE + stranger.x];
         if(cell) {
             const strangerIcon = document.createElement('i');
             strangerIcon.classList.add('fas', 'fa-person-walking', 'stranger-icon');
             if (stranger.isDead) strangerIcon.classList.add('dead-stranger-icon');
+            cell.appendChild(strangerIcon);
+        }
+    });
+    
+    // Police officer
+    currentState.strangers_blue.forEach(stranger_blue => {
+        const cell = board.children[stranger_blue.y * GRID_SIZE + stranger_blue.x];
+        if(cell) {
+            const strangerIcon = document.createElement('i');
+            strangerIcon.classList.add('fas', 'fa-person-walking', 'stranger-blue-icon');
+            if (stranger_blue.isDead) strangerIcon.classList.add('dead-stranger-icon');
+            cell.appendChild(strangerIcon);
+        }
+    });
+    
+    // Secret police
+    currentState.strangers_black.forEach(stranger_black => {
+        const cell = board.children[stranger_black.y * GRID_SIZE + stranger_black.x];
+        if(cell) {
+            const strangerIcon = document.createElement('i');
+            strangerIcon.classList.add('fas', 'fa-person-walking', 'stranger-black-icon');
+            if (stranger_black.isDead) strangerIcon.classList.add('dead-stranger-icon');
+            cell.appendChild(strangerIcon);
+        }
+    });
+    
+    // Dealer
+    currentState.strangers_gold.forEach(stranger_gold => {
+        const cell = board.children[stranger_gold.y * GRID_SIZE + stranger_gold.x];
+        if(cell) {
+            const strangerIcon = document.createElement('i');
+            strangerIcon.classList.add('fas', 'fa-person-walking', 'stranger-gold-icon');
+            if (stranger_gold.isDead) strangerIcon.classList.add('dead-stranger-icon');
             cell.appendChild(strangerIcon);
         }
     });

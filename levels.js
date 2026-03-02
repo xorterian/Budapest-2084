@@ -22,6 +22,15 @@ const levels = [
         ],
         initialStrangerLocations: [
         ],
+        initialStrangerBlueLocations: [
+            { x: 0, y: 0, dx: 0, dy: 1, isDead: false }
+        ],
+        initialStrangerBlackLocations: [
+            { x: 5, y: 0, dx: 0, dy: 1, isDead: false }
+        ],
+        initialStrangerGoldLocations: [
+            { x: 0, y: 5, dx: 0, dy: 1, isDead: false }
+        ],
         initialCarLocations: [
         ],
         initialBusLocations: [
@@ -58,6 +67,12 @@ const levels = [
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
         ],
+        initialStrangerBlueLocations: [
+        ],
+        initialStrangerBlackLocations: [
+        ],
+        initialStrangerGoldLocations: [
+        ],
         initialCarLocations: [
         ],
         initialBusLocations: [
@@ -66,7 +81,7 @@ const levels = [
         deviceLocations: { 'R': [{ x: 1, y: 3 } ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 3, y: 1, text: "Watch out for the building!" }, { x: 5, y: 1, text: "Run away from the bombs!" }]
     },
-    // Level 2: Poor man running cross the road.
+    // Level 3: Poor man running cross the road.
     {
         playerPos: { x: 0, y: 1 },
         flagLocation: { x: 6, y: 6 },
@@ -102,6 +117,12 @@ const levels = [
         ],
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
+        ],
+        initialStrangerBlueLocations: [
+        ],
+        initialStrangerBlackLocations: [
+        ],
+        initialStrangerGoldLocations: [
         ],
         initialCarLocations: [
             { x: 7, y: 4, dx: -1, isPlayerCar: false },

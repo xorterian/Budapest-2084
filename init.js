@@ -57,6 +57,42 @@ var _ = () => {
             }
         }
     });
+    levelData.strangers_blue.forEach(s => {
+        s.p = .5;
+        s.ranSource = [{dx:s.dx, dy:s.dy}];
+        const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+        for(i=1;i!=30;i++){
+            if (Math.random()<s.p){
+                s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+            }else{
+                s.ranSource.push(s.ranSource[i-1]);
+            }
+        }
+    });
+    levelData.strangers_black.forEach(s => {
+        s.p = .6;
+        s.ranSource = [{dx:s.dx, dy:s.dy}];
+        const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+        for(i=1;i!=5;i++){
+            if (Math.random()<s.p){
+                s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+            }else{
+                s.ranSource.push(s.ranSource[i-1]);
+            }
+        }
+    });
+    levelData.strangers_gold.forEach(s => {
+        s.p = .2;
+        s.ranSource = [{dx:s.dx, dy:s.dy}];
+        const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+        for(i=1;i!=20;i++){
+            if (Math.random()<s.p){
+                s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+            }else{
+                s.ranSource.push(s.ranSource[i-1]);
+            }
+        }
+    });
     levelData.ducks.forEach(s => {
         s.p = .4;
         s.ranSource = [{dx:s.dx, dy:s.dy}];

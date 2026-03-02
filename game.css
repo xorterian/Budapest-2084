@@ -14,6 +14,9 @@
     --player-car-color: #e53e3e;
     --bus-color: #fbd38d;
     --stranger-color: #a0aec0;
+    --stranger-blue-color: #4399e5;
+    --stranger-black-color: #010101;
+    --stranger-gold-color: #954b10;
     --player-icon-color: #ffffff;
     --active-icon-color: #f6e05e;
     --black-bg-btn: #1a202c;
@@ -26,6 +29,12 @@
     --destroyed-grass-color: #cccc00;
     --destroyed-road-color: #333333;
     --destroyed-building-color: #000000;
+    --player-dx: 0px;
+    --player-dy: 0px;
+    --grid-window-dim: 500px;
+    --grid-dnx: 8;
+    --grid-dny: 8;
+    --switch-color: #333333;
 }
 
 body {
@@ -136,10 +145,10 @@ body {
 
 #game-board {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    width: 500px;
-    height: 500px;
+    grid-template-columns: repeat(var(--grid-dnx), 1fr);
+    grid-template-rows: repeat(var(--grid-dny), 1fr);
+    width: var(--grid-window-dim);
+    height: var(--grid-window-dim);
     position: relative;
     box-shadow: inset 0 0 10px var(--shadow-light);
     border-radius: 10px;
@@ -165,6 +174,9 @@ body {
     border: 1px solid #333;
     box-sizing: border-box;
     position: relative;
+    border-color: black;
+    animation-name: switch-flash; 
+    animation-duration: 0.2s;
 }
 
 .road {
@@ -206,6 +218,12 @@ body {
     100% { text-shadow: 0 0 5px var(--dead-stranger-color); }
 }
 
+@keyframes switch-flash {
+    0% { border-color: black; }
+    50% { border-color: var(--switch-color); }
+    100% { border-color: black; }
+}
+
 /* Wall and Fence styles */
 .wall {
     background-color: #78716c;
@@ -239,6 +257,12 @@ body {
     color: var(--player-icon-color); /* Player color is now a CSS variable */
     position: relative;
     z-index: 2; /* Ensure player is on top of car */
+    animation-name: playerStep;
+    animation-duration: 0.5s;
+}
+@keyframes playerStep {
+  0%   {left:var(--player-dx); top:var(--player-dy); opacity: 10%;}
+  100% {left:0px; top:0px; opacity: 100%;}
 }
 
 .car-icon, .bus-icon {
@@ -264,6 +288,27 @@ body {
 .stranger-icon {
     font-size: 1.5rem;
     color: var(--stranger-color);
+    position: relative;
+    z-index: 1;
+}
+
+.stranger-blue-icon {
+    font-size: 1.5rem;
+    color: var(--stranger-blue-color);
+    position: relative;
+    z-index: 1;
+}
+
+.stranger-black-icon {
+    font-size: 1.5rem;
+    color: var(--stranger-black-color);
+    position: relative;
+    z-index: 1;
+}
+
+.stranger-gold-icon {
+    font-size: 1.5rem;
+    color: var(--stranger-gold-color);
     position: relative;
     z-index: 1;
 }
@@ -425,7 +470,7 @@ button:active:not(:disabled) {
 .fa-cube { color: #2196f3; }
 .fa-hourglass-half { color: #00e676; }
 
-#game-over-message, #defuse-modal, #info-modal {
+#game-over-message, #defuse-modal, #deal-modal, #info-modal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -441,12 +486,12 @@ button:active:not(:disabled) {
     z-index: 100;
 }
 
-#defuse-modal, #info-modal {
+#defuse-modal, #deal-modal, #info-modal {
     font-size: 1.5rem;
     z-index: 200;
 }
 
-#defuse-modal button, #info-modal button {
+#defuse-modal button, #deal-modal button, #info-modal button {
     font-size: 1rem;
     padding: 0.5rem 1rem;
     margin: 0.5rem;

@@ -59,6 +59,51 @@ if (updatedState.playerStatus !== 'dead') {
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
     });
+    updatedState.strangers_blue.forEach(s => {
+        if (s.isDead) return;
+        s.dx = s.ranSource[0].dx;
+        s.dy = s.ranSource[0].dy;
+        s.ranSource.shift();
+        const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+        if (Math.random()<s.p){
+            s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+        }else{
+            s.ranSource.push(s.ranSource[s.ranSource.length-1]);
+        }
+        const nX = s.x + s.dx, nY = s.y + s.dy;
+        if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
+        else { s.x = nX; s.y = nY; }
+    });
+    updatedState.strangers_black.forEach(s => {
+        if (s.isDead) return;
+        s.dx = s.ranSource[0].dx;
+        s.dy = s.ranSource[0].dy;
+        s.ranSource.shift();
+        const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+        if (Math.random()<s.p){
+            s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+        }else{
+            s.ranSource.push(s.ranSource[s.ranSource.length-1]);
+        }
+        const nX = s.x + s.dx, nY = s.y + s.dy;
+        if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
+        else { s.x = nX; s.y = nY; }
+    });
+    updatedState.strangers_gold.forEach(s => {
+        if (s.isDead) return;
+        s.dx = s.ranSource[0].dx;
+        s.dy = s.ranSource[0].dy;
+        s.ranSource.shift();
+        const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
+        if (Math.random()<s.p){
+            s.ranSource.push(dirs[Math.floor(Math.random()*dirs.length)]);
+        }else{
+            s.ranSource.push(s.ranSource[s.ranSource.length-1]);
+        }
+        const nX = s.x + s.dx, nY = s.y + s.dy;
+        if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
+        else { s.x = nX; s.y = nY; }
+    });
     updatedState.ducks.forEach(d => {
         if (d.isDead) return;
         d.dx = d.ranSource[0].dx;
