@@ -443,6 +443,14 @@ button#random-generator-btn, button#send-back-btn {
     background: linear-gradient(145deg, #4299e1, #3182ce);
 }
 
+button#help {
+    background: linear-gradient(145deg, #4095e1, #3272ce);
+}
+
+button#h-q, button#h-b-main {
+    background: linear-gradient(145deg, #e52e6e, #c53131);
+}
+
 #throw-thread-btn {
     background: linear-gradient(145deg, #e53e3e, #c53030);
 }
@@ -470,7 +478,7 @@ button:active:not(:disabled) {
 .fa-cube { color: #2196f3; }
 .fa-hourglass-half { color: #00e676; }
 
-#game-over-message, #defuse-modal, #deal-modal, #info-modal {
+#game-over-message, #defuse-modal, #deal-modal, #info-modal, #help-modal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -486,12 +494,12 @@ button:active:not(:disabled) {
     z-index: 100;
 }
 
-#defuse-modal, #deal-modal, #info-modal {
+#defuse-modal, #deal-modal, #info-modal, #help-modal {
     font-size: 1.5rem;
     z-index: 200;
 }
 
-#defuse-modal button, #deal-modal button, #info-modal button {
+#defuse-modal button, #deal-modal button, #info-modal button, #help-modal button {
     font-size: 1rem;
     padding: 0.5rem 1rem;
     margin: 0.5rem;
