@@ -16,7 +16,7 @@ var _ = (currentState) => {
                 playerIcon.classList.add('fas', 'fa-person', 'player-icon');
                 playerCell.appendChild(playerIcon);
             } else if (playerCell === carCell) {
-                 const playerIcon = document.createElement('i');
+                const playerIcon = document.createElement('i');
                 playerIcon.classList.add('fas', 'fa-person', 'player-icon');
                 playerCell.appendChild(playerIcon);
             }

@@ -78,24 +78,20 @@
         </div>
     </div>
     <div id="deal-modal">
-        <h3>In what to invest?</h3>
-        <p>QRG (buy: 1, sell: 1)</p>
-        <div>
-            <button id="get-r" style="background-color: #333;">Buy (R)</button>
-            <button id="sell-r" style="background-color: var(--accent-color);">Sell (F)</button>
-        </div>
-        <p>Eigengram (buy: 5, sell: 3)</p>
-        <div>
-            <button id="get-e" style="background-color: var(--accent-color);">Buy (E)</button>
-            <button id="sell-e" style="background-color: var(--accent-color);">Sell (D)</button>
-        </div>
-        <p>Chronogram (buy: 10, sell: 7)</p>
-        <div>
-            <button id="get-t" style="background-color: var(--accent-color);">Buy (T)</button>
-            <button id="sell-t" style="background-color: var(--accent-color);">Sell (G)</button>
-        </div>
-        <div>
-            <button id="get-out" style="background-color: var(--accent-color);">Quit (Q)</button>
+        <h3>What to invest?</h3>
+        <p style="text-align: right;">QRG:
+        <button id="get-r" style="background-color: var(--accent-color);">Buy (1)</button>
+        <button id="sell-r" style="background-color: var(--accent-color);">Sell (1)</button></p>
+        <p style="text-align: right;">Eigengram:
+        <button id="get-e" style="background-color: var(--accent-color);">Buy (5)</button>
+        <button id="sell-e" style="background-color: var(--accent-color);">Sell (3)</button>
+        </p>
+        <p style="text-align: right;">Chronogram:
+        <button id="get-t" style="background-color: var(--accent-color);">Buy (10)</button>
+        <button id="sell-t" style="background-color: var(--accent-color);">Sell (7)</button>
+        </p>
+        <div style="text-align: left;">
+            <button id="get-out">Quit (Q)</button>
         </div>
     </div>
     <div id="info-modal">
@@ -386,6 +382,7 @@
                         break;
                     case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
                     case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
+                    case '5': e.preventDefault(); nextLevel(); break;
                     case 'e': e.preventDefault(); if (!eigengramOnBtn.disabled) eigengramOnBtn.click(); break;
                     case 'c': e.preventDefault();
                         const state = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
@@ -487,15 +484,53 @@
             const currentState = deepClone(history.slice(-1)[0]);
             //const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
 
+            m=currentState.inventory.money;
+            r=currentState.inventory.R;
+            e=currentState.inventory.E;
+            t=currentState.inventory.T;
             switch(chosenOpt) {
-                case 'r':currentState.inventory.R+=1;break;
-                case 'e':currentState.inventory.E+=1;break;
-                case 't':currentState.inventory.T+=1;break;
-                case 'f':currentState.inventory.R-=1;break;
-                case 'd':currentState.inventory.E-=1;break;
-                case 'g':currentState.inventory.T-=1;break;
+                case 'r':
+                  if (m>0){
+                    r+=1;
+                    m-=1;
+                  }
+                  ;break;
+                case 'e':
+                  if (m>4){
+                    e+=1;
+                    m-=5;
+                  }
+                ;break;
+                case 't':
+                  if (m>9){
+                    t+=1;
+                    m-=10;
+                  }
+                  ;break;
+                case 'f':
+                  if (r){
+                    r-=1;
+                    m+=1;
+                  }
+                  ;break;
+                case 'd':
+                  if (e){
+                    e-=1;
+                    m+=3;
+                  }
+                  ;break;
+                case 'g':
+                  if (t){
+                    t-=1;
+                    m+=7;
+                  }
+                  ;break;
                 case 'q':break;
             }
+            currentState.inventory.money=m;
+            currentState.inventory.R=r;
+            currentState.inventory.E=e;
+            currentState.inventory.T=t;
 
             history.push(currentState);
             hideDealModal();
@@ -767,16 +802,17 @@
 
         function checkPlayerCollisions(newState) {
             const { x, y } = newState.playerPos;
+            if (newState.playerCar.occupied) return newState; 
             if (newState.cars.some(c => c.x === x && c.y === y) || newState.buses.some(b => b.x === x && b.y === y)) {
                 newState.playerStatus = 'dead';
             }
-            if (newState.strangers_blue.some(c => c.x === x && c.y === y)) {
-                newState.inventory.money /= 2;
+            if (newState.strangers_blue.some(c => c.x === x && c.y === y && ! c.isDead)) {
+                newState.inventory.money = Math.floor(newState.inventory.money/2);
                 newState.inventory.R = 0;
                 newState.inventory.E = 0;
                 newState.inventory.T = 0;
             }
-            if (newState.strangers_black.some(c => c.x === x && c.y === y)) {
+            if (newState.strangers_black.some(c => c.x === x && c.y === y && ! c.isDead)) {
                 newState.playerStatus = 'dead';
             }
             return newState;
@@ -1004,15 +1040,53 @@
             const currentState = deepClone(history.slice(-1)[0]);
             //const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
 
+            m=currentState.inventory.money;
+            r=currentState.inventory.R;
+            e=currentState.inventory.E;
+            t=currentState.inventory.T;
             switch(chosenOpt) {
-                case 'r':currentState.inventory.R+=1;break;
-                case 'e':currentState.inventory.E+=1;break;
-                case 't':currentState.inventory.T+=1;break;
-                case 'f':currentState.inventory.R-=1;break;
-                case 'd':currentState.inventory.E-=1;break;
-                case 'g':currentState.inventory.T-=1;break;
+                case 'r':
+                  if (m>0){
+                    r+=1;
+                    m-=1;
+                  }
+                  ;break;
+                case 'e':
+                  if (m>4){
+                    e+=1;
+                    m-=5;
+                  }
+                ;break;
+                case 't':
+                  if (m>9){
+                    t+=1;
+                    m-=10;
+                  }
+                  ;break;
+                case 'f':
+                  if (r){
+                    r-=1;
+                    m+=1;
+                  }
+                  ;break;
+                case 'd':
+                  if (e){
+                    e-=1;
+                    m+=3;
+                  }
+                  ;break;
+                case 'g':
+                  if (t){
+                    t-=1;
+                    m+=7;
+                  }
+                  ;break;
                 case 'q':break;
             }
+            currentState.inventory.money=m;
+            currentState.inventory.R=r;
+            currentState.inventory.E=e;
+            currentState.inventory.T=t;
 
             history.push(currentState);
             hideDealModal();

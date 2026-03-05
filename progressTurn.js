@@ -27,13 +27,19 @@ if (playerDesiredMove) {
 
 if (updatedState.playerStatus !== 'dead') {
     updatedState.cars.forEach(c => {
-        c.x += c.dx;
+        c.x += c.dx || 0;
         if (c.x < 0) c.x = GRID_SIZE - 1;
         if (c.x >= GRID_SIZE) c.x = 0;
+        c.y += c.dy || 0;
+        if (c.y < 0) c.y = GRID_SIZE - 1;
+        if (c.y >= GRID_SIZE) c.y = 0;
     });
     updatedState.buses.forEach(b => {
         if (!b.stopped) {
-            b.y += b.dy;
+            b.x += b.dx || 0;
+            if (b.x < 0) b.x = GRID_SIZE - 1;
+            if (b.x >= GRID_SIZE) b.x = 0;
+            b.y += b.dy || 0;
             if (b.y < 0) b.y = GRID_SIZE - 1;
             if (b.y >= GRID_SIZE) b.y = 0;
             if (b.ranSource[0]){//(Math.random() < 0.2) {

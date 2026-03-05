@@ -281,8 +281,11 @@ body {
 .player-car-icon {
     font-size: 1.5rem;
     color: var(--player-car-color);
-    position: relative;
-    z-index: 1;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    z-index: 3;
 }
 
 .stranger-icon {
@@ -447,7 +450,7 @@ button#help {
     background: linear-gradient(145deg, #4095e1, #3272ce);
 }
 
-button#h-q, button#h-b-main {
+button#h-q, button#get-out, button#h-b-main {
     background: linear-gradient(145deg, #e52e6e, #c53131);
 }
 
