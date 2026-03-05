@@ -531,3 +531,7 @@ button:active:not(:disabled) {
     width: fit-content;
 }
 
+h3 {
+    text-align: center;
+    font-size: 1.4em;
+}

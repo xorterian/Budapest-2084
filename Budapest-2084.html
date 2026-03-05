@@ -103,72 +103,82 @@
         <p id="info-modal-text"></p>
         <button id="info-modal-ok">OK</button>
     </div>
-    <div id="help-modal">
-        <div id="help-choose-modal">
+    <div id="help-modal" style="width: 70%; font-size: .8em; text-align: justify;">
+        <div id="help-choose-modal" style="text-align: center;">
             <h3>Choose</h3>
-            <button id="h-i" style="background-color: #333;">Items (I)</button></br>
             <button id="h-w" style="background-color: var(--accent-color);">World (W)</button>
             <button id="h-s" style="background-color: var(--accent-color);">Story (S)</button></br>
+            <button id="h-i" style="background-color: var(--accent-color);">Items (I)</button>
+            <button id="h-p" style="background-color: var(--accent-color);">People (P)</button>
+            <button id="h-o" style="background-color: var(--accent-color);">Objects (O)</button></br>
             <button id="h-r" style="background-color: var(--accent-color);">QRG (R)</button>
             <button id="h-e" style="background-color: var(--accent-color);">Eigengram (E)</button>
             <button id="h-t" style="background-color: var(--accent-color);">Chronogram (T)</button></br>
-            <button id="h-p" style="background-color: var(--accent-color);">People (P)</button>
-            <button id="h-o" style="background-color: var(--accent-color);">Objects (O)</button></br>
         </div>
         <div>
         <div id="help-items-modal">
+            <div style="text-align: center;">
             <h3>Choose an item</h3>
             <button id="h-b-i-1" style="background-color: #333; color: black;"><i class="fas fa-money-bill-wave"></i></button>
             <button id="h-b-i-2" style="background-color: #333; color: black;"><i class="fas fa-flag-checkered"></i></button>
             <button id="h-b-i-3" style="background-color: #333; color: black;"><i class="fas fa-info-circle"></i></button>
             <button id="h-b-i-4" style="background-color: black; color: black;"><i class="fas fa-cube"></i></button>
+            </br>
             <button id="h-b-i-5" style="background-color: gray; color: black;"><i class="fas fa-atom"></i></button>
             <button id="h-b-i-6" style="background-color: darkgray; color: black;"><i class="fas fa-hourglass-half"></i></button>
             <button id="h-b-i-7" style="background-color: #333; color: black;"><i class="fas fa-car"></i></button>
             <button id="h-b-i-8" style="background-color: #333; color: black;"><i class="fas fa-key"></i></button>
-            
+            </div>
             </br>
-            <p id="h-i-1"><b>Money</b>: it is an item that means a single unit of money. If you collect enough amount of money, you can buy things from a dealer or even sell.</p>
-            <p id="h-i-2"><b>Flag</b>: your goal is to get to the flag on each level. Good luck!</p>
-            <p id="h-i-3"><b>Info point</b>: if you play for first, feel free to get to these points to get useful information.</p>
-            <p id="h-i-4"><b>QRG</b>: it stands for Quantum-Random Generator. This is a device with which you can split the time-tree. For more information, read the related article in main menu.</p>
-            <p id="h-i-5"><b>Eigengram</b>: with this device you can communicate with your otherselves in different time-threads. It can be useful when you have a hardware-key which opens gates. For more information, read the related article in main menu.</p>
-            <p id="h-i-6"><b>Chronogram</b>: with this device you can communicate with your pre-self from the past. It creates an extra thread in which, yes, you can avoid mistakes. For more information, read the related article in main menu.</p>
-            <p id="h-i-7"><b>Car</b>: nothing special. Just a car. Get in, and go.</p>
-            <p id="h-i-8"><b>Key</b>: which is a hardware key to be exact. When you use it at a proper station, it can open/close gates or nuke the city. The keys can be copied via the time-tree, that is, you can pass it to your otherselves.</p>
+            <p id="h-i-1"><u>Money</u>: it is an item that means a single unit of money. If you collect enough amount of money, you can buy things from a dealer or even sell.</p>
+            <p id="h-i-2"><u>Flag</u>: your goal is to get to the flag on each level. Good luck!</p>
+            <p id="h-i-3"><u>Info point</u>: if you play for first, feel free to get to these points to get useful information.</p>
+            <p id="h-i-4"><u>QRG</u>: it stands for Quantum-Random Generator. This is a device with which you can split the time-tree. For more information, read the related article in main menu.</p>
+            <p id="h-i-5"><u>Eigengram</u>: with this device you can communicate with your otherselves in different time-threads. It can be useful when you have a hardware-key which opens gates. For more information, read the related article in main menu.</p>
+            <p id="h-i-6"><u>Chronogram</u>: with this device you can communicate with your pre-self from the past. It creates an extra thread in which, yes, you can avoid mistakes. For more information, read the related article in main menu.</p>
+            <p id="h-i-7"><u>Car</u>: nothing special. Just a car. Get in, and go.</p>
+            <p id="h-i-8"><u>Key</u>: which is a hardware key to be exact. When you use it at a proper station, it can open/close gates or nuke the city. The keys can be copied via the time-tree, that is, you can pass it to your otherselves.</p>
         </div>
         <div id="help-world-modal">
             <h3>Explaining the world</h3>
-            <p>This world is ...</p>
+            <p>Our classic, physical world is said to be continuum in space and time. This world is played in 2<sup>continuum</sup> which means that you can create time-threads and you can play in these parallel worlds. The main goal of this game to present how a world like this could work.</br>
+            Your other version in the alternate time-threads is called <u>otherself</u>. To create new threads, you need a non-deterministic random source, for example QRGs. You can distinguish the threads by IDs as well that can be seen on the status bar. With a device, called eigengram, you can communicate with your otherselves and also send keys to them. With a device, called chronogram, you can communicate with your pre-self, that is, your version from the past.</br>
+            Although even this world has rules: no time-loops, no teleportation, only messages/keys can travel multiversal, objects or people cannot. After you died in a thread, just throw that thread away, and focus on the others you can continue. In some cases, you cannot avoid to sacrifice one of your otherselves' life to continue your way.</p>
         </div>
         <div id="help-story-modal">
             <h3>Story</h3>
-            <p>This story is about...</p>
+            <p>We live in the post-war city, Budapest in 2084. We are just after the World War IV which was declared and escalated only in a few threads like ours. You're a Hungarian citizen of the city who tries to escape from this chaos. The technology does not serve the people but a regime who controls everything. If the secret police catch you in a single thread, they will catch in every threads. Gather devices that could help you to survive. Good luck!</p>
         </div>
         <div id="help-qrg-modal">
             <h3>Explaining the QRGs</h3>
-            <p>This world is ...</p>
+            <p>The device QRG, that is, Quantum-Random Generator, is a non-deterministic randombit source. With its usage you can create time-threads. To be exact, in the 2<sup>continuum</sup> time-tree the time branches continuously, you just cannot notice it until you don't have these randombits that defines in which time-thread you just are.</br>
+            You also can switch between the threads (click on the proper buttons in the status bar). And you also can throw a thread away. In different branches, you can behave differently.</p>
         </div>
         <div id="help-eigengram-modal">
             <h3>Explaining the Eigengrams</h3>
-            <p>This world is ...</p>
+            <p>It's possible that our real, physical world is 2<sup>continuum</sup>, too. We just cannot communicate between the threads. In this game you can. The device is called eigengram which branches the time and keeps a channel between them to use to send messages or a hardware key. It can be useful when one of your otherselves can get into a place for a key but cannot get out. Then the keys can be sent via eigengram to an otherself who could continue the game.</br>
+            Watch out! The secret police can use eigengrams, too. If they locate you once, they located you in all the threads.</p>
         </div>
         <div id="help-chronogram-modal">
             <h3>Explaining the Chronograms</h3>
-            <p>This world is ...</p>
+            <p>The eigengram grants you not only multiversal communication but superluminal communication as well. If it can be combined with just a tiny time dilation, you could experience early phases in the messages. A device, that circulates a future message in an inside loop, can accumulate the early phases. It realizes the so-called chronogram. With this device you can branch a thread in the past and also send messages and keys.</br>
+            Don't forget! You can communicate with your pre-self/post-self only until the channel is hold. So from the point you activated the device and to the point you sent the message. It is a great resource but has limitation in time. And it is important that it will not undo the steps you made in the past. It just branches the time in the time-tree to give you new chances in parallel.</p>
         </div>
         <div id="help-people-modal">
+            <div style="text-align: center;">
             <h3>People and animals</h3>
             <button id="h-b-p-1" style="background-color: #333; color: blue;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-2" style="background-color: #333; color: black;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-3" style="background-color: #333; color: gold;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-4" style="background-color: #333; color: lightgray;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-5" style="background-color: #333; color: lightgray;"><i class="fas fa-person" style="transform: rotate(90deg);"></i></button>
+            </br>
             <button id="h-b-p-6" style="background-color: #333;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-7" style="background-color: #333; color: white; opacity: 0.6;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-8" style="background-color: #333; color: white; opacity: 0.3;"><i class="fas fa-person"></i></button>
             <button id="h-b-p-9" style="background-color: #333; color: brown;"><i class="fas fa-dog"></i></button>
             <button id="h-b-p-10" style="background-color: #333; color: brown;"><i class="fas fa-dog" style="transform: rotate(90deg);"></i></button>
+            </div>
             </br>
             <p id="h-p-1"><u>Police officer</u> is a person with whom a meet means the halve of your money and taken quantum devices if had any.</p>
             <p id="h-p-2"><u>Secret police officer</u> is a person who kills you when you behave suspicious.</p>
@@ -182,17 +192,20 @@
             <p id="h-p-10"><u>Laying dog</u> on the floor... no comment.</p>
         </div>
         <div id="help-objects-modal">
+            <div style="text-align: center;">
             <h3>Choose an object</h3>
             <button id="h-b-o-1" style="background-color: #333; color: black;"><i class="fas fa-bomb"></i></button>
             <button id="h-b-o-2" style="background-color: #333; color: blue;"><i class="fas fa-car"></i></button>
             <button id="h-b-o-3" style="background-color: #333; color: yellow;"><i class="fas fa-bus"></i></button>
             <!-- Continue -->
+            </div>
             </br>
             <p id="h-o-1">The <u>bomb</u> is an object the explodes and destroy everything within 3 moves and 3 steps. It means you can just run away after discovering it. If you decide to try to defuse it, then stay at the bomb and press "D". After that you can choose to cut a wire of two. Choose wisely!</p>
             <p id="h-o-2">The <u>car</u> is a vehicle that moves. Watch out before stepping on the road, it can hit you.</p>
             <p id="h-o-3">The <u>bus</u> is similar to the cars but with different determinism.</p>
         </div>
-        <button id="h-b-main" style="background-color: #333;">Back</button>
+        <!--<button id="h-b-main" style="background-color: #333;">Back</button>-->
+        <div style="text-align: right;"><button id="h-b-main" style="background-color: #333;">Back</button></div>
         </div>
     </div>
 </div>
