@@ -11,6 +11,9 @@ const levels = [
         fenceLayout: [],
         houseLocations: [],
         initialMoneyLocations: [],
+        initialKeyALocations: [{x: 3, y: 3}],
+        initialKeyBLocations: [{x: 5, y: 3}],
+        initialKeyCLocations: [{x: 3, y: 5}],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -39,6 +42,9 @@ const levels = [
         ],
         initialMoneyLocations: [
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [
             { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
         ],
@@ -80,6 +86,9 @@ const levels = [
             { x: 6, y: 2 },
             { x: 1, y: 6 }
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [
             { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
         ],
@@ -132,6 +141,9 @@ const levels = [
         ],
         initialMoneyLocations: [
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -189,6 +201,9 @@ const levels = [
         ],
         initialMoneyLocations: [
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -233,6 +248,9 @@ const levels = [
         initialMoneyLocations: [
                 { x: 1, y: 1 }
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -286,6 +304,9 @@ const levels = [
         ],
         initialMoneyLocations: [
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -343,6 +364,9 @@ const levels = [
             {x: 0, y: 3},
             {x: 2, y: 4}
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -385,6 +409,9 @@ const levels = [
                 { x: 4, y: 6 },
                 { x: 3, y: 6 }
         ],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -436,6 +463,9 @@ const levels = [
             {x: 7, y: 1},
         ],
         initialMoneyLocations: [],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -457,6 +487,9 @@ const levels = [
         fenceLayout: [],
         houseLocations: [],
         initialMoneyLocations: [],
+        initialKeyALocations: [],
+        initialKeyBLocations: [],
+        initialKeyCLocations: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],

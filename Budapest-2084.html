@@ -21,6 +21,7 @@
         </div>
         <div id="money-counter" class="stat-box"><i class="fas fa-money-bill-alt"></i><span id="money-amount">0</span></div>
         <div id="level-counter" class="stat-box">Level: 1</div>
+        <div class="stat-box"><i id="keyA" class="fas fa-key" style="color: red; opacity: 0.3;"></i><i id="keyB" class="fas fa-key" style="color: yellow; opacity: 0.3;"></i><i id="keyC" class="fas fa-key" style="color: blue; opacity: 0.3;"></i></div>
         <button id="help">Help</button>
     </div>
     
@@ -193,12 +194,18 @@
             <button id="h-b-o-1" style="background-color: #333; color: black;"><i class="fas fa-bomb"></i></button>
             <button id="h-b-o-2" style="background-color: #333; color: blue;"><i class="fas fa-car"></i></button>
             <button id="h-b-o-3" style="background-color: #333; color: yellow;"><i class="fas fa-bus"></i></button>
+            <button id="h-b-o-4" style="background-color: #333; color: white;"><i class="fas fa-key"></i></button>
+            <button id="h-b-o-5" style="background-color: #333; color: darkgray;"><i class="fas fa-door-closed"></i></button>
+            <button id="h-b-o-6" style="background-color: #333; color: black;"><i class="fas fa-desktop"></i></button>
             <!-- Continue -->
             </div>
             </br>
             <p id="h-o-1">The <u>bomb</u> is an object the explodes and destroy everything within 3 moves and 3 steps. It means you can just run away after discovering it. If you decide to try to defuse it, then stay at the bomb and press "D". After that you can choose to cut a wire of two. Choose wisely!</p>
             <p id="h-o-2">The <u>car</u> is a vehicle that moves. Watch out before stepping on the road, it can hit you.</p>
             <p id="h-o-3">The <u>bus</u> is similar to the cars but with different determinism.</p>
+            <p id="h-o-4">The <u>key</u>s are hardware keys, so you cannot open doors directly. Get to a station which opens/closes doors with the key or does other things.</p>
+            <p id="h-o-5">It's 2084. We have no traditional keys. To open or close a <u>door</u> you have to use a hardware key on a proper station.</p>
+            <p id="h-o-6">At the <u>station</u>s you can control things if you have the proper keys, like opening/closing doors, initiating the self-destruction of the city, or ordering ice-cream.</p>
         </div>
         <!--<button id="h-b-main" style="background-color: #333;">Back</button>-->
         <div style="text-align: right;"><button id="h-b-main" style="background-color: #333;">Back</button></div>
@@ -220,6 +227,9 @@
         const timeCounterDisplay = document.getElementById('time-counter');
         const levelCounterDisplay = document.getElementById('level-counter');
         const moneyAmountDisplay = document.getElementById('money-amount');
+        const keyADisplay = document.getElementById('keyA');
+        const keyBDisplay = document.getElementById('keyB');
+        const keyCDisplay = document.getElementById('keyC');
         const currentThreadDisplay = document.getElementById('current-thread');
         
         const prevThreadBtn = document.getElementById('prev-thread');
@@ -286,6 +296,9 @@
         const helpModalO1Btn = document.getElementById('h-b-o-1');
         const helpModalO2Btn = document.getElementById('h-b-o-2');
         const helpModalO3Btn = document.getElementById('h-b-o-3');
+        const helpModalO4Btn = document.getElementById('h-b-o-4');
+        const helpModalO5Btn = document.getElementById('h-b-o-5');
+        const helpModalO6Btn = document.getElementById('h-b-o-6');
         const helpModalBackBtn = document.getElementById('h-b-main');
         
 
@@ -615,6 +628,9 @@
             document.getElementById('h-o-1').style.display = (n==8 && m==1) ? 'block' : 'none';
             document.getElementById('h-o-2').style.display = (n==8 && m==2) ? 'block' : 'none';
             document.getElementById('h-o-3').style.display = (n==8 && m==3) ? 'block' : 'none';
+            document.getElementById('h-o-4').style.display = (n==8 && m==4) ? 'block' : 'none';
+            document.getElementById('h-o-5').style.display = (n==8 && m==5) ? 'block' : 'none';
+            document.getElementById('h-o-6').style.display = (n==8 && m==6) ? 'block' : 'none';
             document.removeEventListener('keydown', handleKeyDown);
             document.addEventListener('keydown', hideHelpModalOnKeyPress);
         }
@@ -689,8 +705,8 @@
                 wallLayout: deepClone(level.wallLayout),
                 fenceLayout: deepClone(level.fenceLayout),
                 trapBuildings: deepClone(level.trapBuildingLayout),//trapBuildings,
-                inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0 },
-                devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T), 'money': deepClone(level.initialMoneyLocations)},
+                inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0, 'keyA': false, 'keyB': false, 'keyC': false },
+                devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T), 'money': deepClone(level.initialMoneyLocations), 'keyA': deepClone(level.initialKeyALocations), 'keyB': deepClone(level.initialKeyBLocations), 'keyC': deepClone(level.initialKeyCLocations)},
                 deviceLocations: deepClone(level.deviceLocations),
                 infoLocations: deepClone(level.infoLocations),
                 flagLocation: deepClone(level.flagLocation),
@@ -710,6 +726,9 @@
         function updateStatsDisplay(currentState) {
             timeCounterDisplay.textContent = `Time: ${currentState.moveCount}`;
             moneyAmountDisplay.textContent = `${currentState.inventory.money}`;
+            keyADisplay.style.opacity = currentState.inventory.keyA ? '1' : '0.3';
+            keyBDisplay.style.opacity = currentState.inventory.keyB ? '1' : '0.3';
+            keyCDisplay.style.opacity = currentState.inventory.keyC ? '1' : '0.3';
             levelCounterDisplay.textContent = `Level: ${currentLevel + 1}`;
         }
         
@@ -773,7 +792,7 @@
             document.removeEventListener('keydown', handleKeyDown);
             document.addEventListener('keydown', handleRestart);
             updateDevicePanel({
-                inventory: { R: 0, E: 0, T: 0, money: 0 },
+                inventory: { R: 0, E: 0, T: 0, money: 0, keyA: false, keyB: false, keyC: false },
                 eigengram: { isOn: false, lifetime: 0 },
                 chronogram: { isOn: false, lifetime: 0, savedState: null },
             });
@@ -903,6 +922,21 @@
             if (moneyIndex !== -1) {
                 newState.inventory.money++;
                 newState.devicesOnBoard.money.splice(moneyIndex, 1);
+            }
+            const keyAIndex = newState.devicesOnBoard.keyA.findIndex(k => k.x === x && k.y === y);
+            if (keyAIndex !== -1) {
+                newState.inventory.keyA=true;
+                newState.devicesOnBoard.keyA.splice(keyAIndex, 1);
+            }
+            const keyBIndex = newState.devicesOnBoard.keyB.findIndex(k => k.x === x && k.y === y);
+            if (keyBIndex !== -1) {
+                newState.inventory.keyB=true;
+                newState.devicesOnBoard.keyB.splice(keyBIndex, 1);
+            }
+            const keyCIndex = newState.devicesOnBoard.keyC.findIndex(k => k.x === x && k.y === y);
+            if (keyCIndex !== -1) {
+                newState.inventory.keyC=true;
+                newState.devicesOnBoard.keyC.splice(keyCIndex, 1);
             }
             const RanIndex = newState.devicesOnBoard.R.findIndex(m => m.x === x && m.y === y);
             if (RanIndex !== -1) {
@@ -1382,6 +1416,9 @@
         document.getElementById('h-b-o-1').addEventListener('click', () => showHelpModal(8,1));
         document.getElementById('h-b-o-2').addEventListener('click', () => showHelpModal(8,2));
         document.getElementById('h-b-o-3').addEventListener('click', () => showHelpModal(8,3));
+        document.getElementById('h-b-o-4').addEventListener('click', () => showHelpModal(8,4));
+        document.getElementById('h-b-o-5').addEventListener('click', () => showHelpModal(8,5));
+        document.getElementById('h-b-o-6').addEventListener('click', () => showHelpModal(8,6));
 
         document.getElementById('h-b-main').addEventListener('click', () => showHelpModal(-1));
         

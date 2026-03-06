@@ -65,6 +65,24 @@ var _ = () => {
                  cell.appendChild(moneyIcon);
             }
 
+            if (currentState.devicesOnBoard.keyA.some(k => k.x === col && k.y === row)) {
+                 const keyIcon = document.createElement('i');
+                 keyIcon.classList.add('fas', 'fa-key', 'key-a-icon');
+                 cell.appendChild(keyIcon);
+            }
+
+            if (currentState.devicesOnBoard.keyB.some(k => k.x === col && k.y === row)) {
+                 const keyIcon = document.createElement('i');
+                 keyIcon.classList.add('fas', 'fa-key', 'key-b-icon');
+                 cell.appendChild(keyIcon);
+            }
+
+            if (currentState.devicesOnBoard.keyC.some(k => k.x === col && k.y === row)) {
+                 const keyIcon = document.createElement('i');
+                 keyIcon.classList.add('fas', 'fa-key', 'key-c-icon');
+                 cell.appendChild(keyIcon);
+            }
+            
             if (currentState.devicesOnBoard.R.some(m => m.x === col && m.y === row)) {
                  const RanIcon = document.createElement('i');
                  RanIcon.classList.add('fas', 'fa-cube', 'item-r-icon');
