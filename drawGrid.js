@@ -46,6 +46,42 @@ var _ = () => {
                 wallIcon.classList.add('fas', 'fa-building', 'wall-icon');
                 cell.appendChild(wallIcon);
             }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.doorA) {
+                const doorIcon = document.createElement('i');
+                if (currentState.doorA) {
+                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-open-icon');
+                } else {
+                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-icon');
+                }
+                cell.appendChild(doorIcon);
+            }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.doorB) {
+                const doorIcon = document.createElement('i');
+                if (currentState.doorB) {
+                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-open-icon');
+                } else {
+                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-icon');
+                }
+                cell.appendChild(doorIcon);
+            }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.doorC) {
+                const doorIcon = document.createElement('i');
+                if (currentState.doorC) {
+                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-open-icon');
+                } else {
+                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-icon');
+                }
+                cell.appendChild(doorIcon);
+            }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.desktop) {
+                const desktopIcon = document.createElement('i');
+                desktopIcon.classList.add('fas', 'fa-desktop', 'desktop-icon');
+                cell.appendChild(desktopIcon);
+            }
 
             if (currentState.grid[row][col] === CELL_TYPES.fence) {
                 const fenceIcon = document.createElement('i');

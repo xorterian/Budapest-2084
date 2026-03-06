@@ -9,6 +9,8 @@ const levels = [
         wallLayout: [],
         trapBuildingLayout: [],
         fenceLayout: [],
+        doorLayout: [{x: 4, y: 4, n: 1}, {x: 4, y: 5, n: 2}, {x: 4, y: 6, n: 3}],
+        desktopLayout: [{x: 1, y: 4, n: 2, text: "Do you want to open/close the door 2?" }],
         houseLocations: [],
         initialMoneyLocations: [],
         initialKeyALocations: [{x: 3, y: 3}],
@@ -45,6 +47,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [
             { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
         ],
@@ -89,6 +93,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [
             { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
         ],
@@ -144,6 +150,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -204,6 +212,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -248,9 +258,11 @@ const levels = [
         initialMoneyLocations: [
                 { x: 1, y: 1 }
         ],
-        initialKeyALocations: [],
+        initialKeyALocations: [{x: 2, y: 1}],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [{x: 4, y: 1, n: 1}],
+        desktopLayout: [{x: 2, y: 7, n: 1, text: "Do you want to open/close the door?" }],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -269,7 +281,7 @@ const levels = [
         ],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
-        infoLocations: [{ x: 0, y: 3, text: "Bring the hardware-key to the station. That opens the gate and you can go through." }, { x: 7, y: 1, text: "Don't worry! The police officer does not hurt you but takes your devices and the half of your money away." }]
+        infoLocations: [{ x: 0, y: 3, text: "Bring the hardware-key to the station and press \"D\". That opens the gate and you can go through." }, { x: 7, y: 1, text: "Don't worry! The police officer does not hurt you but takes your devices and the half of your money away." }]
     },
     // Level 6: The Car
     {
@@ -307,6 +319,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [
         ],
         initialStrangerLocations: [
@@ -367,6 +381,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -382,7 +398,7 @@ const levels = [
         initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
-        infoLocations: [{ x: 1, y: 0, text: "For a guess, there will be a surprise bomb at the corner. If you don't have any QRGs, buy one from the deal standing in brown jacket!" }]
+        infoLocations: [{ x: 1, y: 0, text: "For a guess, there will be a surprise bomb at the corner. If you don't have any QRGs, buy one from the dealer standing in brown jacket!" }]
     },
     // Level 8: The Decision
     {
@@ -412,6 +428,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -465,7 +483,9 @@ const levels = [
         initialMoneyLocations: [],
         initialKeyALocations: [],
         initialKeyBLocations: [],
-        initialKeyCLocations: [],
+        initialKeyCLocations: [{x: 1, y: 2}],
+        doorLayout: [{x: 7, y: 3, n: 3}],
+        desktopLayout: [{x: 2, y: 0, n: 3, text: ""}],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],
@@ -490,6 +510,8 @@ const levels = [
         initialKeyALocations: [],
         initialKeyBLocations: [],
         initialKeyCLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [],

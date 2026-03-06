@@ -21,7 +21,7 @@
         </div>
         <div id="money-counter" class="stat-box"><i class="fas fa-money-bill-alt"></i><span id="money-amount">0</span></div>
         <div id="level-counter" class="stat-box">Level: 1</div>
-        <div class="stat-box"><i id="keyA" class="fas fa-key" style="color: red; opacity: 0.3;"></i><i id="keyB" class="fas fa-key" style="color: yellow; opacity: 0.3;"></i><i id="keyC" class="fas fa-key" style="color: blue; opacity: 0.3;"></i></div>
+        <div class="stat-box"><i id="keyA" class="fas fa-key" style="color: red; opacity: 0.3;"></i><i id="keyB" class="fas fa-key" style="color: white; opacity: 0.3;"></i><i id="keyC" class="fas fa-key" style="color: lawngreen; opacity: 0.3;"></i></div>
         <button id="help">Help</button>
     </div>
     
@@ -99,6 +99,11 @@
         <h3 id="info-modal-title">Information</h3>
         <p id="info-modal-text"></p>
         <button id="info-modal-ok">OK</button>
+    </div>
+    <div id="pc-modal">
+        <h3 id="pc-modal-title">Computer Station</h3>
+        <p id="pc-modal-text"></p>
+        <button id="pc-modal-a">Open</button><button id="pc-modal-b">Close</button>
     </div>
     <div id="help-modal" style="width: 70%; font-size: .8em; text-align: justify;">
         <div id="help-choose-modal" style="text-align: center;">
@@ -268,6 +273,11 @@
         const infoModalText = document.getElementById('info-modal-text');
         const infoModalOkBtn = document.getElementById('info-modal-ok');
         
+        const pcModal = document.getElementById('pc-modal');
+        const pcModalText = document.getElementById('pc-modal-text');
+        const pcModalABtn = document.getElementById('pc-modal-a');
+        const pcModalBBtn = document.getElementById('pc-modal-b');
+        
         const helpModal = document.getElementById('help-modal');
         const helpBtn = document.getElementById('help');
         const helpChooseModal = document.getElementById('help-choose-modal');
@@ -312,7 +322,9 @@
             trapBuilding: 'trapBuilding',
             tower: 'broadcast-tower', 
             uni: 'university',
-            door: 'door-closed',
+            doorA: 'door-a-closed',
+            doorB: 'door-b-closed',
+            doorC: 'door-c-closed',
             gate: 'torii-gate',
             city: 'city',
             panel: 'solar-panel',
@@ -392,6 +404,13 @@
                         if (dealerOnCell) {
                             showDealModal(currentState.inventory.money);
                         }
+                        break;
+                    case 'o':
+                        e.preventDefault();
+                        currentState.desktopLayout.forEach(pc => {
+                        if (pc.x === playerPos.x && pc.y === playerPos.y){
+                            showPCModal(pc.text,pc.n, currentState.inventory.keyA, currentState.inventory.keyB, currentState.inventory.keyC);
+                        }});
                         break;
                     case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
                     case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
@@ -587,6 +606,40 @@
             hideInfoModal();
         }
 
+        function showPCModal(text,n=0,keyA=false,keyB=false,keyC=false) {
+            pcModalVars = {'n': n, 'keyA': keyA, 'keyB': keyB, 'keyC': keyC };
+            pcModalText.textContent = text;
+            pcModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', hidePCModalOnKeyPress);
+        }
+
+        function hidePCModal(x=0,state={}) {
+            const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            if (x) {
+                if ((pcModalVars.n==1 && pcModalVars.keyA) || (pcModalVars.n==2 && pcModalVars.keyB) || (pcModalVars.n==3 && pcModalVars.keyC)) {
+                    currentState.doorLayout.forEach(d => { 
+                        if(d.n==pcModalVars.n) {
+                            switch(d.n){
+                                case 1: currentState.doorA = true;break;
+                                case 2: currentState.doorB = true;break;
+                                case 3: currentState.doorC = true;break;
+                            }
+                        }
+                    });
+                }
+            }
+            
+            pcModal.style.display = 'none';
+            document.removeEventListener('keydown', hidePCModalOnKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function hidePCModalOnKeyPress(e) {
+            e.preventDefault();
+            hidePCModal(0);
+        }
+
         function showHelpModal(n=0,m=0) {
             if (n==-1) {
                   if (helpChooseModal.style.display=='block') {
@@ -680,6 +733,13 @@
             trapBuildings.forEach(trap => grid[trap.y][trap.x] = CELL_TYPES.trapBuilding);
 
             level.fenceLayout.forEach(fence => grid[fence.y][fence.x] = CELL_TYPES.fence);
+            level.doorLayout.forEach(d => {
+              switch(d.n){
+                  case 1: grid[d.y][d.x] = CELL_TYPES.doorA;break;
+                  case 2: grid[d.y][d.x] = CELL_TYPES.doorB;break;
+                  case 3: grid[d.y][d.x] = CELL_TYPES.doorC;break;
+              }});
+            level.desktopLayout.forEach(d => grid[d.y][d.x] = CELL_TYPES.desktop);
             grid[level.flagLocation.y][level.flagLocation.x] = CELL_TYPES.flag;
 
 
@@ -704,6 +764,8 @@
                 destroyedTiles: [],
                 wallLayout: deepClone(level.wallLayout),
                 fenceLayout: deepClone(level.fenceLayout),
+                doorLayout: deepClone(level.doorLayout),
+                desktopLayout: deepClone(level.desktopLayout),
                 trapBuildings: deepClone(level.trapBuildingLayout),//trapBuildings,
                 inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0, 'keyA': false, 'keyB': false, 'keyC': false },
                 devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T), 'money': deepClone(level.initialMoneyLocations), 'keyA': deepClone(level.initialKeyALocations), 'keyB': deepClone(level.initialKeyBLocations), 'keyC': deepClone(level.initialKeyCLocations)},
@@ -811,10 +873,14 @@
         }
         
         function isObstacle(x, y, grid) {
+            //currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
             if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return true;
             const cellType = grid[y][x];
-            const isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding;
             const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            let isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding;
+            isSolid ||= currentState.doorLayout.some(d => {
+                return d.x == x && d.y == y && ((d.n == 1 && !currentState.doorA) || (d.n == 2 && !currentState.doorB) || (d.n == 3 && !currentState.doorC));
+            });
             const isHouse = currentState.houseLocations.some(h => h.x === x && h.y === y);
             return isSolid || isHouse;
         }
@@ -1202,6 +1268,13 @@
                             showDealModal(currentState.inventory.money);
                         }
                         break;
+                    case 'o':
+                        e.preventDefault();
+                        currentState.desktopLayout.forEach(pc => {
+                        if (pc.x === playerPos.x && pc.y === playerPos.y){
+                            showPCModal(pc.text, pc.n, currentState.inventory.keyA, currentState.inventory.keyB, currentState.inventory.keyC);
+                        }});
+                        break;
                     case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
                     case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
                     case 'e': e.preventDefault(); if (!eigengramOnBtn.disabled) eigengramOnBtn.click(); break;
@@ -1383,6 +1456,7 @@
         getOutBtn.addEventListener('click', () => handleDealAttempt('q'));
 
         helpBtn.addEventListener('click', () => showHelpModal());
+        document.getElementById('info-modal-ok').addEventListener('click', () => hideInfoModal());
         
         document.getElementById('h-i').addEventListener('click', () => showHelpModal(1));
         document.getElementById('h-w').addEventListener('click', () => showHelpModal(2));
@@ -1421,6 +1495,10 @@
         document.getElementById('h-b-o-6').addEventListener('click', () => showHelpModal(8,6));
 
         document.getElementById('h-b-main').addEventListener('click', () => showHelpModal(-1));
+        
+        document.getElementById('pc-modal-a').addEventListener('click', () => hidePCModal(1));
+        document.getElementById('pc-modal-b').addEventListener('click', () => hidePCModal(2));
+        
         
         initGame();
     });

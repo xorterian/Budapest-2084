@@ -24,8 +24,11 @@
     --duck-color: #964b00;
     --money-color: #4CAF50;
     --key-a-color: red;
-    --key-b-color: yellow;
-    --key-c-color: blue;
+    --key-b-color: white;
+    --key-c-color: lawngreen;
+    --door-a-color: brown;
+    --door-b-color: bisque;
+    --door-c-color: chartreuse;;
     --flag-color: #eeeeee;
     --bomb-color: #111100;
     --explosion-color: rgba(255, 0, 0, 0.5);
@@ -236,6 +239,18 @@ body {
     background-color: #bfa881;
     border: 1px dashed #57534e;
 }
+.door-a {
+    background-color: var(--door-a-color);
+    border: 1px dashed #57534e;
+}
+.door-b {
+    background-color: var(--door-b-color);
+    border: 1px dashed #57534e;
+}
+.door-c {
+    background-color: var(--door-c-color);
+    border: 1px dashed #57534e;
+}
 
 .flag {
     /* This rule is now removed for a transparent background */
@@ -338,9 +353,14 @@ body {
     z-index: 3;
 }
 
-.wall-icon, .fence-icon, .flag-icon, .money-icon, .info-icon {
+.wall-icon, .desktop-icon, .flag-icon, .money-icon, .info-icon {
     position: absolute;
     font-size: 1.5rem;
+}
+
+.fence-icon, .door-a-icon, .door-b-icon, .door-c-icon, .door-a-open-icon, .door-b-open-icon, .door-c-open-icon {
+    position: absolute;
+    font-size: 2.5rem;
 }
 
 .key-a-icon, .key-b-icon, .key-c-icon {
@@ -350,6 +370,13 @@ body {
 
 .wall-icon { color: #4a4a4a; opacity: 0.8; }
 .fence-icon { color: #8c7b64; opacity: 0.8; }
+.door-a-icon { color: var(--door-a-color); opacity: 0.8; }
+.door-b-icon { color: var(--door-b-color); opacity: 0.8; }
+.door-c-icon { color: var(--door-c-color); opacity: 0.8; }
+.door-a-open-icon { color: var(--door-a-color); opacity: 0.4; }
+.door-b-open-icon { color: var(--door-b-color); opacity: 0.4; }
+.door-c-open-icon { color: var(--door-c-color); opacity: 0.4; }
+.desktop-icon { color: black; opacity: 0.8; }
 .flag-icon { color: var(--flag-color); }
 .money-icon { color: var(--money-color); }
 .key-a-icon { color: var(--key-a-color); }
@@ -492,7 +519,7 @@ button:active:not(:disabled) {
 .fa-cube { color: #2196f3; }
 .fa-hourglass-half { color: #00e676; }
 
-#game-over-message, #defuse-modal, #deal-modal, #info-modal, #help-modal {
+#game-over-message, #defuse-modal, #deal-modal, #info-modal, #pc-modal, #help-modal {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -508,12 +535,12 @@ button:active:not(:disabled) {
     z-index: 100;
 }
 
-#defuse-modal, #deal-modal, #info-modal, #help-modal {
+#defuse-modal, #deal-modal, #info-modal, #pc-modal, #help-modal {
     font-size: 1.5rem;
     z-index: 200;
 }
 
-#defuse-modal button, #deal-modal button, #info-modal button, #help-modal button {
+#defuse-modal button, #deal-modal button, #info-modal button, #pc-modal-a button, #pc-modal-b button, #help-modal button {
     font-size: 1rem;
     padding: 0.5rem 1rem;
     margin: 0.5rem;
