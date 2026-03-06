@@ -28,10 +28,14 @@
     --key-c-color: lawngreen;
     --door-a-color: brown;
     --door-b-color: bisque;
-    --door-c-color: chartreuse;;
+    --door-c-color: chartreuse;
     --flag-color: #eeeeee;
     --bomb-color: #111100;
+    --radio-color: yellow;
+    --bio-color: chartreuse;
     --explosion-color: rgba(255, 0, 0, 0.5);
+    --explosion-radio-color: rgba(0,0,255, 0.5);
+    --explosion-bio-color: rgba(0,255,0, 0.5);
     --destroyed-grass-color: #cccc00;
     --destroyed-road-color: #333333;
     --destroyed-building-color: #000000;
@@ -202,6 +206,14 @@ body {
     background-color: var(--explosion-color) !important;
     animation: flash-red 0.5s;
 }
+.explosion-radio-cell {
+    background-color: var(--explosion-radio-color) !important;
+    animation: flash-blue 0.5s;
+}
+.explosion-bio-cell {
+    background-color: var(--explosion-bio-color) !important;
+    animation: flash-green 0.5s;
+}
 
 .destroyed-grass { background-color: var(--destroyed-grass-color); }
 .destroyed-road { background-color: var(--destroyed-road-color); }
@@ -209,6 +221,14 @@ body {
 
 @keyframes flash-red {
     from { background-color: var(--explosion-color); }
+    to { background-color: transparent; }
+}
+@keyframes flash-blue {
+    from { background-color: var(--explosion-radio-color); }
+    to { background-color: transparent; }
+}
+@keyframes flash-green {
+    from { background-color: var(--explosion-bio-color); }
     to { background-color: transparent; }
 }
 
@@ -349,6 +369,18 @@ body {
 .bomb-icon {
     font-size: 1.5rem;
     color: var(--bomb-color);
+    position: relative;
+    z-index: 3;
+}
+.radio-icon {
+    font-size: 1.5rem;
+    color: var(--radio-color);
+    position: relative;
+    z-index: 3;
+}
+.bio-icon {
+    font-size: 1.5rem;
+    color: var(--bio-color);
     position: relative;
     z-index: 3;
 }

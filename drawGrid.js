@@ -137,7 +137,12 @@ var _ = () => {
 
             const explosion = currentState.explosions.find(ex => ex.x === col && ex.y === row);
             if (explosion) {
-                cell.classList.add('explosion-cell');
+                switch(explosion.typ){
+                    case 'radio': cell.classList.add('explosion-radio-cell');break;
+                    case 'bio': cell.classList.add('explosion-bio-cell');break;
+                    default: cell.classList.add('explosion-cell');break;
+                }
+                
             }
             
             if (currentState.infoLocations.some(inf => inf.x === col && inf.y === row)) {

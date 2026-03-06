@@ -336,7 +336,7 @@
             death: 'skull-crossbones',
             eye: 'eye',
             bio: 'biohazard',
-            radioation: 'radiation',
+            radios: 'radiation',
             danger: 'exclamation-triangle'
         };
 
@@ -609,7 +609,7 @@
         function showPCModal(text,n=0,keyA=false,keyB=false,keyC=false) {
             pcModalVars = {'n': n, 'keyA': keyA, 'keyB': keyB, 'keyC': keyC };
             pcModalText.textContent = text;
-            pcModal.style.display = 'block';
+            pcModal.style.display = text ? 'block' : 'none';
             document.removeEventListener('keydown', handleKeyDown);
             document.addEventListener('keydown', hidePCModalOnKeyPress);
         }
@@ -627,6 +627,16 @@
                             }
                         }
                     });
+                } else {
+                    if (pcModalVars.n==-1){
+                        for(let i=0;i!=12;i++){
+                            currentState.radios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
+                        }
+                    } else if (pcModalVars.n==-2){
+                        for(let i=0;i!=4;i++){
+                            currentState.bios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
+                        }
+                    }
                 }
             }
             
@@ -749,30 +759,37 @@
                 playerStatus: 'alive',
                 isDriving: false,
                 lastMoveDirection: {x: 0, y: 0},
-                cars: deepClone(level.initialCarLocations),
-                buses: deepClone(level.initialBusLocations),
-                playerCar: deepClone(level.playerCar),
-                strangers: deepClone(level.initialStrangerLocations),
-                strangers_blue: deepClone(level.initialStrangerBlueLocations),
-                strangers_black: deepClone(level.initialStrangerBlackLocations),
-                strangers_gold: deepClone(level.initialStrangerGoldLocations),
-                ducks: deepClone(level.initialDuckLocations),
+                cars: (level.initialCarLocations) ? deepClone(level.initialCarLocations) : [],
+                buses: (level.initialBusLocations) ? deepClone(level.initialBusLocations) : [],
+                playerCar: (level.playerCar) ? deepClone(level.playerCar) : { x: 0, y: 0, occupied: false },//?
+                strangers: (level.initialStrangerLocations) ? deepClone(level.initialStrangerLocations) : [],
+                strangers_blue: (level.initialStrangerBlueLocations) ? deepClone(level.initialStrangerBlueLocations) : [],
+                strangers_black: (level.initialStrangerBlackLocations) ? deepClone(level.initialStrangerBlackLocations) : [],
+                strangers_gold: (level.initialStrangerGoldLocations) ? deepClone(level.initialStrangerGoldLocations) : [],
+                ducks: (level.initialDuckLocations) ? deepClone(level.initialDuckLocations) : [],
                 deadStrangers: [],
                 deadDucks: [],
-                bombs: [],
+                bombs: (level.bombs) ? deepClone(level.bombs) : [],
+                radios: (level.radios) ? deepClone(level.radios) : [],
+                bios: (level.bios) ? deepClone(level.bios) : [],
                 explosions: [],
                 destroyedTiles: [],
-                wallLayout: deepClone(level.wallLayout),
-                fenceLayout: deepClone(level.fenceLayout),
-                doorLayout: deepClone(level.doorLayout),
-                desktopLayout: deepClone(level.desktopLayout),
-                trapBuildings: deepClone(level.trapBuildingLayout),//trapBuildings,
+                wallLayout: (level.wallLayout) ? deepClone(level.wallLayout) : [],
+                fenceLayout: (level.fenceLayout) ? deepClone(level.fenceLayout) : [],
+                doorLayout: (level.doorLayout) ? deepClone(level.doorLayout) : [],
+                desktopLayout: (level.desktopLayout) ? deepClone(level.desktopLayout) : [],
+                trapBuildings: (level.trapBuildingLayout) ? deepClone(level.trapBuildingLayout) : [],//trapBuildings,
                 inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0, 'keyA': false, 'keyB': false, 'keyC': false },
-                devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T), 'money': deepClone(level.initialMoneyLocations), 'keyA': deepClone(level.initialKeyALocations), 'keyB': deepClone(level.initialKeyBLocations), 'keyC': deepClone(level.initialKeyCLocations)},
-                deviceLocations: deepClone(level.deviceLocations),
-                infoLocations: deepClone(level.infoLocations),
+                devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T),
+                    'money': deepClone(level.initialMoneyLocations),
+                    'keyA': (level.initialKeyALocations) ? deepClone(level.initialKeyALocations) : [],
+                    'keyB': (level.initialKeyBLocations) ? deepClone(level.initialKeyBLocations) : [],
+                    'keyC': (level.initialKeyCLocations) ? deepClone(level.initialKeyCLocations) : []
+                },
+                deviceLocations: (level.deviceLocations) ? deepClone(level.deviceLocations) : { 'R': [ ], 'E': [ ], 'T': [ ] },
+                infoLocations: (level.infoLocations) ? deepClone(level.infoLocations) : [],
                 flagLocation: deepClone(level.flagLocation),
-                houseLocations: deepClone(level.houseLocations),
+                houseLocations: (level.houseLocations) ? deepClone(level.houseLocations) : [],
                 eigengram: { isOn: false, lifetime: 0 },
                 chronogram: { isOn: false, lifetime: 0, savedState: null },
                 moveCount: 0
@@ -1028,14 +1045,15 @@
             return newState;
         }
 
-        function triggerExplosion(bomb, state) {
-            for (let ex = -2; ex <= 2; ex++) {
-                for (let ey = -2; ey <= 2; ey++) {
+        function triggerExplosion(bomb, state, R=2, pr=1,trTyp='bomb') {
+            for (let ex = -R; ex <= R; ex++) {
+                for (let ey = -R; ey <= R; ey++) {
+                    if (Math.random() <= 1-pr) continue;
                     const blastX = bomb.x + ex;
                     const blastY = bomb.y + ey;
                     if (blastX >= 0 && blastX < GRID_SIZE && blastY >= 0 && blastY < GRID_SIZE) {
                         if (!state.explosions.some(exp => exp.x === blastX && exp.y === blastY)) {
-                            state.explosions.push({ x: blastX, y: blastY });
+                            state.explosions.push({ x: blastX, y: blastY, typ: trTyp });
                         }
                         if (state.playerPos.x === blastX && state.playerPos.y === blastY) {
                             state.playerStatus = 'dead';
@@ -1048,7 +1066,9 @@
                     }
                 }
             }
-            state.bombs = state.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+            if (trTyp=='bomb'){
+                state.bombs = state.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+            }
         }
          
         const progressTurn = eval(progressTurnString);

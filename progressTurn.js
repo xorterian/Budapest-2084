@@ -150,6 +150,9 @@ if (updatedState.playerStatus !== 'dead') {
         return true;
     });
     explodingBombs.forEach(bomb => triggerExplosion(bomb, updatedState));
+    
+    updatedState.radios.forEach(r => triggerExplosion(r, updatedState, 1, 0.2, 'radio'));
+    updatedState.bios.forEach(b => triggerExplosion(b, updatedState, 1, 0.3, 'bio'));
 
 
     if (updatedState.eigengram.isOn && --updatedState.eigengram.lifetime <= 0) {

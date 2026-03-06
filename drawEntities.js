@@ -104,6 +104,24 @@ var _ = (currentState) => {
             cell.appendChild(bombIcon);
         }
     });
+    
+    currentState.radios.forEach(r => {
+        const cell = board.children[r.y * GRID_SIZE + r.x];
+        if(cell) {
+            const rIcon = document.createElement('i');
+            rIcon.classList.add('fas', 'fa-radiation', 'radio-icon');
+            cell.appendChild(rIcon);
+        }
+    });
+    
+    currentState.bios.forEach(r => {
+        const cell = board.children[r.y * GRID_SIZE + r.x];
+        if(cell) {
+            const rIcon = document.createElement('i');
+            rIcon.classList.add('fas', 'fa-biohazard', 'bio-icon');
+            cell.appendChild(rIcon);
+        }
+    });
 }
 
 drawEntitiesString = _.toString();

@@ -1,6 +1,5 @@
 // --- LEVELS DEFINITION ---
 const levels = [
-
     // Level i: 
     {
         playerPos: { x: 0, y: 1 },
@@ -9,20 +8,10 @@ const levels = [
         wallLayout: [],
         trapBuildingLayout: [],
         fenceLayout: [],
-        doorLayout: [{x: 4, y: 4, n: 1}, {x: 4, y: 5, n: 2}, {x: 4, y: 6, n: 3}],
-        desktopLayout: [{x: 1, y: 4, n: 2, text: "Do you want to open/close the door 2?" }],
-        houseLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
         initialMoneyLocations: [],
-        initialKeyALocations: [{x: 3, y: 3}],
-        initialKeyBLocations: [{x: 5, y: 3}],
-        initialKeyCLocations: [{x: 3, y: 5}],
         initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
-        initialCarLocations: [],
-        initialBusLocations: [],
         playerCar: { x: 0, y: 0, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []
@@ -34,36 +23,22 @@ const levels = [
         roadLayout: [
             { type: 'vertical', x: 4 }
         ],
-        wallLayout: [
-        ],
-        trapBuildingLayout: [
-        ],
-        fenceLayout: [
-        ],
-        houseLocations: [
-        ],
-        initialMoneyLocations: [
-        ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
+        wallLayout: [],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        houseLocations: [],
+        initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
         initialDuckLocations: [
             { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
         ],
-        initialStrangerLocations: [
-        ],
-        initialStrangerBlueLocations: [
-        ],
-        initialStrangerBlackLocations: [
-        ],
-        initialStrangerGoldLocations: [
-        ],
-        initialCarLocations: [
-        ],
-        initialBusLocations: [
-        ],
+        initialStrangerLocations: [],
+        initialStrangerBlueLocations: [],
+        initialStrangerBlackLocations: [],
+        initialStrangerGoldLocations: [],
+        initialCarLocations: [],
+        initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [], 'E': [], 'T': [] },
         infoLocations: [{ x: 1, y: 3, text: "Get to the flags!" }]
@@ -82,17 +57,12 @@ const levels = [
         trapBuildingLayout: [
             { x: 2, y: 7 }
         ],
-        fenceLayout: [
-        ],
-        houseLocations: [
-        ],
+        fenceLayout: [],
+        houseLocations: [],
         initialMoneyLocations: [
             { x: 6, y: 2 },
             { x: 1, y: 6 }
         ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
         doorLayout: [],
         desktopLayout: [],
         initialDuckLocations: [
@@ -101,16 +71,11 @@ const levels = [
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
         ],
-        initialStrangerBlueLocations: [
-        ],
-        initialStrangerBlackLocations: [
-        ],
-        initialStrangerGoldLocations: [
-        ],
-        initialCarLocations: [
-        ],
-        initialBusLocations: [
-        ],
+        initialStrangerBlueLocations: [],
+        initialStrangerBlackLocations: [],
+        initialStrangerGoldLocations: [],
+        initialCarLocations: [],
+        initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 3, y: 1, text: "Watch out for the building!" }, { x: 5, y: 1, text: "Run away from the bombs!" }]
@@ -140,29 +105,20 @@ const levels = [
         trapBuildingLayout: [
             { x: 5, y: 1 },
         ],
-        fenceLayout: [
-        ],
+        fenceLayout: [],
         houseLocations: [
             { x: 7, y: 0 },
         ],
-        initialMoneyLocations: [
-        ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
+        initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [
-        ],
+        initialDuckLocations: [],
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
         ],
-        initialStrangerBlueLocations: [
-        ],
-        initialStrangerBlackLocations: [
-        ],
-        initialStrangerGoldLocations: [
-        ],
+        initialStrangerBlueLocations: [],
+        initialStrangerBlackLocations: [],
+        initialStrangerGoldLocations: [],
         initialCarLocations: [
             { x: 7, y: 4, dx: -1, isPlayerCar: false },
             { x: 3, y: 3, dx: -1, isPlayerCar: false }
@@ -201,33 +157,21 @@ const levels = [
         trapBuildingLayout: [
                 { x: 3, y: 5 }
         ],
-        fenceLayout: [
-        ],
+        fenceLayout: [],
         houseLocations: [
                 { x: 6, y: 4 },
                 { x: 0, y: 4 },
         ],
-        initialMoneyLocations: [
-        ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
+        initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [
-        ],
-        initialStrangerLocations: [
-        ],
-        initialStrangerBlueLocations: [
-        ],
-        initialStrangerBlackLocations: [
-        ],
-        initialStrangerGoldLocations: [
-        ],
-        initialCarLocations: [
-        ],
-        initialBusLocations: [
-        ],
+        initialDuckLocations: [],
+        initialStrangerLocations: [],
+        initialStrangerBlueLocations: [],
+        initialStrangerBlackLocations: [],
+        initialStrangerGoldLocations: [],
+        initialCarLocations: [],
+        initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ {x:6, y:2 } ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 3, y: 0, text: "If you find a bomb with no enough space to escape, use a QRG (press \"R\") to branch the time, and try to defuse the bomb (press \"D\") by cutting different wires in different branches. Good luck!" }]
@@ -249,36 +193,26 @@ const levels = [
                 { x: 4, y: 6 },
                 { x: 4, y: 7 }
         ],
-        trapBuildingLayout: [
-        ],
-        fenceLayout: [
-        ],
-        houseLocations: [
-        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        houseLocations: [],
         initialMoneyLocations: [
                 { x: 1, y: 1 }
         ],
         initialKeyALocations: [{x: 2, y: 1}],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
         doorLayout: [{x: 4, y: 1, n: 1}],
         desktopLayout: [{x: 2, y: 7, n: 1, text: "Do you want to open/close the door?" }],
-        initialDuckLocations: [
-        ],
-        initialStrangerLocations: [
-        ],
+        initialDuckLocations: [],
+        initialStrangerLocations: [],
         initialStrangerBlueLocations: [
                 { x: 6, y: 5, dx: -1, dy: 0, isDead: false }
         ],
-        initialStrangerBlackLocations: [
-        ],
-        initialStrangerGoldLocations: [
-        ],
+        initialStrangerBlackLocations: [],
+        initialStrangerGoldLocations: [],
         initialCarLocations: [
             { x: 3, y: 3, dx: 0, dy: 1, isPlayerCar: false }
         ],
-        initialBusLocations: [
-        ],
+        initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 0, y: 3, text: "Bring the hardware-key to the station and press \"D\". That opens the gate and you can go through." }, { x: 7, y: 1, text: "Don't worry! The police officer does not hurt you but takes your devices and the half of your money away." }]
@@ -287,8 +221,7 @@ const levels = [
     {
         playerPos: { x: 6, y: 1 },
         flagLocation: { x: 0, y: 7 },
-        roadLayout: [
-        ],
+        roadLayout: [],
         wallLayout: [
                 { x: 0, y: 4 },
                 { x: 1, y: 4 },
@@ -306,39 +239,27 @@ const levels = [
                 { x: 7, y: 2 },
                 { x: 6, y: 3 }
         ],
-        trapBuildingLayout: [
-        ],
+        trapBuildingLayout: [],
         fenceLayout: [
                 { x: 2, y: 5 },
                 { x: 3, y: 5 }
         ],
-        houseLocations: [
-        ],
-        initialMoneyLocations: [
-        ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
+        houseLocations: [],
+        initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [
-        ],
-        initialStrangerLocations: [
-        ],
-        initialStrangerBlueLocations: [
-        ],
+        initialDuckLocations: [],
+        initialStrangerLocations: [],
+        initialStrangerBlueLocations: [],
         initialStrangerBlackLocations: [
                 { x: 1, y: 6, dx: -1, dy: 0, isDead: false },
                 { x: 3, y: 7, dx: 0, dy: -1, isDead: false },
                 { x: 5, y: 6, dx: 0, dy: -1, isDead: false },
                 { x: 2, y: 2, dx: 0, dy: -1, isDead: true }
         ],
-        initialStrangerGoldLocations: [
-        ],
-        initialCarLocations: [
-        ],
-        initialBusLocations: [
-        ],
+        initialStrangerGoldLocations: [],
+        initialCarLocations: [],
+        initialBusLocations: [],
         playerCar: { x: 1, y: 1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 4, y: 0, text: "The secret polie officers are about to kill you. You can escape from them easier with that red car!" }]
@@ -372,21 +293,14 @@ const levels = [
                 { x: 4, y: 6 }
         ],
         fenceLayout: [],
-        houseLocations: [],
         initialMoneyLocations: [
             {x: 1, y: 1},
             {x: 0, y: 3},
             {x: 2, y: 4}
         ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
         doorLayout: [],
         desktopLayout: [],
         initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
         initialStrangerGoldLocations: [
                 { x: 6, y: 0, dx: 1, dy: 0, isDead: false }
         ],
@@ -395,7 +309,6 @@ const levels = [
             { x: 2, y: 3, dx: 1, isPlayerCar: false },
             { x: 6, y: 4, dx: -1, isPlayerCar: false }
         ],
-        initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 1, y: 0, text: "For a guess, there will be a surprise bomb at the corner. If you don't have any QRGs, buy one from the dealer standing in brown jacket!" }]
@@ -418,27 +331,18 @@ const levels = [
         ],
         trapBuildingLayout: [{ x: 4, y: 4 }],
         fenceLayout: [],
-        houseLocations: [],
         initialMoneyLocations: [
                 { x: 5, y: 3 },
                 { x: 5, y: 5 },
                 { x: 4, y: 6 },
                 { x: 3, y: 6 }
         ],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
         doorLayout: [],
         desktopLayout: [],
         initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
         initialStrangerGoldLocations: [
                 { x: 0, y: 0, dx: 1, dy: 0, isDead: false }
         ],
-        initialCarLocations: [],
-        initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{ x: 0, y: 3, text: "Don't take unnecessary risk!" }]
@@ -481,21 +385,134 @@ const levels = [
             {x: 7, y: 1},
         ],
         initialMoneyLocations: [],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
         initialKeyCLocations: [{x: 1, y: 2}],
         doorLayout: [{x: 7, y: 3, n: 3}],
         desktopLayout: [{x: 2, y: 0, n: 3, text: ""}],
         initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
-        initialCarLocations: [],
-        initialBusLocations: [],
+        
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ {x: 3, y: 3} ], 'E': [ ], 'T': [ ] },
         infoLocations: []
+    },
+    // Level 10: The Three-door
+    {
+        playerPos: { x: 3, y: 6 },
+        flagLocation: { x: 3, y: 0 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 1, y: 0},{x: 6, y: 0},
+            {x: 1, y: 1},{x: 6, y: 1},
+            {x: 1, y: 2},{x: 6, y: 2},
+            {x: 1, y: 3},{x: 6, y: 3},
+            {x: 1, y: 4},{x: 6, y: 4},
+            {x: 1, y: 5},{x: 6, y: 5}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [
+            {x: 2, y: 1},{x: 5, y: 1},
+            {x: 2, y: 3},{x: 5, y: 3},
+            {x: 2, y: 5},{x: 5, y: 5}
+        ],
+        doorLayout: [
+            {x: 3, y: 1, n: 1},{x: 4, y: 1, n: 1},
+            {x: 3, y: 3, n: 2},{x: 4, y: 3, n: 2},
+            {x: 3, y: 5, n: 3},{x: 4, y: 5, n: 3}
+        ],
+        desktopLayout: [
+            {x:2 ,y: 7, n: 1, text: "Red door"},
+            {x:3 ,y: 7, n: 2, text: "White door"},
+            {x:4 ,y: 7, n: 3, text: "Green door"}
+        ],
+        initialMoneyLocations: [],
+        initialKeyALocations: [{x:2, y: 2}],
+        initialKeyBLocations: [{x:7, y: 0}],
+        initialKeyCLocations: [{x:0, y: 0}],
+        initialDuckLocations: [],
+        initialStrangerBlackLocations: [
+            {x: 3, y: 4, dx: -1, dy: 0, isDead: false },
+            {x: 3, y: 2, dx: -1, dy: 0, isDead: false },
+            {x: 4, y: 2, dx: 1, dy: 0, isDead: false },
+            {x: 4, y: 0, dx: -1, dy: 0, isDead: false }
+        ],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: []
+    },
+    // Level 11: The Double QRG 
+    {
+        playerPos: { x: 1, y: 1 },
+        flagLocation: { x: 7, y: 0 },
+        roadLayout: [
+            { type: 'horizontal', y: 4 },
+            { type: 'horizontal', y: 5 },
+            { type: 'horizontal', y: 6 }
+        ],
+        wallLayout: [
+            {x: 6, y: 0},{x: 6, y: 1},
+            {x: 0, y: 4},{x: 1, y: 4},{x: 2, y: 4},{x: 3, y: 4},{x: 4, y: 4},{x: 5, y: 4},/*{x: 6, y: 4},*/{x: 7, y: 4},
+            {x: 0, y: 5},{x: 1, y: 5},{x: 2, y: 5},{x: 3, y: 5},{x: 4, y: 5},{x: 5, y: 5},/*{x: 6, y: 5},*/{x: 7, y: 5},
+            {x: 0, y: 6},{x: 1, y: 6},/*{x: 2, y: 6},{x: 3, y: 6},{x: 4, y: 6},{x: 5, y: 6},/*{x: 6, y: 6},*/{x: 7, y: 6},
+            {x: 0, y: 7},{x: 1, y: 7},{x: 2, y: 7},/*{x: 3, y: 7},/*{x: 4, y: 7},*/{x: 5, y: 7},{x: 6, y: 7},{x: 7, y: 7}
+        ],
+        trapBuildingLayout: [{x: 4, y: 7},{x: 3, y: 7}],
+        fenceLayout: [],
+        doorLayout: [{x: 7, y: 1, n: 1}],
+        desktopLayout: [{x:0 ,y: 3, n: 1, text: ""}],
+        initialMoneyLocations: [],
+        initialKeyALocations: [{x: 2, y: 6}],
+        initialDuckLocations: [],
+        
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x: 4, y: 1},{x: 4, y: 2}], 'E': [], 'T': [ ] },
+        infoLocations: [{x: 2, y: 0, text: "In some cases it can be useful to have two QRGs at the same time."}]
+    },
+    // Level 12: The Eigengram 
+    {
+        playerPos: { x: 1, y: 1 },
+        flagLocation: { x: 7, y: 0 },
+        roadLayout: [
+            { type: 'horizontal', y: 4 },
+            { type: 'horizontal', y: 5 },
+            { type: 'horizontal', y: 6 }
+        ],
+        wallLayout: [
+            {x: 6, y: 0},{x: 6, y: 1},
+            {x: 0, y: 4},{x: 1, y: 4},{x: 2, y: 4},{x: 3, y: 4},{x: 4, y: 4},{x: 5, y: 4},/*{x: 6, y: 4},*/{x: 7, y: 4},
+            {x: 0, y: 5},{x: 1, y: 5},{x: 2, y: 5},{x: 3, y: 5},/*{x: 4, y: 5},*/{x: 5, y: 5},/*{x: 6, y: 5},*/{x: 7, y: 5},
+            {x: 0, y: 6},{x: 1, y: 6},/*{x: 2, y: 6},{x: 3, y: 6},{x: 4, y: 6},{x: 5, y: 6},/*{x: 6, y: 6},*/{x: 7, y: 6},
+            {x: 0, y: 7},{x: 1, y: 7},{x: 2, y: 7},/*{x: 3, y: 7},/*{x: 4, y: 7},*/{x: 5, y: 7},{x: 6, y: 7},{x: 7, y: 7}
+        ],
+        trapBuildingLayout: [{x: 4, y: 5},{x: 4, y: 7},{x: 3, y: 7}],
+        fenceLayout: [],
+        doorLayout: [{x: 7, y: 1, n: 1}],
+        desktopLayout: [{x:0 ,y: 3, n: 1, text: ""}],
+        initialMoneyLocations: [],
+        initialKeyALocations: [{x: 2, y: 6}],
+        initialDuckLocations: [],
+        
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x: 4, y: 1}], 'E': [{x: 4, y: 2}], 'T': [ ] },
+        infoLocations: [{x: 2, y: 0, text: "The case looks similar but this time you need to apply the device called Eigengram to send the key to your otherself. So after picking the items up, branch the time (press \"R\"), one of your otherself stays at the station, and the other one goes to the key. Because of the traps, he/she switches the eigengram on (press \"E\" in both branches!) via the key will be sent. Then the first otherself will be able to use the key to open the door, and go to the next level. Good luck!"}]
+    },
+    // Level 13: The Self-destruction Button
+    {
+        playerPos: { x: 1, y: 1 },
+        flagLocation: { x: 6, y: 1 },
+        roadLayout: [],
+        wallLayout: [],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        doorLayout: [],
+        desktopLayout: [{x: 4, y: 6, n: -1, text: "Do you want to launch the self-destruction mode?"}],
+        houseLocations: [{x: 1, y: 3},{x: 1, y: 5},{x: 6, y: 5}],
+        initialMoneyLocations: [],
+          
+        initialDuckLocations: [{x: 1, y: 7, dx: -1, dy: 0, isDead: false}],
+          
+         
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x: 4, y: 3}], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 3, y: 0, text: "Some stations can be used to launch the self-destruction of the city. You can use a thread for testing it."}]
     },
     // Level i: 
     {
@@ -505,20 +522,11 @@ const levels = [
         wallLayout: [],
         trapBuildingLayout: [],
         fenceLayout: [],
-        houseLocations: [],
         initialMoneyLocations: [],
-        initialKeyALocations: [],
-        initialKeyBLocations: [],
-        initialKeyCLocations: [],
         doorLayout: [],
         desktopLayout: [],
         initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
-        initialCarLocations: [],
-        initialBusLocations: [],
+        
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []
