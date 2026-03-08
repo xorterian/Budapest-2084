@@ -325,6 +325,9 @@
             doorA: 'door-a-closed',
             doorB: 'door-b-closed',
             doorC: 'door-c-closed',
+            doorAOpen: 'door-a-open',
+            doorBOpen: 'door-b-open',
+            doorCOpen: 'door-c-open',
             gate: 'torii-gate',
             city: 'city',
             panel: 'solar-panel',
@@ -609,9 +612,13 @@
         function showPCModal(text,n=0,keyA=false,keyB=false,keyC=false) {
             pcModalVars = {'n': n, 'keyA': keyA, 'keyB': keyB, 'keyC': keyC };
             pcModalText.textContent = text;
-            pcModal.style.display = text ? 'block' : 'none';
-            document.removeEventListener('keydown', handleKeyDown);
-            document.addEventListener('keydown', hidePCModalOnKeyPress);
+            if (text) {
+                pcModal.style.display = 'block';
+            } else {
+                hidePCModal(n,state={});
+                document.removeEventListener('keydown', handleKeyDown);
+                document.addEventListener('keydown', hidePCModalOnKeyPress);
+            }
         }
 
         function hidePCModal(x=0,state={}) {
@@ -619,11 +626,17 @@
             if (x) {
                 if ((pcModalVars.n==1 && pcModalVars.keyA) || (pcModalVars.n==2 && pcModalVars.keyB) || (pcModalVars.n==3 && pcModalVars.keyC)) {
                     currentState.doorLayout.forEach(d => { 
-                        if(d.n==pcModalVars.n) {
-                            switch(d.n){
+                        if(Math.abs(d.n)==pcModalVars.n) {
+                            /*switch(d.n){
                                 case 1: currentState.doorA = true;break;
                                 case 2: currentState.doorB = true;break;
                                 case 3: currentState.doorC = true;break;
+                            }*/
+                            d.n *= -1;
+                            switch(Math.abs(d.n)){
+                                case 1: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorA : CELL_TYPES.doorAOpen;break;
+                                case 2: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorB : CELL_TYPES.doorBOpen;break;
+                                case 3: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorC : CELL_TYPES.doorCOpen;break;
                             }
                         }
                     });
@@ -744,10 +757,10 @@
 
             level.fenceLayout.forEach(fence => grid[fence.y][fence.x] = CELL_TYPES.fence);
             level.doorLayout.forEach(d => {
-              switch(d.n){
-                  case 1: grid[d.y][d.x] = CELL_TYPES.doorA;break;
-                  case 2: grid[d.y][d.x] = CELL_TYPES.doorB;break;
-                  case 3: grid[d.y][d.x] = CELL_TYPES.doorC;break;
+              switch(Math.abs(d.n)){
+                  case 1: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorA : CELL_TYPES.doorAOpen;break;
+                  case 2: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorB : CELL_TYPES.doorBOpen;break;
+                  case 3: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorC : CELL_TYPES.doorCOpen;break;
               }});
             level.desktopLayout.forEach(d => grid[d.y][d.x] = CELL_TYPES.desktop);
             grid[level.flagLocation.y][level.flagLocation.x] = CELL_TYPES.flag;
@@ -757,11 +770,13 @@
                 grid: grid,
                 playerPos: deepClone(level.playerPos),
                 playerStatus: 'alive',
+                playerBioT: (level.playerBioT) ? deepClone(level.playerBioT) : -1,
+                playerRadioT: (level.playerRadioT) ? deepClone(level.playerRadioT) : -1,
                 isDriving: false,
                 lastMoveDirection: {x: 0, y: 0},
                 cars: (level.initialCarLocations) ? deepClone(level.initialCarLocations) : [],
                 buses: (level.initialBusLocations) ? deepClone(level.initialBusLocations) : [],
-                playerCar: (level.playerCar) ? deepClone(level.playerCar) : { x: 0, y: 0, occupied: false },//?
+                playerCar: (level.playerCar) ? deepClone(level.playerCar) : { x: -1, y: -1, occupied: false },//?
                 strangers: (level.initialStrangerLocations) ? deepClone(level.initialStrangerLocations) : [],
                 strangers_blue: (level.initialStrangerBlueLocations) ? deepClone(level.initialStrangerBlueLocations) : [],
                 strangers_black: (level.initialStrangerBlackLocations) ? deepClone(level.initialStrangerBlackLocations) : [],
@@ -779,14 +794,17 @@
                 doorLayout: (level.doorLayout) ? deepClone(level.doorLayout) : [],
                 desktopLayout: (level.desktopLayout) ? deepClone(level.desktopLayout) : [],
                 trapBuildings: (level.trapBuildingLayout) ? deepClone(level.trapBuildingLayout) : [],//trapBuildings,
-                inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0, 'keyA': false, 'keyB': false, 'keyC': false },
+                inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0, 'keyA': false, 'keyB': false, 'keyC': false, 'vac': 0, 'med': 0, 'jacket': 0 },
                 devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T),
                     'money': deepClone(level.initialMoneyLocations),
                     'keyA': (level.initialKeyALocations) ? deepClone(level.initialKeyALocations) : [],
                     'keyB': (level.initialKeyBLocations) ? deepClone(level.initialKeyBLocations) : [],
-                    'keyC': (level.initialKeyCLocations) ? deepClone(level.initialKeyCLocations) : []
+                    'keyC': (level.initialKeyCLocations) ? deepClone(level.initialKeyCLocations) : [],
+                    'vac': (level.initialVacLocations) ? deepClone(level.initialVacLocations) : [],
+                    'med': (level.initialMedLocations) ? deepClone(level.initialMedLocations) : [],
+                    'jacket': (level.initialJacketLocations) ? deepClone(level.initialJacketLocations) : []
                 },
-                deviceLocations: (level.deviceLocations) ? deepClone(level.deviceLocations) : { 'R': [ ], 'E': [ ], 'T': [ ] },
+                deviceLocations: (level.deviceLocations) ? deepClone(level.deviceLocations) : { 'R': [ ], 'E': [ ], 'T': [ ], 'vac': [], 'med': [], 'jacket': [] },
                 infoLocations: (level.infoLocations) ? deepClone(level.infoLocations) : [],
                 flagLocation: deepClone(level.flagLocation),
                 houseLocations: (level.houseLocations) ? deepClone(level.houseLocations) : [],
@@ -871,7 +889,7 @@
             document.removeEventListener('keydown', handleKeyDown);
             document.addEventListener('keydown', handleRestart);
             updateDevicePanel({
-                inventory: { R: 0, E: 0, T: 0, money: 0, keyA: false, keyB: false, keyC: false },
+                inventory: { R: 0, E: 0, T: 0, money: 0, keyA: false, keyB: false, keyC: false, vac: 0, med: 0, jacket: 0 },
                 eigengram: { isOn: false, lifetime: 0 },
                 chronogram: { isOn: false, lifetime: 0, savedState: null },
             });
@@ -894,10 +912,10 @@
             if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return true;
             const cellType = grid[y][x];
             const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
-            let isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding;
-            isSolid ||= currentState.doorLayout.some(d => {
-                return d.x == x && d.y == y && ((d.n == 1 && !currentState.doorA) || (d.n == 2 && !currentState.doorB) || (d.n == 3 && !currentState.doorC));
-            });
+            let isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding || cellType === CELL_TYPES.doorA || cellType === CELL_TYPES.doorB || cellType === CELL_TYPES.doorC;
+            /*isSolid ||= currentState.doorLayout.some(d => {
+                return d.x == x && d.y == y && d.n > 0;//((d.n == 1 && !currentState.doorA) || (d.n == 2 && !currentState.doorB) || (d.n == 3 && !currentState.doorC));
+            });*/
             const isHouse = currentState.houseLocations.some(h => h.x === x && h.y === y);
             return isSolid || isHouse;
         }
@@ -930,6 +948,17 @@
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
+                }
+                if (s.isInfected) {
+                    for(let dx=-1;dx!=1;dx++){for(let dy=-1;dy!=1;dy++){
+                            if (Math.random()<.2) continue;
+                            newState.explosions.push({ x: Math.abs(s.x+dx)%8, y: Math.abs(s.y+dy)%8, typ: 'bio' });
+                    }}
+                    if (--s.isT==0) {
+                        s.isDead = true;
+                        s.deathTimer = DEATH_TIMER;
+                        newState.deadStrangers.push({ ...s });
+                    }
                 }
             });
             
@@ -978,6 +1007,17 @@
                     d.isDead = true;
                     d.deathTimer = DEATH_TIMER;
                     newState.deadDucks.push({ ...d });
+                }
+                if (d.isInfected) {
+                    for(let dx=-1;dx!=1;dx++){for(let dy=-1;dy!=1;dy++){
+                            if (Math.random()<.2) continue;
+                            newState.explosions.push({ x: Math.abs(d.x+dx)%8, y: Math.abs(d.y+dy)%8, typ: 'bio' });
+                    }}
+                    if (--d.isT==0) {
+                        d.isDead = true;
+                        d.deathTimer = DEATH_TIMER;
+                        newState.deadStrangers.push({ ...d });
+                    }
                 }
             });
             return newState;
@@ -1042,6 +1082,43 @@
                     newState.infoLocations.splice(newState.infoLocations.findIndex(w => w.x === x && w.y === y), 1);
                 }
             });
+            const vacIndex = newState.devicesOnBoard.vac.findIndex(m => m.x === x && m.y === y);
+            if (vacIndex !== -1) {
+                newState.devicesOnBoard.vac.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    if (Math.random() < m.prEff) {
+                        newState.inventory.vac=true;
+                    }
+                    if (Math.random() < m.prSide) {
+                        if (newState.playerBioT<0) newState.playerBioT = 3; 
+                    }
+                    newState.devicesOnBoard.vac.splice(newState.devicesOnBoard.vac.findIndex(w => w.x === x && w.y === y), 1);
+                }
+            });
+            }
+            const medIndex = newState.devicesOnBoard.med.findIndex(m => m.x === x && m.y === y);
+            if (medIndex !== -1) {
+                newState.devicesOnBoard.med.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    if (Math.random() < m.prEff) {
+                        newState.playerBioT = -1; newState.playerRadioT = -1;
+                    }
+                    if (Math.random() < m.prSide) {
+                        if (newState.playerBioT<0) newState.playerBioT = 3; 
+                    }
+                    newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === x && w.y === y), 1);
+                }
+            });
+            }
+            const jacIndex = newState.devicesOnBoard.jacket.findIndex(m => m.x === x && m.y === y);
+            if (jacIndex !== -1) {
+                newState.devicesOnBoard.jacket.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    newState.inventory.jacket = Math.random() < m.prEff;
+                    newState.devicesOnBoard.jacket.splice(newState.devicesOnBoard.jacket.findIndex(w => w.x === x && w.y === y), 1);
+                }
+            });
+            }
             return newState;
         }
 
@@ -1056,13 +1133,27 @@
                             state.explosions.push({ x: blastX, y: blastY, typ: trTyp });
                         }
                         if (state.playerPos.x === blastX && state.playerPos.y === blastY) {
-                            state.playerStatus = 'dead';
+                            if (trTyp=='bomb') state.playerStatus = 'dead';
+                            if (trTyp=='bio' && state.playerBioT<0 && !state.inventory.vac) state.playerBioT = 5;
+                            if (trTyp=='radio' && state.playerRadioT<0 && !state.inventory.jacket) state.playerRadioT = 7;
                         }
-                        state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
+                        state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
+                            if (trTyp=='bomb') s.isDead = true;
+                            if (trTyp=='bio') s.isInfected = true;
+                            if (s.isT<0 && !s.isDead) s.isT = 4;
+                        }});
                         state.strangers_blue.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
                         state.strangers_black.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
-                        state.strangers_gold.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
-                        state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) d.isDead = true; });
+                        state.strangers_gold.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
+                            if (trTyp=='bomb') s.isDead = true;
+                            if (trTyp=='bio') s.isInfected = true;
+                            if (s.isT<0 && !s.isDead) s.isT = 6;
+                        }});
+                        state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) {
+                            if (trTyp=='bomb') d.isDead = true;
+                            if (trTyp=='bio') d.isInfected = true;
+                            if (d.isT<0 && !d.isDead) d.isT = 8; d.p=0.7;
+                        }});
                     }
                 }
             }
@@ -1297,6 +1388,7 @@
                         break;
                     case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
                     case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
+                    case '5': e.preventDefault(); nextLevel(); break;
                     case 'e': e.preventDefault(); if (!eigengramOnBtn.disabled) eigengramOnBtn.click(); break;
                     case 'c': e.preventDefault();
                         const state = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];

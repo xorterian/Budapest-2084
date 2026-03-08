@@ -47,6 +47,8 @@ var _ = () => {
     });
     levelData.strangers.forEach(s => {
         s.p = .3;
+        if (!s.isT) s.isT = -1;
+        if (s.isInfected) s.p+=.1;
         s.ranSource = [{dx:s.dx, dy:s.dy}];
         const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
         for(i=1;i!=30;i++){
@@ -83,6 +85,8 @@ var _ = () => {
     });
     levelData.strangers_gold.forEach(s => {
         s.p = .2;
+        if (!s.isT) s.isT = -1;
+        if (s.isInfected) s.p+=.1;
         s.ranSource = [{dx:s.dx, dy:s.dy}];
         const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
         for(i=1;i!=20;i++){
@@ -95,6 +99,8 @@ var _ = () => {
     });
     levelData.ducks.forEach(s => {
         s.p = .4;
+        if (!s.isT) s.isT = -1;
+        if (s.isInfected) s.p+=.1;
         s.ranSource = [{dx:s.dx, dy:s.dy}];
         const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
         for(i=1;i!=15;i++){

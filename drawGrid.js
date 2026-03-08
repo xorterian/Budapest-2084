@@ -49,31 +49,37 @@ var _ = () => {
             
             if (currentState.grid[row][col] === CELL_TYPES.doorA) {
                 const doorIcon = document.createElement('i');
-                if (currentState.doorA) {
-                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-open-icon');
-                } else {
-                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-icon');
-                }
+                doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-icon');
+                cell.appendChild(doorIcon);
+            }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.doorAOpen) {
+                const doorIcon = document.createElement('i');
+                doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-open-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorB) {
                 const doorIcon = document.createElement('i');
-                if (currentState.doorB) {
-                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-open-icon');
-                } else {
-                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-icon');
-                }
+                doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-icon');
+                cell.appendChild(doorIcon);
+            }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.doorBOpen) {
+                const doorIcon = document.createElement('i');
+                doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-open-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorC) {
                 const doorIcon = document.createElement('i');
-                if (currentState.doorC) {
-                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-open-icon');
-                } else {
-                    doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-icon');
-                }
+                doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-icon');
+                cell.appendChild(doorIcon);
+            }
+            
+            if (currentState.grid[row][col] === CELL_TYPES.doorCOpen) {
+                const doorIcon = document.createElement('i');
+                doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-open-icon');
                 cell.appendChild(doorIcon);
             }
             
@@ -133,6 +139,26 @@ var _ = () => {
                  const ChronIcon = document.createElement('i');
                  ChronIcon.classList.add('fas', 'fa-hourglass-half', 'item-t-icon');
                  cell.appendChild(ChronIcon);
+            }
+            if (currentState.devicesOnBoard.vac.some(m => m.x === col && m.y === row)) {
+                 const vacIcon = document.createElement('i');
+                 vacIcon.classList.add('fas', 'fa-syringe', 'item-vac-icon');
+                 cell.appendChild(vacIcon);
+            }
+            if (currentState.devicesOnBoard.med.some(m => m.x === col && m.y === row)) {
+                 const medIcon = document.createElement('i');
+                 medIcon.classList.add('fas', 'fa-tablets', 'item-med-icon');
+                 cell.appendChild(medIcon);
+            }
+            if (currentState.devicesOnBoard.jacket.some(m => m.x === col && m.y === row)) {
+                 const jacIcon = document.createElement('i');
+                 jacIcon.classList.add('fas', 'fa-user-astronaut', 'item-jacket-icon');
+                 cell.appendChild(jacIcon);
+            }
+            if (currentState.grid[row][col] === CELL_TYPES.tester && currentState.tester) {
+                const testIcon = document.createElement('i');
+                testIcon.classList.add('fas', 'fa-microscope', 'tester-icon');
+                cell.appendChild(testIcon);
             }
 
             const explosion = currentState.explosions.find(ex => ex.x === col && ex.y === row);

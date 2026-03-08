@@ -12,7 +12,6 @@ const levels = [
         desktopLayout: [],
         initialMoneyLocations: [],
         initialDuckLocations: [],
-        playerCar: { x: 0, y: 0, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []
     },
@@ -94,8 +93,7 @@ const levels = [
             { x: 5, y: 0 },
             { x: 6, y: 0 },
             { x: 6, y: 1 },
-            
-            { x: 1, y: 5 },
+              { x: 1, y: 5 },
             { x: 2, y: 5 },
             { x: 1, y: 6 },
             { x: 2, y: 6 },
@@ -201,7 +199,7 @@ const levels = [
         ],
         initialKeyALocations: [{x: 2, y: 1}],
         doorLayout: [{x: 4, y: 1, n: 1}],
-        desktopLayout: [{x: 2, y: 7, n: 1, text: "Do you want to open/close the door?" }],
+        desktopLayout: [{x: 2, y: 7, n: 1, text: "" }],
         initialDuckLocations: [],
         initialStrangerLocations: [],
         initialStrangerBlueLocations: [
@@ -362,15 +360,12 @@ const levels = [
             {x: 2, y: 3},                           {x: 5, y: 3},
             {x: 2, y: 4},                           {x: 5, y: 4},
             {x: 2, y: 5},/*{x: 3, y: 5},*/{x: 4, y: 5},{x: 5, y: 5},
-            
-            //{x: 4, y: 6},
+              //{x: 4, y: 6},
             {x: 4, y: 7},
             {x: 3, y: 7},
             {x: 2, y: 7},
-            
-            {x: 0, y: 1},{x: 1, y: 1},{x: 2, y: 1},
-            
-            /*{x: 6, y: 3},*/{x: 6, y: 3}
+              {x: 0, y: 1},{x: 1, y: 1},{x: 2, y: 1},
+              /*{x: 6, y: 3},*/{x: 6, y: 3}
         ],
         trapBuildingLayout: [
             {x: 4, y: 6},
@@ -419,9 +414,9 @@ const levels = [
             {x: 3, y: 5, n: 3},{x: 4, y: 5, n: 3}
         ],
         desktopLayout: [
-            {x:2 ,y: 7, n: 1, text: "Red door"},
-            {x:3 ,y: 7, n: 2, text: "White door"},
-            {x:4 ,y: 7, n: 3, text: "Green door"}
+            {x:2 ,y: 7, n: 1, text: ""},
+            {x:3 ,y: 7, n: 2, text: ""},
+            {x:4 ,y: 7, n: 3, text: ""}
         ],
         initialMoneyLocations: [],
         initialKeyALocations: [{x:2, y: 2}],
@@ -506,13 +501,58 @@ const levels = [
         desktopLayout: [{x: 4, y: 6, n: -1, text: "Do you want to launch the self-destruction mode?"}],
         houseLocations: [{x: 1, y: 3},{x: 1, y: 5},{x: 6, y: 5}],
         initialMoneyLocations: [],
-          
         initialDuckLocations: [{x: 1, y: 7, dx: -1, dy: 0, isDead: false}],
-          
-         
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [{x: 4, y: 3}], 'E': [ ], 'T': [ ] },
         infoLocations: [{x: 3, y: 0, text: "Some stations can be used to launch the self-destruction of the city. You can use a thread for testing it."}]
+    },
+    // Level 14: The Gate-puzzle
+    {
+        playerPos: { x: 7, y: 0 },
+        flagLocation: { x: 0, y: 0 },
+        roadLayout: [
+            { type: 'vertical', x: 2 },
+            { type: 'vertical', x: 5 },
+            { type: 'horizontal', y: 2 },
+            { type: 'horizontal', y: 5 }
+        ],
+        wallLayout: [{x: 2,y: 2},{x: 2,y: 5},{x: 5,y: 2},{x: 5,y: 5}],
+        trapBuildingLayout: [],
+        fenceLayout: [
+            {x: 2,y: 1},{x: 2,y: 0},
+            {x: 3,y: 5},{x: 4,y: 5},
+            {x: 5,y: 6},{x: 5,y: 7}
+        ],
+        doorLayout: [
+            {x: 6,y: 2,n: -1},{x: 7,y: 2,n: -1},
+            {x: 6,y: 5,n: 1},{x: 7,y: 5,n: 1},
+            {x: 2,y: 6,n: 1},{x: 2,y: 7,n: 1},
+            {x: 5,y: 1,n: -2},{x: 5,y: 0,n: -2},
+            {x: 2,y: 3,n: 2},{x: 2,y: 4,n: 2},
+            {x: 1,y: 5,n: 2},{x: 0,y: 5,n: 2},
+            {x: 0,y: 2,n: 3},{x: 1,y: 2,n: 3}
+        ],
+        initialKeyALocations: [{x: 3, y: 3}],
+        initialKeyBLocations: [{x: 7, y: 3}],
+        initialKeyCLocations: [{x: 0, y: 7}],
+        desktopLayout: [
+            {x: 6,y: 4,n: 1, text: "Red gates"},
+            {x: 4,y: 1,n: 2, text: "White gates"},
+            {x: 6,y: 7,n: 3, text: "Green gates"}
+        ],
+        bios: [{x: 3, y: 7}],
+        initialMoneyLocations: [],
+        initialDuckLocations: [
+            {x: 1, y: 7, dx: -1, dy: 0, isDead: false},
+            {x: 1, y: 7, dx: 0, dy: -1, isDead: false},
+            {x: 0, y: 3, dx: 1, dy: 0, isDead: false},
+            {x: 1, y: 4, dx: -1, dy: 0, isDead: false}
+        ],
+        //initialVacLocations: [{x: 1, y: 1, prSide: .01, prEff: 0.99}],
+        //initialMedLocations: [{x: 3, y: 1, prSide: .01, prEff: 0.99}],
+        //initialJacketLocations: [{x: 4, y: 0, prEff: 0.3}],
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ], 'vac': [], 'med': [], 'jacket': [] },
+        infoLocations: []
     },
     // Level i: 
     {

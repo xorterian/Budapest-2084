@@ -121,9 +121,22 @@ if (updatedState.playerStatus !== 'dead') {
         }else{
             d.ranSource.push(d.ranSource[d.ranSource.length-1]);
         }
-        const nX = d.x + d.dx, nY = d.y + d.dy;
-        if (isObstacle(nX, nY, updatedState.grid)) { d.dx *= -1; d.dy *= -1; }
-        else { d.x = nX; d.y = nY; }
+        let nX = d.x + d.dx, nY = d.y + d.dy;
+        if (isObstacle(nX, nY, updatedState.grid)) {
+            if (d.isInfected) {
+                for(let e1=-1;e1!=1;e1++){for(let e2=-1;e2!=1;e2++){
+                    if ((e1==0 || e2==0) && e1!=e2) continue;
+                    nX = d.x + d.dx*e1; nY = d.y + d.dx*e2;
+                    if (!isObstacle(nX, nY, updatedState.grid)) {
+                        d.x=nX;d.y=nY;break;
+                    }
+                }}
+            } else {
+                d.dx *= -1; d.dy *= -1;
+            }
+        } else {
+            d.x = nX; d.y = nY;
+        }
     });
     updatedState.trapBuildings.forEach(tp => {
         if (!tp.stopped) {
@@ -151,6 +164,9 @@ if (updatedState.playerStatus !== 'dead') {
     });
     explodingBombs.forEach(bomb => triggerExplosion(bomb, updatedState));
     
+    updatedState.playerBioT--;
+    updatedState.playerRadioT--;
+    if (updatedState.playerBioT==0 || updatedState.playerRadioT==0) updatedState.playerStatus = 'dead';
     updatedState.radios.forEach(r => triggerExplosion(r, updatedState, 1, 0.2, 'radio'));
     updatedState.bios.forEach(b => triggerExplosion(b, updatedState, 1, 0.3, 'bio'));
 
