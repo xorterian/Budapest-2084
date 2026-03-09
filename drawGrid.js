@@ -155,11 +155,11 @@ var _ = () => {
                  jacIcon.classList.add('fas', 'fa-user-astronaut', 'item-jacket-icon');
                  cell.appendChild(jacIcon);
             }
-            if (currentState.grid[row][col] === CELL_TYPES.tester && currentState.tester) {
+            /*if (currentState.grid[row][col] === CELL_TYPES.tester && currentState.tester) {
                 const testIcon = document.createElement('i');
                 testIcon.classList.add('fas', 'fa-microscope', 'tester-icon');
                 cell.appendChild(testIcon);
-            }
+            }*/
 
             const explosion = currentState.explosions.find(ex => ex.x === col && ex.y === row);
             if (explosion) {

@@ -1,6 +1,6 @@
 // --- LEVELS DEFINITION ---
 const levels = [
-    // Level i: 
+    // Level 21: 
     {
         playerPos: { x: 0, y: 1 },
         flagLocation: { x: 6, y: 6 },
@@ -8,13 +8,15 @@ const levels = [
         wallLayout: [],
         trapBuildingLayout: [],
         fenceLayout: [],
+        initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialMoneyLocations: [],
         initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []
     },
+
     // Level 1: The ducg crossing the road. 
     {
         playerPos: { x: 1, y: 1 },
@@ -22,20 +24,11 @@ const levels = [
         roadLayout: [
             { type: 'vertical', x: 4 }
         ],
-        wallLayout: [],
         trapBuildingLayout: [],
-        fenceLayout: [],
-        houseLocations: [],
         initialMoneyLocations: [],
-        doorLayout: [],
-        desktopLayout: [],
         initialDuckLocations: [
             { x: 7, y: 4, dx: -1, dy: 0, isDead: false }
-        ],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
+        ],               
         initialCarLocations: [],
         initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
@@ -56,8 +49,7 @@ const levels = [
         trapBuildingLayout: [
             { x: 2, y: 7 }
         ],
-        fenceLayout: [],
-        houseLocations: [],
+        fenceLayout: [],        
         initialMoneyLocations: [
             { x: 6, y: 2 },
             { x: 1, y: 6 }
@@ -69,10 +61,7 @@ const levels = [
         ],
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
-        ],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
+        ],                        
         initialCarLocations: [],
         initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
@@ -113,10 +102,7 @@ const levels = [
         initialDuckLocations: [],
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
-        ],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
+        ],                        
         initialCarLocations: [
             { x: 7, y: 4, dx: -1, isPlayerCar: false },
             { x: 3, y: 3, dx: -1, isPlayerCar: false }
@@ -163,11 +149,7 @@ const levels = [
         initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
+        initialDuckLocations: [],                                
         initialCarLocations: [],
         initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
@@ -192,21 +174,17 @@ const levels = [
                 { x: 4, y: 7 }
         ],
         trapBuildingLayout: [],
-        fenceLayout: [],
-        houseLocations: [],
+        fenceLayout: [],        
         initialMoneyLocations: [
                 { x: 1, y: 1 }
         ],
         initialKeyALocations: [{x: 2, y: 1}],
         doorLayout: [{x: 4, y: 1, n: 1}],
         desktopLayout: [{x: 2, y: 7, n: 1, text: "" }],
-        initialDuckLocations: [],
-        initialStrangerLocations: [],
+        initialDuckLocations: [],        
         initialStrangerBlueLocations: [
                 { x: 6, y: 5, dx: -1, dy: 0, isDead: false }
-        ],
-        initialStrangerBlackLocations: [],
-        initialStrangerGoldLocations: [],
+        ],                
         initialCarLocations: [
             { x: 3, y: 3, dx: 0, dy: 1, isPlayerCar: false }
         ],
@@ -241,21 +219,17 @@ const levels = [
         fenceLayout: [
                 { x: 2, y: 5 },
                 { x: 3, y: 5 }
-        ],
-        houseLocations: [],
+        ],        
         initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [],
-        initialStrangerLocations: [],
-        initialStrangerBlueLocations: [],
+        initialDuckLocations: [],                
         initialStrangerBlackLocations: [
                 { x: 1, y: 6, dx: -1, dy: 0, isDead: false },
                 { x: 3, y: 7, dx: 0, dy: -1, isDead: false },
                 { x: 5, y: 6, dx: 0, dy: -1, isDead: false },
                 { x: 2, y: 2, dx: 0, dy: -1, isDead: true }
-        ],
-        initialStrangerGoldLocations: [],
+        ],        
         initialCarLocations: [],
         initialBusLocations: [],
         playerCar: { x: 1, y: 1, occupied: false },
@@ -554,6 +528,229 @@ const levels = [
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ], 'vac': [], 'med': [], 'jacket': [] },
         infoLocations: []
     },
+    // Level 15: The vaccination
+    {
+        playerPos: { x: 1, y: 1 },
+        flagLocation: { x: 6, y: 1 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 2, y: 0},{x: 5, y: 0},
+            {x: 2, y: 1},{x: 3, y: 1},{x: 5, y: 1},
+            {x: 2, y: 2},{x: 5, y: 2},
+            {x: 2, y: 3},{x: 5, y: 3},{x: 4, y: 3},
+            {x: 2, y: 4},{x: 5, y: 4},
+            {x: 2, y: 5},{x: 3, y: 5},{x: 5, y: 5}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        doorLayout: [{x: 6, y: 3, n: 3},{x: 7, y: 3, n: 3}],
+        initialKeyCLocations: [{x: 4, y: 0}],
+        desktopLayout: [
+            {x: 3,y: 0,n: 3, text: ""},
+        ],
+        bios: [{x: 3, y: 3},{x: 4, y: 2}],
+        initialMoneyLocations: [],
+        initialDuckLocations: [],
+        initialVacLocations: [{x: 7, y: 6, prSide: .01, prEff: 0.99}],
+        //initialMedLocations: [{x: 3, y: 1, prSide: .01, prEff: 0.99}],
+        //initialJacketLocations: [{x: 4, y: 0, prEff: 0.3}],
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 0, y: 4, text: "You easily become infected in biohazard area without vaccination. Note that, it's 99% that serum gives you protection for this level, and it's 1% that you will be died in side effects."}]
+    },
+    // Level 16: The Medications
+    {
+        playerPos: { x: 0, y: 1 },
+        flagLocation: { x: 7, y: 1 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 1, y: 0},{x: 6, y: 0},
+            {x: 1, y: 1},{x: 3, y: 1},{x: 4, y: 1},{x: 5, y: 1},{x: 6, y: 1},
+            {x: 1, y: 2},{x: 6, y: 2},
+            {x: 1, y: 3},{x: 3, y: 3},{x: 4, y: 3},{x: 5, y: 3},{x: 6, y: 3},
+            {x: 1, y: 4},{x: 6, y: 4},
+            {x: 1, y: 5},{x: 3, y: 5},{x: 4, y: 5},{x: 5, y: 5},{x: 6, y: 5}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        doorLayout: [{x: 7, y: 3, n: 1},{x: 7, y: 4, n: 2}],
+        initialKeyALocations: [{x: 3, y: 4}],
+        initialKeyBLocations: [{x: 3, y: 2}],
+        desktopLayout: [
+            {x: 4,y: 0,n: 1, text: ""},
+            {x: 3,y: 0,n: 2, text: ""},
+        ],
+        bios: [{x: 2, y: 4},{x: 2, y: 2},{x: 2, y: 1}],
+        initialMoneyLocations: [],
+        initialDuckLocations: [],
+        //initialVacLocations: [{x: 7, y: 6, prSide: .01, prEff: 0.99}],
+        initialMedLocations: [
+            {x: 4, y: 2, prSide: .01, prEff: 0.99},
+            {x: 5, y: 2, prSide: .01, prEff: 0.99},
+            {x: 4, y: 4, prSide: .01, prEff: 0.99},
+            {x: 5, y: 4, prSide: .01, prEff: 0.99},
+            {x: 5, y: 0, prSide: .01, prEff: 0.99},
+            {x: 3, y: 7, prSide: .01, prEff: 0.99},
+        ],
+        //initialJacketLocations: [{x: 4, y: 0, prEff: 0.3}],
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 0, y: 7, text: "The medication can cure if you get infected. (A new disease needs new medications.) It's 99% that a given medication works, and it's 1% that the side effects kill you."}]
+    },
+    // Level 17: Infected otherself's key
+    {
+        playerPos: { x: 1, y: 1 },
+        flagLocation: { x: 4, y: 0 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 0, y: 5},{x: 1, y: 5},{x: 2, y: 5},{x: 3, y: 5},{x: 4, y: 5},{x: 5, y: 5},{x: 7, y: 5},
+            {x: 0, y: 7},{x: 1, y: 7},{x: 2, y: 7},{x: 3, y: 7},{x: 4, y: 7},{x: 5, y: 7},{x: 6, y: 7},{x: 7, y: 7},
+            {x: 0, y: 6},{x: 7, y: 6},
+            {x: 3, y: 0},//{x: 5, y: 0},
+            {x: 3, y: 1},{x: 5, y: 1}
+        ],
+        trapBuildingLayout: [{x: 5, y: 0}],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [{x: 4, y: 1, n: 2}],
+        desktopLayout: [{x: 7, y: 0, n: 2}],
+        initialKeyBLocations: [{x: 1, y: 6}],
+        bios: [{x: 4, y: 6},{x: 3, y: 6}],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x: 1, y: 3}], 'E': [{x: 1, y: 4}], 'T': [ ] },
+        infoLocations: []
+    },
+    // Level 18: The PCR test
+    {
+        playerPos: { x: 5, y: 3 },
+        flagLocation: { x: 7, y: 3 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 0, y: 0},{x: 1, y: 0},{x: 2, y: 0},
+            {x: 0, y: 1},{x: 1, y: 1},{x: 2, y: 1},
+            {x: 0, y: 2},{x: 1, y: 2},{x: 2, y: 2},
+            
+            {x: 0, y: 5},{x: 1, y: 5},{x: 2, y: 5},
+            {x: 0, y: 6},{x: 1, y: 6},{x: 2, y: 6},
+            {x: 0, y: 7},{x: 1, y: 7},{x: 2, y: 7},
+            
+            {x: 5, y: 0},{x: 6, y: 0},{x: 7, y: 0},
+            {x: 5, y: 1},{x: 6, y: 1},{x: 7, y: 1},
+            {x: 5, y: 2},{x: 6, y: 2},{x: 7, y: 2},
+            
+            {x: 5, y: 5},{x: 6, y: 5},{x: 7, y: 5},
+            {x: 5, y: 6},{x: 6, y: 6},{x: 7, y: 6},
+            {x: 5, y: 7},{x: 6, y: 7},{x: 7, y: 7}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [{x: 0, y: 4}],
+        initialKeyALocations: [{x: 3, y: 7}],
+        doorLayout: [{x: 6, y: 4, n: 1},{x: 6, y: 3, n: 1}],
+        desktopLayout: [{x: 4, y: 0, n: 1}],
+        testers: [{x: 4, y: 4}],
+        bios: [{x: 3, y: 0},{x: 4, y: 7}],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        initialMedLocations: [
+            {x: 0, y: 3, prSide: .01, prEff: 1},
+            {x: 3, y: 2, prSide: .01, prEff: 0.66},
+            {x: 3, y: 5, prSide: .01, prEff: 0.66}
+        ],
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 3, y: 3, text: "The two pills can cure your disease (independently) with 65%. The pill next to the banknote has 99% efficiency but you have only one piece of that. So you can use the PCR to test if the weaker ones could not cure you (press \"P\"). You have only 1% to die in side effects."}]
+    },
+    // Level 19: The Chronogram
+    {
+        playerPos: { x: 5, y: 7 },
+        flagLocation: { x: 4, y: 1 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 1, y: 0},{x: 1, y: 1},{x: 1, y: 2},{x: 1, y: 3},{x: 1, y: 4},{x: 1, y: 5},{x: 1, y: 6},
+            {x: 6, y: 0},{x: 6, y: 1},{x: 6, y: 2},{x: 6, y: 3},{x: 6, y: 4},{x: 6, y: 5},{x: 6, y: 6},
+            {x: 2, y: 6},{x: 4, y: 6},{x: 5, y: 6},
+            {x: 2, y: 4},{x: 4, y: 4},{x: 5, y: 4}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [{x: 2, y: 5},{x: 4, y: 5},{x: 5, y: 5}],
+        initialMoneyLocations: [],
+        doorLayout: [{x: 3, y: 6, n: 3},{x: 3, y: 5, n: 3},{x: 3, y: 4, n: 3}],
+        initialKeyCLocations: [{x: 7, y: 2}],
+        desktopLayout: [{x: 3, y: 7, n: 3},{x: 3, y: 3, n: 3}],
+        initialDuckLocations: [],                           
+        initialStrangerBlackLocations: [
+            { x: 0, y: 0, dx: 0, dy: 1, isDead: false },
+            { x: 0, y: 1, dx: 0, dy: 1, isDead: false }
+        ],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 0, y: 7}] },
+        infoLocations: [{x: 1, y: 7, text: "That device on the corner is a chronogram. Get it, run to the station, activate it by pressing \"C\", then get the key. Until that the secret police is about the catch you, so you have to send the key back in the time to your pre-self with the chronogram. Hurry!"}]
+    },
+    // Level 20: The Dilemma (infected dog)
+    {
+        playerPos: { x: 4, y: 4 },
+        flagLocation: { x: 0, y: 3 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 5, y: 0},{x: 5, y: 1},{x: 5, y: 2},{x: 5, y: 3},{x: 5, y: 4},{x: 5, y: 5},{x: 5, y: 6},{x: 5, y: 7},
+            {x: 7, y: 2},{x: 7, y: 3},{x: 7, y: 4},{x: 7, y: 5},
+            {x: 0, y: 1},{x: 1, y: 1},{x: 2, y: 1},
+            {x: 0, y: 6},{x: 1, y: 6},{x: 2, y: 6}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [
+            {x: 1, y: 2, n: 2},{x: 1, y: 3, n: 2},{x: 1, y: 4, n: 2},{x: 1, y: 5, n: 2},
+            {x: 6, y: 2, n: 1},{x: 6, y: 5, n: 3}
+        ],
+        desktopLayout: [{x: 2, y: 4, n: 2},{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
+        initialMedLocations: [
+            {x: 6, y: 1, prSide: .01, prEff: 0.99},{x: 4, y: 1, prSide: .01, prEff: 0.99},
+            {x: 6, y: 6, prSide: .01, prEff: 0.99},{x: 4, y: 6, prSide: .01, prEff: 0.99}
+        ],
+        bios: [{x: 2, y: 7},{x: 2, y: 0}],
+        initialKeyBLocations: [{x: 0, y: 0},{x: 0, y: 7}],
+        initialKeyALocations: [{x: 3, y: 2}],
+        initialKeyCLocations: [{x: 3, y: 5}],
+        initialDuckLocations: [{x: 6, y: 4, dx: 0, dy: -1, isDead: false}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 3, y: 3, text: "Poor dog is infected :( But one (and only one) of the medications can cure it without side effects. You can count with similar efficiency on your side, too. Decide which way you wish to leave the dog."}]
+    },
+    
+    
+    // Level 22: The Dilemma (healthy dog)
+    {
+        playerPos: { x: 4, y: 4 },
+        flagLocation: { x: 1, y: 0 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 5, y: 0},{x: 5, y: 1},{x: 5, y: 2},{x: 5, y: 3},{x: 5, y: 4},{x: 5, y: 5},{x: 5, y: 6},{x: 5, y: 7},
+            {x: 7, y: 2},{x: 7, y: 3},{x: 7, y: 4},{x: 7, y: 5},
+            {x: 2, y: 0},{x: 2, y: 1},{x: 2, y: 2},{x: 2, y: 3},{x: 2, y: 4},{x: 2, y: 5},{x: 2, y: 6},
+            {x: 1, y: 6},{x: 1, y: 2}
+        ],
+        trapBuildingLayout: [{x: 0, y: 4}],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [
+            {x: 6, y: 2, n: 1},{x: 6, y: 5, n: 3}
+        ],
+        desktopLayout: [{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
+        initialMedLocations: [
+            {x: 6, y: 1, prSide: .01, prEff: 0.99},{x: 6, y: 6, prSide: .01, prEff: 0.99}
+        ],
+        initialVacLocations: [
+            {x: 4, y: 1, prSide: .01, prEff: 0.99},{x: 4, y: 6, prSide: .01, prEff: 0.99}
+        ],
+        bios: [{x: 1, y: 7},{x: 1, y: 5},{x: 0, y: 3}],
+        initialKeyALocations: [{x: 3, y: 2}],
+        initialKeyCLocations: [{x: 3, y: 5}],
+        initialDuckLocations: [{x: 6, y: 4, dx: 0, dy: -1, isDead: false}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x: 3, y: 0}], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 3, y: 3, text: "That dog is healthy. But you have to go through an infectious area. One of the vaccination give you 95% protection, the other one unintentionally kills you with 80%. On the other side the medications has the same effects that you can test on that dog if you want."}]
+    },
     // Level i: 
     {
         playerPos: { x: 0, y: 1 },
@@ -566,7 +763,6 @@ const levels = [
         doorLayout: [],
         desktopLayout: [],
         initialDuckLocations: [],
-        
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []

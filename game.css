@@ -389,7 +389,7 @@ body {
     z-index: 3;
 }
 
-.wall-icon, .desktop-icon, .flag-icon, .money-icon, .info-icon, .vac-icon, .med-icon, .jacket-icon {
+.wall-icon, .desktop-icon, .flag-icon, .money-icon, .info-icon, .vac-icon, .med-icon, .jacket-icon, .tester-icon {
     position: absolute;
     font-size: 1.5rem;
 }
@@ -413,6 +413,7 @@ body {
 .door-b-open-icon { color: var(--door-b-color); opacity: 0.4; }
 .door-c-open-icon { color: var(--door-c-color); opacity: 0.4; }
 .desktop-icon { color: black; opacity: 0.8; }
+.tester-icon { color: black; opacity: 0.8; }
 .flag-icon { color: var(--flag-color); }
 .money-icon { color: var(--money-color); }
 .vac-icon { color: var(--vac-color); }

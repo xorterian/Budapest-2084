@@ -340,6 +340,7 @@
             eye: 'eye',
             bio: 'biohazard',
             radios: 'radiation',
+            tester: 'tester',
             danger: 'exclamation-triangle'
         };
 
@@ -741,7 +742,7 @@
 
             let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(CELL_TYPES.grass));
             
-            level.roadLayout.forEach(road => {
+            if (level.roadLayout) level.roadLayout.forEach(road => {
                 if (road.type === 'horizontal') {
                     for (let i = 0; i < GRID_SIZE; i++) grid[road.y][i] = CELL_TYPES.road;
                 } else if (road.type === 'vertical') {
@@ -749,20 +750,21 @@
                 }
             });
 
-            level.wallLayout.forEach(wall => grid[wall.y][wall.x] = CELL_TYPES.wall);
-
+            if (level.wallLayout) level.wallLayout.forEach(wall => grid[wall.y][wall.x] = CELL_TYPES.wall);
 
             const trapBuildings = level.trapBuildingLayout.map(trap => ({...trap}));
             trapBuildings.forEach(trap => grid[trap.y][trap.x] = CELL_TYPES.trapBuilding);
 
-            level.fenceLayout.forEach(fence => grid[fence.y][fence.x] = CELL_TYPES.fence);
-            level.doorLayout.forEach(d => {
+            if (level.fenceLayout) level.fenceLayout.forEach(fence => grid[fence.y][fence.x] = CELL_TYPES.fence);
+            if (level.doorLayout) level.doorLayout.forEach(d => {
               switch(Math.abs(d.n)){
                   case 1: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorA : CELL_TYPES.doorAOpen;break;
                   case 2: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorB : CELL_TYPES.doorBOpen;break;
                   case 3: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorC : CELL_TYPES.doorCOpen;break;
               }});
-            level.desktopLayout.forEach(d => grid[d.y][d.x] = CELL_TYPES.desktop);
+            if (level.desktopLayout) level.desktopLayout.forEach(d => grid[d.y][d.x] = CELL_TYPES.desktop);
+            if (level.testers) level.testers.forEach(d => grid[d.y][d.x] = CELL_TYPES.tester);
+            //TODO
             grid[level.flagLocation.y][level.flagLocation.x] = CELL_TYPES.flag;
 
 
@@ -787,6 +789,7 @@
                 bombs: (level.bombs) ? deepClone(level.bombs) : [],
                 radios: (level.radios) ? deepClone(level.radios) : [],
                 bios: (level.bios) ? deepClone(level.bios) : [],
+                testers: (level.testers) ? deepClone(level.testers) : [],
                 explosions: [],
                 destroyedTiles: [],
                 wallLayout: (level.wallLayout) ? deepClone(level.wallLayout) : [],
@@ -1134,7 +1137,7 @@
                         }
                         if (state.playerPos.x === blastX && state.playerPos.y === blastY) {
                             if (trTyp=='bomb') state.playerStatus = 'dead';
-                            if (trTyp=='bio' && state.playerBioT<0 && !state.inventory.vac) state.playerBioT = 5;
+                            if (trTyp=='bio' && state.playerBioT<0 && !state.inventory.vac) state.playerBioT = 9;
                             if (trTyp=='radio' && state.playerRadioT<0 && !state.inventory.jacket) state.playerRadioT = 7;
                         }
                         state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {

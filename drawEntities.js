@@ -122,6 +122,15 @@ var _ = (currentState) => {
             cell.appendChild(rIcon);
         }
     });
+    
+    currentState.testers.forEach(r => {
+        const cell = board.children[r.y * GRID_SIZE + r.x];
+        if(cell) {
+            const rIcon = document.createElement('i');
+            rIcon.classList.add('fas', 'fa-microscope', 'tester-icon');
+            cell.appendChild(rIcon);
+        }
+    });
 }
 
 drawEntitiesString = _.toString();
