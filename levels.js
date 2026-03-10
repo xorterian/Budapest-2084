@@ -1,21 +1,5 @@
 // --- LEVELS DEFINITION ---
 const levels = [
-    // Level 21: 
-    {
-        playerPos: { x: 0, y: 1 },
-        flagLocation: { x: 6, y: 6 },
-        roadLayout: [],
-        wallLayout: [],
-        trapBuildingLayout: [],
-        fenceLayout: [],
-        initialMoneyLocations: [],
-        doorLayout: [],
-        desktopLayout: [],
-        initialDuckLocations: [],
-        playerCar: { x: -1, y: -1, occupied: false },
-        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
-        infoLocations: []
-    },
 
     // Level 1: The ducg crossing the road. 
     {
@@ -709,7 +693,7 @@ const levels = [
             {x: 6, y: 6, prSide: .01, prEff: 0.99},{x: 4, y: 6, prSide: .01, prEff: 0.99}
         ],
         bios: [{x: 2, y: 7},{x: 2, y: 0}],
-        initialKeyBLocations: [{x: 0, y: 0},{x: 0, y: 7}],
+        initialKeyBLocations: [{x: 1, y: 0},{x: 1, y: 7}],
         initialKeyALocations: [{x: 3, y: 2}],
         initialKeyCLocations: [{x: 3, y: 5}],
         initialDuckLocations: [{x: 6, y: 4, dx: 0, dy: -1, isDead: false}],
@@ -717,8 +701,36 @@ const levels = [
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{x: 3, y: 3, text: "Poor dog is infected :( But one (and only one) of the medications can cure it without side effects. You can count with similar efficiency on your side, too. Decide which way you wish to leave the dog."}]
     },
-    
-    
+    // Level 21: Two holes... 
+    {
+        playerPos: { x: 6, y: 4 },
+        flagLocation: { x: 1, y: 1 },
+        roadLayout: [
+            { type: 'horizontal', y: 5 },
+            { type: 'horizontal', y: 7 }
+        ],
+        wallLayout: [
+            {x: 0, y: 4},{x: 1, y: 4},{x: 2, y: 4},{x: 3, y: 4},{x: 4, y: 4},
+            {x: 3, y: 3},{x: 3, y: 2},{x: 3, y: 0},
+            {x: 0, y: 6},{x: 1, y: 6},{x: 2, y: 6},{x: 3, y: 6},{x: 4, y: 6}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [{x: 3, y: 1, n: 3}],
+        initialKeyCLocations: [{x: 6, y: 2}],
+        desktopLayout: [{x: 2, y: 7, n: 3},{x: 2, y: 5, n: 3}],
+        initialDuckLocations: [],
+        bios: [{x: 4, y: 6}],
+        initialMedLocations: [
+            {x: 1, y: 7, prSide: .01, prEff: 0.99},{x: 1, y: 5, prSide: .01, prEff: 0.99},
+            {x: 7, y: 6, prSide: .01, prEff: 0.99}
+        ],
+        testers: [{x: 0, y: 7},{x: 0, y: 5}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 6, y: 1}] },
+        infoLocations: [{x: 7, y: 5, text: "Both stations can open the gate. But only one of the medications (placed next to the stations) can stop the infection, that is, taking the wrong one, you will just not be able to get out of the corridor. (The medications placed next to you is perfect but you should leave it for the last one.) Use the PCR test and the chronogram if you chose the wrong way for first."}]
+    },
     // Level 22: The Dilemma (healthy dog)
     {
         playerPos: { x: 4, y: 4 },
@@ -750,6 +762,39 @@ const levels = [
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [{x: 3, y: 0}], 'E': [ ], 'T': [ ] },
         infoLocations: [{x: 3, y: 3, text: "That dog is healthy. But you have to go through an infectious area. One of the vaccination give you 95% protection, the other one unintentionally kills you with 80%. On the other side the medications has the same effects that you can test on that dog if you want."}]
+    },
+    // Level 23: So many opponents 
+    {
+        playerPos: { x: 2, y: 2 },
+        flagLocation: { x: 6, y: 3 },
+        roadLayout: [],
+        wallLayout: [
+            {x: 4, y: 1},{x: 4, y: 2},{x: 4, y: 3},{x: 4, y: 4},{x: 4, y: 5},{x: 4, y: 6},{x: 4, y: 7}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [
+            {x: 5, y: 1, n: 1},{x: 6, y: 1, n: 1},{x: 7, y: 1, n: 1},
+            {x: 5, y: 4, n: 2},{x: 6, y: 4, n: 2},{x: 7, y: 4, n: 2},
+            {x: 5, y: 6, n: 3},{x: 6, y: 6, n: 3},{x: 7, y: 6, n: 3}
+        ],
+        desktopLayout: [{x: 2, y: 4, n: 1},{x: 2, y: 5, n: 2},{x: 2, y: 6, n: 3}],
+        initialKeyALocations: [{x: 1, y: 4}],
+        initialKeyBLocations: [{x: 1, y: 5}],
+        initialKeyCLocations: [{x: 1, y: 6}],
+        initialStrangerBlackLocations: [
+                { x: 5, y: 2, dx: -1, dy: 0, isDead: false },
+                { x: 6, y: 2, dx: 0, dy: -1, isDead: false },
+                { x: 7, y: 2, dx: -1, dy: 0, isDead: false },
+                { x: 5, y: 3, dx: 0, dy: -1, isDead: false },
+                { x: 7, y: 3, dx: 1, dy: 0, isDead: false }
+        ],
+        initialDuckLocations: [{x: 5, y: 5, dx: 1, dy: 0, isDead: false},{x: 6, y: 5, dx: -1, dy: 0, isDead: false},{x: 7, y: 5, dx: -1, dy: 0, isDead: false}],
+        bios: [{x: 6, y: 7}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: []
     },
     // Level i: 
     {

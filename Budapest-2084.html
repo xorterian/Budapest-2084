@@ -617,8 +617,8 @@
                 pcModal.style.display = 'block';
             } else {
                 hidePCModal(n,state={});
-                document.removeEventListener('keydown', handleKeyDown);
-                document.addEventListener('keydown', hidePCModalOnKeyPress);
+                //document.removeEventListener('keydown', handleKeyDown);
+                //document.addEventListener('keydown', hidePCModalOnKeyPress);
             }
         }
 
@@ -654,6 +654,7 @@
                 }
             }
             
+            drawGrid();
             pcModal.style.display = 'none';
             document.removeEventListener('keydown', hidePCModalOnKeyPress);
             document.addEventListener('keydown', handleKeyDown);
@@ -1369,8 +1370,19 @@
                     case 'd':
                         e.preventDefault();
                         const bombOnCell = currentState.bombs.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        const pcrOnCell = currentState.testers.find(b => b.x === playerPos.x && b.y === playerPos.y);
                         if (bombOnCell) {
                             showDefuseModal(bombOnCell);
+                        } else if (pcrOnCell) {
+                            if (currentState.playerBioT>0 && currentState.playerRadioT>0) {
+                                showInfoModal("You're infected and got too much radiation as well.");
+                            } else if (currentState.playerBioT<0 && currentState.playerRadioT>0) {
+                                showInfoModal("You got too much radiation.");
+                            } else if (currentState.playerBioT>0 && currentState.playerRadioT<0) {
+                                showInfoModal("You're infected.");
+                            } else {
+                                showInfoModal("You're healthy!");
+                            }
                         } else {
                             handleCarInteraction();
                         }
