@@ -868,6 +868,24 @@
             eigengramOnBtn.disabled = currentState.inventory.E === 0 || currentState.eigengram.isOn || isGameOver;
             eigengramMessagePanel.disabled = !currentState.eigengram.isOn || isGameOver;
             eigengramMessagePanel.value = currentState.eigengram.isOn ? (eigengramMessages[threadIds[currentThreadIndex]] || '') : getEigengramMessageForDisplay();
+            //alert(currentState.inventory.keyA);//TODO
+            for(let i=0;i!=getLivingThreads().length;i++) {
+                w = getLivingThreads()[i];
+                if (threadHistory[w]["history"][threadHistory[w]["history"].length-1]["eigengram"]["isOn"]) {
+                    currentState.inventory.keyA ||= threadHistory[w]["history"][threadHistory[w]["history"].length-1]["inventory"]["keyA"];
+                    currentState.inventory.keyB ||= threadHistory[w]["history"][threadHistory[w]["history"].length-1]["inventory"]["keyB"];
+                    currentState.inventory.keyC ||= threadHistory[w]["history"][threadHistory[w]["history"].length-1]["inventory"]["keyC"];
+                    if (currentState.inventory.keyA && currentState.inventory.keyB && currentState.inventory.keyC) break;
+                }
+            }
+            //getLivingThreads()
+            //currentState.inventory.keyA ||= currentState.eigengram.isOn ? threadHistory[""].forEach(w => {alert(w.history.inventory.keyA);}) : false;
+            // threadHistory[""]["history"][1]["inventory"]["keyA"]
+            // threadHistory["1"]["history"][threadHistory["1"]["history"].length-1]["inventory"]["keyA"]
+            //currentState.inventory.keyB ||= currentState.eigengram.isOn ? threadHistory.some(w => {return w.inventory.keyB;}) : false;
+            //currentState.inventory.keyC ||= currentState.eigengram.isOn ? threadHistory.some(w => {return w.inventory.keyC;}) : false;
+            
+            
 
             chronogramLabel.textContent = `Chronogram${currentState.inventory.T > 0 ? ` x ${currentState.inventory.T}` : ''}`;
             chronogramLifetimeDisplay.textContent = currentState.chronogram.isOn ? currentState.chronogram.lifetime : (currentState.inventory.T > 0 ? STARTING_LIFETIME : 0);
