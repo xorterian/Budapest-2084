@@ -479,6 +479,7 @@ body {
     background-color: var(--black-bg-btn);
     color: #a0aec0;
     cursor: not-allowed;
+    margin-inline: 0.2em;
 }
 
 .device-icon-btn:not(:disabled) {

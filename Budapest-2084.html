@@ -45,22 +45,25 @@
                         </button>
                     </div>
                 </div>
-                <input id="eigengram-message-panel" class="text-input" placeholder="message to the otherself..." disabled />
             </div>
             
             <div class="device-section">
                 <div class="device-header">
                     <span id="chronogram-label">Chronogram</span>
                     <div class="device-controls">
-                        <span>Lifetime: <span id="chronogram-lifetime">0</span></span>
-                        <button id="chronogram-on-btn" class="device-icon-btn" disabled>
-                            <i id="chronogram-icon" class="fas fa-lightbulb"></i>
-                        </button>
+                        <!-- <span id="chronogram-lifetime">0</span> -->
+                        <div id="chronogram-button-group">
+                            <button id="send-back-btn" class="device-icon-btn" disabled style="border: 1.2em; background: burlywood;
+  color: ivory;">
+                                <i id="chronogram-icon" class="fas fa-clock" style="padding: .2em;"></i>
+                            </button>
+                            <span id="chronogram-bolt-icon" style="display: block; align-content: center;"><i class="fas fa-bolt" style="font-size: 1.2em; color: gray;"></i></span>
+                            <span id="chronogram-lifetime" style="display: block; align-content: center; font-size: 1.2em;"></span>
+                            <button id="chronogram-on-btn" class="device-icon-btn" disabled>
+                                <i id="chronogram-icon" class="fas fa-lightbulb"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <input id="chronogram-message-panel" class="text-input" placeholder="message to the post-/preself..." disabled />
-                <div id="chronogram-button-group">
-                    <button id="send-back-btn" disabled>Send Back</button>
                 </div>
             </div>
             
@@ -249,12 +252,11 @@
         const eigengramOnBtn = document.getElementById('eigengram-on-btn');
         const eigengramIcon = document.getElementById('eigengram-icon');
         const eigengramLifetimeDisplay = document.getElementById('eigengram-lifetime');
-        const eigengramMessagePanel = document.getElementById('eigengram-message-panel');
 
         const chronogramOnBtn = document.getElementById('chronogram-on-btn');
         const chronogramIcon = document.getElementById('chronogram-icon');
         const chronogramLifetimeDisplay = document.getElementById('chronogram-lifetime');
-        const chronogramMessagePanel = document.getElementById('chronogram-message-panel');
+        const chronogramBoltIcon = document.getElementById('chronogram-bolt-icon');
         const sendBackBtn = document.getElementById('send-back-btn');
 
         const defuseModal = document.getElementById('defuse-modal');
@@ -352,8 +354,6 @@
         let threadIds = [];
         let currentThreadIndex = 0;
         let threadHistory = {};
-        let eigengramMessages = {};
-        let chronogramMessages = {};
         let eigengramSourceThreadId = null;
         let isGameOver = false;
         let playerDesiredMove = null;
@@ -847,27 +847,14 @@
             nextThreadBtn.disabled = getLivingThreads().length <= 1;
         }
 
-        function getEigengramMessageForDisplay() {
-            let checkId = threadIds[currentThreadIndex];
-            if (eigengramSourceThreadId === '') return eigengramMessages[''] || '';
-            while (checkId) {
-                if (eigengramMessages[checkId] !== undefined) return eigengramMessages[checkId];
-                checkId = checkId.slice(0, -1);
-            }
-            return '';
-        }
-
         function updateDevicePanel(currentState) {
             qrgLabel.textContent = `QRG${currentState.inventory.R > 0 ? ` x ${currentState.inventory.R}` : ''}`;
             randomGeneratorBtn.disabled = currentState.inventory.R === 0;
 
             eigengramLabel.textContent = `Eigengram${currentState.inventory.E > 0 ? ` x ${currentState.inventory.E}` : ''}`;
             eigengramLifetimeDisplay.textContent = currentState.eigengram.isOn ? currentState.eigengram.lifetime : (currentState.inventory.E > 0 ? STARTING_LIFETIME : 0);
-            eigengramIcon.className = `fas ${currentState.eigengram.isOn ? 'fa-bolt' : 'fa-lightbulb'}`;
             eigengramOnBtn.classList.toggle('active', currentState.eigengram.isOn);
             eigengramOnBtn.disabled = currentState.inventory.E === 0 || currentState.eigengram.isOn || isGameOver;
-            eigengramMessagePanel.disabled = !currentState.eigengram.isOn || isGameOver;
-            eigengramMessagePanel.value = currentState.eigengram.isOn ? (eigengramMessages[threadIds[currentThreadIndex]] || '') : getEigengramMessageForDisplay();
             //alert(currentState.inventory.keyA);//TODO
             for(let i=0;i!=getLivingThreads().length;i++) {
                 w = getLivingThreads()[i];
@@ -888,13 +875,11 @@
             
 
             chronogramLabel.textContent = `Chronogram${currentState.inventory.T > 0 ? ` x ${currentState.inventory.T}` : ''}`;
-            chronogramLifetimeDisplay.textContent = currentState.chronogram.isOn ? currentState.chronogram.lifetime : (currentState.inventory.T > 0 ? STARTING_LIFETIME : 0);
-            chronogramIcon.className = `fas ${currentState.chronogram.isOn ? 'fa-bolt' : 'fa-lightbulb'}`;
+            chronogramLifetimeDisplay.textContent = currentState.chronogram.isOn ? currentState.chronogram.lifetime : (currentState.inventory.T > 0 ? STARTING_LIFETIME : "");
+            chronogramBoltIcon.style.display = (currentState.inventory.T > 0 || currentState.chronogram.isOn) ? "none" : "block";
             chronogramOnBtn.classList.toggle('active', currentState.chronogram.isOn);
             chronogramOnBtn.disabled = currentState.inventory.T === 0 || currentState.chronogram.isOn || isGameOver;
-            chronogramMessagePanel.disabled = !currentState.chronogram.isOn || isGameOver;
             sendBackBtn.disabled = isGameOver || !currentState.chronogram.isOn || currentState.chronogram.lifetime <= 0;
-            chronogramMessagePanel.value = chronogramMessages[threadIds[currentThreadIndex]] || '';
             
             throwThreadBtn.disabled = false;
         }
@@ -1504,10 +1489,6 @@
                 parentState.inventory.R--;
                 threadHistory[newId0] = {status: 'alive', history: [deepClone(parentState)]};
                 threadHistory[newId1] = {status: 'alive', history: [deepClone(parentState)]};
-                eigengramMessages[newId0] = getEigengramMessageForDisplay() || '';
-                eigengramMessages[newId1] = getEigengramMessageForDisplay() || '';
-                chronogramMessages[newId0] = chronogramMessages[currentThreadId] || '';
-                chronogramMessages[newId1] = chronogramMessages[currentThreadId] || '';
                 
                 const newThreadIds = threadIds.filter(id => id !== currentThreadId);
                 newThreadIds.push(newId0, newId1);
@@ -1534,20 +1515,6 @@
             }
         });
 
-        eigengramMessagePanel.addEventListener('input', (e) => {
-            if (isGameOver) return;
-            const message = e.target.value;
-            const currentThreadId = threadIds[currentThreadIndex];
-            if (threadHistory[currentThreadId].history.slice(-1)[0].eigengram.isOn) {
-                if (eigengramSourceThreadId === '') {
-                    threadIds.forEach(id => eigengramMessages[id] = message);
-                } else {
-                    eigengramMessages[currentThreadId] = message;
-                }
-                drawGrid();
-            }
-        });
-
         chronogramOnBtn.addEventListener('click', () => {
             if (isGameOver) return;
             const currentThreadId = threadIds[currentThreadIndex];
@@ -1563,36 +1530,26 @@
             }
         });
 
-        chronogramMessagePanel.addEventListener('input', (e) => {
-            if (isGameOver) return;
-            chronogramMessages[threadIds[currentThreadIndex]] = e.target.value;
-        });
-
         sendBackBtn.addEventListener('click', () => {
             if (isGameOver) return;
             const currentThreadId = threadIds[currentThreadIndex];
             const currentState = threadHistory[currentThreadId].history.slice(-1)[0];
             if (currentState.chronogram.isOn && currentState.chronogram.lifetime > 0) {
                 const { savedState } = currentState.chronogram;
-                const messageToSend = chronogramMessagePanel.value;
                 const newPresentId = currentThreadId + '0', newPastId = currentThreadId + '1';
                 
                 const newPresentHistory = deepClone(threadHistory[currentThreadId].history);
                 const newPresentState = newPresentHistory.slice(-1)[0];
-                newPresentState.chronogram.savedState = null;
+                newPresentState.chronogram = { isOn: false, lifetime: 0, savedState: null };
                 threadHistory[newPresentId] = {status: 'alive', history: newPresentHistory};
-                eigengramMessages[newPresentId] = getEigengramMessageForDisplay() || '';
-                chronogramMessages[newPresentId] = chronogramMessages[currentThreadId] || '';
                 
                 const pastState = deepClone(savedState);
-                pastState.chronogram = { isOn: true, lifetime: STARTING_LIFETIME, savedState: null };
-                pastState.inventory.T ++;
+                pastState.chronogram = { isOn: false, lifetime: 0, savedState: null };
+                //pastState.inventory.T ++;
                 pastState.inventory.keyA ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyA"];
                 pastState.inventory.keyB ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyB"];
                 pastState.inventory.keyC ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyC"];
-                chronogramMessages[newPastId] = messageToSend;
                 threadHistory[newPastId] = {status: 'alive', history: [pastState]};
-                eigengramMessages[newPastId] = getEigengramMessageForDisplay() || '';
 
                 const newThreadIds = threadIds.filter(id => id !== currentThreadId);
                 newThreadIds.push(newPresentId, newPastId);
