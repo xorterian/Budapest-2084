@@ -1030,6 +1030,18 @@
                     d.deathTimer = DEATH_TIMER;
                     newState.deadDucks.push({ ...d });
                 }
+                if (newState.devicesOnBoard.med.some(m => m.x === d.x && m.y === d.y)) {
+                    m = newState.devicesOnBoard.med[newState.devicesOnBoard.med.findIndex(w => w.x === d.x && w.y === d.y)];
+                    if (Math.random()<m.prSide) {
+                        d.isT = 3;
+                        d.isInfected = true;
+                    }
+                    if (Math.random()<m.prEff) {
+                        d.isT = -1;
+                        d.isInfected = false;
+                    }
+                    newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === d.x && w.y === d.y), 1);
+                }
                 if (d.isInfected) {
                     for(let dx=-1;dx!=1;dx++){for(let dy=-1;dy!=1;dy++){
                             if (Math.random()<.2) continue;

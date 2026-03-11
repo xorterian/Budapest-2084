@@ -111,7 +111,30 @@ var _ = () => {
             }
         }
     });
+    
     if (levelData.deviceLocations.T[0]) STARTING_LIFETIME = levelData.deviceLocations.T[0].t;
+    
+    levelData.con = [Math.random()<.5,Math.random()<.5,Math.random()<.5];
+    levelData.devicesOnBoard.med.forEach(m => {
+        if (m.con) {
+            m.prSide = levelData.con[Math.abs(m.con)];
+            if (m.con<0) m.prSide = 1-m.prSide;
+            m.prEff = 1-m.prSide;
+        } else {
+            m.prEff = Math.random() < m.prEff;
+            m.prSide = Math.random() < m.prSide;
+        }
+    });
+    levelData.devicesOnBoard.vac.forEach(m => {
+        if (m.con) {
+            m.prSide = levelData.con[Math.abs(m.con)];
+            if (m.con<0) m.prSide = 1-m.prSide;
+            m.prEff = 1-m.prSide;
+        } else {
+            m.prEff = Math.random() < m.prEff;
+            m.prSide = Math.random() < m.prSide;
+        }
+    });
     //... TODO
     
 

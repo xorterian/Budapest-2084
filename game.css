@@ -413,7 +413,7 @@ body {
 .door-b-open-icon { color: var(--door-b-color); opacity: 0.4; }
 .door-c-open-icon { color: var(--door-c-color); opacity: 0.4; }
 .desktop-icon { color: black; opacity: 0.8; }
-.tester-icon { color: black; opacity: 0.8; }
+.tester-icon { color: cyan; opacity: 0.8; }
 .flag-icon { color: var(--flag-color); }
 .money-icon { color: var(--money-color); }
 .vac-icon { color: var(--vac-color); }
@@ -422,7 +422,7 @@ body {
 .key-a-icon { color: var(--key-a-color); }
 .key-b-icon { color: var(--key-b-color); }
 .key-c-icon { color: var(--key-c-color); }
-.info-icon { color: #3b82f6; }
+.info-icon { color: dodgerblue; }
 
 .device-panel {
     background-color: var(--secondary-color);
