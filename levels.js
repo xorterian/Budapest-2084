@@ -605,7 +605,7 @@ const levels = [
     },
     // Level 18: The PCR test
     {
-        playerPos: { x: 5, y: 3 },
+        playerPos: { x: 5, y: 4 },
         flagLocation: { x: 7, y: 3 },
         roadLayout: [],
         wallLayout: [
@@ -627,21 +627,21 @@ const levels = [
         ],
         trapBuildingLayout: [],
         fenceLayout: [],
-        initialMoneyLocations: [{x: 1, y: 4}],
+        initialMoneyLocations: [{x: 1, y: 4},{x: 1, y: 3}],
         initialKeyALocations: [{x: 3, y: 7}],
         doorLayout: [{x: 6, y: 4, n: 1},{x: 6, y: 3, n: 1}],
-        desktopLayout: [{x: 4, y: 0, n: 1}],
-        testers: [{x: 4, y: 4}],
-        bios: [{x: 3, y: 0},{x: 4, y: 7}],
+        desktopLayout: [{x: 3, y: 0, n: 1}],
+        testers: [{x: 3, y: 4}],
+        bios: [{x: 4, y: 0},{x: 4, y: 7}],
         initialDuckLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         initialMedLocations: [
-            {x: 1, y: 3, prSide: .01, prEff: 1, color: "red"},
+            {x: 2, y: 4, prSide: .01, prEff: 1, color: "red"},
             {x: 3, y: 2, prSide: .01, prEff: 0.66, color: "blue"},
             {x: 3, y: 5, prSide: .01, prEff: 0.66, color: "blue"}
         ],
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
-        infoLocations: [{x: 3, y: 3, text: "The two pills can cure your disease (independently) with 65%. The pill next to the banknote has 99% efficiency but you have only one piece of that. So you can use the PCR to test if the weaker ones could not cure you (press \"P\"). You have only 1% to die in side effects."}]
+        infoLocations: [{x: 4, y: 3, text: "The two pills can cure your disease (independently) with 65%. The pill next to the banknote has 99% efficiency but you have only one piece of that. So you can use the PCR to test if the weaker ones could not cure you (press \"P\"). You have only 1% to die in side effects."}]
     },
     // Level 19: The Chronogram
     {
@@ -677,8 +677,8 @@ const levels = [
         wallLayout: [
             {x: 5, y: 0},{x: 5, y: 1},{x: 5, y: 2},{x: 5, y: 3},{x: 5, y: 4},{x: 5, y: 5},{x: 5, y: 6},{x: 5, y: 7},
             {x: 7, y: 2},{x: 7, y: 3},{x: 7, y: 4},{x: 7, y: 5},
-            {x: 0, y: 1},{x: 1, y: 1},{x: 2, y: 1},
-            {x: 0, y: 6},{x: 1, y: 6},{x: 2, y: 6}
+            {x: 0, y: 1},{x: 1, y: 1},
+            {x: 0, y: 6},{x: 1, y: 6}
         ],
         trapBuildingLayout: [],
         fenceLayout: [],
@@ -687,16 +687,18 @@ const levels = [
             {x: 1, y: 2, n: 2},{x: 1, y: 3, n: 2},{x: 1, y: 4, n: 2},{x: 1, y: 5, n: 2},
             {x: 6, y: 2, n: 1},{x: 6, y: 5, n: 3}
         ],
-        desktopLayout: [{x: 2, y: 4, n: 2},{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
+        desktopLayout: [{x: 0, y: 7, n: 2},{x: 0, y: 0, n: 2},{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
         initialMedLocations: [
-            {x: 6, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},{x: 4, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},
-            {x: 6, y: 6, prSide: .01, prEff: 0.99},{x: 4, y: 6, prSide: .01, prEff: 0.99}
+            {x: 6, y: 1, prSide: .5, prEff: 0.5, color: "yellow", con: 1},
+            {x: 4, y: 1, prSide: .5, prEff: 0.5, color: "yellow", con: 1},
+            {x: 6, y: 6, prSide: .5, prEff: 0.5, con: -1},
+            {x: 4, y: 6, prSide: .5, prEff: 0.5, con: -1}
         ],
         bios: [{x: 2, y: 7},{x: 2, y: 0}],
         initialKeyBLocations: [{x: 1, y: 0},{x: 1, y: 7}],
         initialKeyALocations: [{x: 3, y: 2}],
         initialKeyCLocations: [{x: 3, y: 5}],
-        initialDuckLocations: [{x: 6, y: 4, dx: 0, dy: -1, isDead: false}],
+        initialDuckLocations: [{x: 6, y: 4, dx: 0, dy: -1, isDead: false, isInfected: true, isT: 20}],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{x: 3, y: 3, text: "Poor dog is infected :( But one (and only one) of the medications can cure it without side effects. You can count with similar efficiency on your side, too. Decide which way you wish to leave the dog."}]
@@ -723,8 +725,8 @@ const levels = [
         initialDuckLocations: [],
         radios: [{x: 4, y: 6}],
         initialMedLocations: [
-            {x: 1, y: 7, prSide: .01, prEff: 0.99},{x: 1, y: 5, prSide: .01, prEff: 0.99},
-            {x: 7, y: 6, prSide: .01, prEff: 0.99, color: "gray"}
+            {x: 1, y: 7, prSide: .01, prEff: 0.99, color: "red", con: 1},{x: 1, y: 5, prSide: .01, prEff: 0.99, con: -1},
+            {x: 7, y: 6, prSide: .01, prEff: 0.99, color: "white"}
         ],
         testers: [{x: 0, y: 7},{x: 0, y: 5}],
         playerCar: { x: -1, y: -1, occupied: false },
@@ -750,10 +752,12 @@ const levels = [
         ],
         desktopLayout: [{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
         initialMedLocations: [
-            {x: 6, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},{x: 6, y: 6, prSide: .01, prEff: 0.99, color: "brown"}
+            {x: 6, y: 1, prSide: .01, prEff: 0.99, color: "yellow", con: 1},
+            {x: 6, y: 6, prSide: .01, prEff: 0.99, color: "brown", con: -1}
         ],
         initialVacLocations: [
-            {x: 4, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},{x: 4, y: 6, prSide: .01, prEff: 0.99, color: "brown"}
+            {x: 4, y: 1, prSide: .01, prEff: 0.99, color: "yellow", con: 1},
+            {x: 4, y: 6, prSide: .01, prEff: 0.99, color: "brown", con: -1}
         ],
         bios: [{x: 1, y: 7},{x: 1, y: 5},{x: 0, y: 3}],
         initialKeyALocations: [{x: 3, y: 2}],
