@@ -111,6 +111,7 @@ var _ = () => {
             }
         }
     });
+    if (levelData.deviceLocations.T[0]) STARTING_LIFETIME = levelData.deviceLocations.T[0].t;
     //... TODO
     
 

@@ -140,26 +140,6 @@ var _ = () => {
                  ChronIcon.classList.add('fas', 'fa-hourglass-half', 'item-t-icon');
                  cell.appendChild(ChronIcon);
             }
-            if (currentState.devicesOnBoard.vac.some(m => m.x === col && m.y === row)) {
-                 const vacIcon = document.createElement('i');
-                 vacIcon.classList.add('fas', 'fa-syringe', 'item-vac-icon');
-                 cell.appendChild(vacIcon);
-            }
-            if (currentState.devicesOnBoard.med.some(m => m.x === col && m.y === row)) {
-                 const medIcon = document.createElement('i');
-                 medIcon.classList.add('fas', 'fa-tablets', 'item-med-icon');
-                 cell.appendChild(medIcon);
-            }
-            if (currentState.devicesOnBoard.jacket.some(m => m.x === col && m.y === row)) {
-                 const jacIcon = document.createElement('i');
-                 jacIcon.classList.add('fas', 'fa-user-astronaut', 'item-jacket-icon');
-                 cell.appendChild(jacIcon);
-            }
-            /*if (currentState.grid[row][col] === CELL_TYPES.tester && currentState.tester) {
-                const testIcon = document.createElement('i');
-                testIcon.classList.add('fas', 'fa-microscope', 'tester-icon');
-                cell.appendChild(testIcon);
-            }*/
 
             const explosion = currentState.explosions.find(ex => ex.x === col && ex.y === row);
             if (explosion) {

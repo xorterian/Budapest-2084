@@ -344,10 +344,10 @@
             danger: 'exclamation-triangle'
         };
 
-        const STARTING_LIFETIME = 5;
         const DEATH_TIMER = 3;
         const BOMB_TIMER = 3;
         
+        let STARTING_LIFETIME = 5;
         let currentLevel = 0;
         let threadIds = [];
         let currentThreadIndex = 0;
@@ -1575,6 +1575,9 @@
                 const pastState = deepClone(savedState);
                 pastState.chronogram = { isOn: true, lifetime: STARTING_LIFETIME, savedState: null };
                 pastState.inventory.T ++;
+                pastState.inventory.keyA ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyA"];
+                pastState.inventory.keyB ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyB"];
+                pastState.inventory.keyC ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyC"];
                 chronogramMessages[newPastId] = messageToSend;
                 threadHistory[newPastId] = {status: 'alive', history: [pastState]};
                 eigengramMessages[newPastId] = getEigengramMessageForDisplay() || '';

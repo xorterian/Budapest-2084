@@ -131,6 +131,47 @@ var _ = (currentState) => {
             cell.appendChild(rIcon);
         }
     });
+    
+    currentState.devicesOnBoard.vac.forEach(r => {
+        const cell = board.children[r.y * GRID_SIZE + r.x];
+        if(cell) {
+            const rIcon = document.createElement('i');
+            if (r.color) {
+                rIcon.classList.add('fas', 'fa-syringe');
+                rIcon.style = "opacity: .7; color: " + r.color + ";";
+            } else {
+                rIcon.classList.add('fas', 'fa-syringe', 'item-vac-icon');
+            }
+            cell.appendChild(rIcon);
+        }
+    });
+    currentState.devicesOnBoard.med.forEach(r => {
+        const cell = board.children[r.y * GRID_SIZE + r.x];
+        if(cell) {
+            const rIcon = document.createElement('i');
+            if (r.color) {
+                rIcon.classList.add('fas', 'fa-tablets');
+                rIcon.style = "opacity: .7; color: " + r.color + ";";
+            } else {
+                rIcon.classList.add('fas', 'fa-tablets', 'item-med-icon');
+            }
+            cell.appendChild(rIcon);
+        }
+    });
+    currentState.devicesOnBoard.jacket.forEach(r => {
+        const cell = board.children[r.y * GRID_SIZE + r.x];
+        if(cell) {
+            const rIcon = document.createElement('i');
+            if (r.color) {
+                rIcon.classList.add('fas', 'fa-user-astronaut');
+                rIcon.style = "opacity: .7; color: " + r.color + ";";
+            } else {
+                rIcon.classList.add('fas', 'fa-user-astronaut', 'item-jacket-icon');
+            }
+            cell.appendChild(rIcon);
+        }
+    });
+    
 }
 
 drawEntitiesString = _.toString();

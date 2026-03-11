@@ -573,7 +573,7 @@ const levels = [
             {x: 4, y: 4, prSide: .01, prEff: 0.99},
             {x: 5, y: 4, prSide: .01, prEff: 0.99},
             {x: 5, y: 0, prSide: .01, prEff: 0.99},
-            {x: 3, y: 7, prSide: .01, prEff: 0.99},
+            {x: 3, y: 7, prSide: .01, prEff: 0.99}
         ],
         //initialJacketLocations: [{x: 4, y: 0, prEff: 0.3}],
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
@@ -597,7 +597,7 @@ const levels = [
         doorLayout: [{x: 4, y: 1, n: 2}],
         desktopLayout: [{x: 7, y: 0, n: 2}],
         initialKeyBLocations: [{x: 1, y: 6}],
-        bios: [{x: 4, y: 6},{x: 3, y: 6}],
+        radios: [{x: 4, y: 6},{x: 3, y: 6}],
         initialDuckLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [{x: 1, y: 3}], 'E': [{x: 1, y: 4}], 'T': [ ] },
@@ -627,7 +627,7 @@ const levels = [
         ],
         trapBuildingLayout: [],
         fenceLayout: [],
-        initialMoneyLocations: [{x: 0, y: 4}],
+        initialMoneyLocations: [{x: 1, y: 4}],
         initialKeyALocations: [{x: 3, y: 7}],
         doorLayout: [{x: 6, y: 4, n: 1},{x: 6, y: 3, n: 1}],
         desktopLayout: [{x: 4, y: 0, n: 1}],
@@ -636,9 +636,9 @@ const levels = [
         initialDuckLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         initialMedLocations: [
-            {x: 0, y: 3, prSide: .01, prEff: 1},
-            {x: 3, y: 2, prSide: .01, prEff: 0.66},
-            {x: 3, y: 5, prSide: .01, prEff: 0.66}
+            {x: 1, y: 3, prSide: .01, prEff: 1, color: "red"},
+            {x: 3, y: 2, prSide: .01, prEff: 0.66, color: "blue"},
+            {x: 3, y: 5, prSide: .01, prEff: 0.66, color: "blue"}
         ],
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{x: 3, y: 3, text: "The two pills can cure your disease (independently) with 65%. The pill next to the banknote has 99% efficiency but you have only one piece of that. So you can use the PCR to test if the weaker ones could not cure you (press \"P\"). You have only 1% to die in side effects."}]
@@ -666,7 +666,7 @@ const levels = [
             { x: 0, y: 1, dx: 0, dy: 1, isDead: false }
         ],
         playerCar: { x: -1, y: -1, occupied: false },
-        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 0, y: 7}] },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 0, y: 7, t: 12}] },
         infoLocations: [{x: 1, y: 7, text: "That device on the corner is a chronogram. Get it, run to the station, activate it by pressing \"C\", then get the key. Until that the secret police is about the catch you, so you have to send the key back in the time to your pre-self with the chronogram. Hurry!"}]
     },
     // Level 20: The Dilemma (infected dog)
@@ -689,7 +689,7 @@ const levels = [
         ],
         desktopLayout: [{x: 2, y: 4, n: 2},{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
         initialMedLocations: [
-            {x: 6, y: 1, prSide: .01, prEff: 0.99},{x: 4, y: 1, prSide: .01, prEff: 0.99},
+            {x: 6, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},{x: 4, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},
             {x: 6, y: 6, prSide: .01, prEff: 0.99},{x: 4, y: 6, prSide: .01, prEff: 0.99}
         ],
         bios: [{x: 2, y: 7},{x: 2, y: 0}],
@@ -721,14 +721,14 @@ const levels = [
         initialKeyCLocations: [{x: 6, y: 2}],
         desktopLayout: [{x: 2, y: 7, n: 3},{x: 2, y: 5, n: 3}],
         initialDuckLocations: [],
-        bios: [{x: 4, y: 6}],
+        radios: [{x: 4, y: 6}],
         initialMedLocations: [
             {x: 1, y: 7, prSide: .01, prEff: 0.99},{x: 1, y: 5, prSide: .01, prEff: 0.99},
-            {x: 7, y: 6, prSide: .01, prEff: 0.99}
+            {x: 7, y: 6, prSide: .01, prEff: 0.99, color: "gray"}
         ],
         testers: [{x: 0, y: 7},{x: 0, y: 5}],
         playerCar: { x: -1, y: -1, occupied: false },
-        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 6, y: 1}] },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 6, y: 1, t: 7}] },
         infoLocations: [{x: 7, y: 5, text: "Both stations can open the gate. But only one of the medications (placed next to the stations) can stop the infection, that is, taking the wrong one, you will just not be able to get out of the corridor. (The medications placed next to you is perfect but you should leave it for the last one.) Use the PCR test and the chronogram if you chose the wrong way for first."}]
     },
     // Level 22: The Dilemma (healthy dog)
@@ -750,10 +750,10 @@ const levels = [
         ],
         desktopLayout: [{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
         initialMedLocations: [
-            {x: 6, y: 1, prSide: .01, prEff: 0.99},{x: 6, y: 6, prSide: .01, prEff: 0.99}
+            {x: 6, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},{x: 6, y: 6, prSide: .01, prEff: 0.99, color: "brown"}
         ],
         initialVacLocations: [
-            {x: 4, y: 1, prSide: .01, prEff: 0.99},{x: 4, y: 6, prSide: .01, prEff: 0.99}
+            {x: 4, y: 1, prSide: .01, prEff: 0.99, color: "yellow"},{x: 4, y: 6, prSide: .01, prEff: 0.99, color: "brown"}
         ],
         bios: [{x: 1, y: 7},{x: 1, y: 5},{x: 0, y: 3}],
         initialKeyALocations: [{x: 3, y: 2}],
