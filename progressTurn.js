@@ -33,6 +33,7 @@ if (updatedState.playerStatus !== 'dead') {
         c.y += c.dy || 0;
         if (c.y < 0) c.y = GRID_SIZE - 1;
         if (c.y >= GRID_SIZE) c.y = 0;
+        if (Math.abs(c.x-updatedState.playerPos.x)+Math.abs(c.y-updatedState.playerPos.y)==1) (new Audio("assets/WetDriveBy.mp3")).play();
     });
     updatedState.buses.forEach(b => {
         if (!b.stopped) {
@@ -48,6 +49,7 @@ if (updatedState.playerStatus !== 'dead') {
             }
             b.ranSource.shift();
             b.ranSource.push(Math.random()<b.p);
+            if (Math.abs(b.x-updatedState.playerPos.x)+Math.abs(b.y-updatedState.playerPos.y)==1) (new Audio("assets/WetDriveBy.mp3")).play();
         } else if (--b.stopDuration <= 0) b.stopped = false;
     });
     updatedState.strangers.forEach(s => {
@@ -146,6 +148,7 @@ if (updatedState.playerStatus !== 'dead') {
                 tp.stopDuration = 10;
                 tp.ranSource.shift();
                 tp.ranSource.push(Math.random()<tp.p);
+                (new Audio("assets/clock2.mp3")).play();
             }
         } else if (--tp.stopDuration <= 0) tp.stopped = false;
         

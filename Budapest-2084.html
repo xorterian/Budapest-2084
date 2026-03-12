@@ -25,6 +25,13 @@
         <button id="help">Help</button>
     </div>
     
+    <div id="audio-panel" style="display: none;">
+        <audio id="music" controls autoplay loop>
+            <source src="assets/music-01.mp3" type="audio/mpeg">
+            No audio supported :(
+        </audio>
+    </div>
+    
     <div id="main-content-area">
         <div id="game-board"></div>
         <div class="device-panel">
@@ -349,6 +356,12 @@
         const DEATH_TIMER = 3;
         const BOMB_TIMER = 3;
         
+        let isMusic = 1;
+        let music = ['assets/music-01.mp3', 'assets/music-02.mp3', 'assets/music-03.mp3', 'assets/music-04.mp3', 'assets/music-05.mp3', 'assets/music-06.mp3', 'assets/music-07.mp3', 'assets/music-08.mp3', 'assets/music-09.mp3', 'assets/music-10.mp3', 'assets/music-11.mp3', 'assets/music-12.mp3', 'assets/music-13.mp3', 'assets/music-14.mp3', 'assets/music-15.mp3'];
+        /* Sound list:
+          already had: exp, boing, clang, HydraulicHiss, crash, clock, clock2, alarm, ambulance
+          to-have: dog, pig, person-die, game-over, flag, item-up,
+        */
         let STARTING_LIFETIME = 5;
         let currentLevel = 0;
         let threadIds = [];
@@ -617,8 +630,6 @@
                 pcModal.style.display = 'block';
             } else {
                 hidePCModal(n,state={});
-                //document.removeEventListener('keydown', handleKeyDown);
-                //document.addEventListener('keydown', hidePCModalOnKeyPress);
             }
         }
 
@@ -628,25 +639,23 @@
                 if ((pcModalVars.n==1 && pcModalVars.keyA) || (pcModalVars.n==2 && pcModalVars.keyB) || (pcModalVars.n==3 && pcModalVars.keyC)) {
                     currentState.doorLayout.forEach(d => { 
                         if(Math.abs(d.n)==pcModalVars.n) {
-                            /*switch(d.n){
-                                case 1: currentState.doorA = true;break;
-                                case 2: currentState.doorB = true;break;
-                                case 3: currentState.doorC = true;break;
-                            }*/
                             d.n *= -1;
                             switch(Math.abs(d.n)){
                                 case 1: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorA : CELL_TYPES.doorAOpen;break;
                                 case 2: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorB : CELL_TYPES.doorBOpen;break;
                                 case 3: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorC : CELL_TYPES.doorCOpen;break;
                             }
+                            (new Audio("assets/HydraulicHiss.mp3")).play();
                         }
                     });
                 } else {
                     if (pcModalVars.n==-1){
+                        (new Audio("assets/alarm.mp3")).play();
                         for(let i=0;i!=12;i++){
                             currentState.radios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
                         }
                     } else if (pcModalVars.n==-2){
+                        (new Audio("assets/alarm.mp3")).play();
                         for(let i=0;i!=4;i++){
                             currentState.bios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
                         }
@@ -891,6 +900,7 @@
         
         function gameOver() {
             isGameOver = true;
+            (new Audio("assets/ambulance.mp3")).play();
             gameOverMessage.style.display = 'block';
             gameWrapper.classList.add('game-over-backdrop');
             document.removeEventListener('keydown', handleKeyDown);
@@ -915,14 +925,10 @@
         }
         
         function isObstacle(x, y, grid) {
-            //currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
             if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return true;
             const cellType = grid[y][x];
             const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
             let isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding || cellType === CELL_TYPES.doorA || cellType === CELL_TYPES.doorB || cellType === CELL_TYPES.doorC;
-            /*isSolid ||= currentState.doorLayout.some(d => {
-                return d.x == x && d.y == y && d.n > 0;//((d.n == 1 && !currentState.doorA) || (d.n == 2 && !currentState.doorB) || (d.n == 3 && !currentState.doorC));
-            });*/
             const isHouse = currentState.houseLocations.some(h => h.x === x && h.y === y);
             return isSolid || isHouse;
         }
@@ -931,6 +937,7 @@
             const { x, y } = newState.playerPos;
             if (newState.playerCar.occupied) return newState; 
             if (newState.cars.some(c => c.x === x && c.y === y) || newState.buses.some(b => b.x === x && b.y === y)) {
+                if (newState.playerStatus=='alive') (new Audio("assets/crash.mp3")).play();
                 newState.playerStatus = 'dead';
             }
             if (newState.strangers_blue.some(c => c.x === x && c.y === y && ! c.isDead)) {
@@ -941,6 +948,7 @@
             }
             if (newState.strangers_black.some(c => c.x === x && c.y === y && ! c.isDead)) {
                 newState.playerStatus = 'dead';
+                //if (newState.playerStatus=='alive') (new Audio("assets/crash.mp3")).play();TODO
             }
             return newState;
         }
@@ -952,6 +960,7 @@
                             newState.buses.some(v => v.x === s.x && v.y === s.y) ||
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
+                    if (isMusic) (new Audio("assets/crash.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -975,6 +984,7 @@
                             newState.buses.some(v => v.x === s.x && v.y === s.y) ||
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
+                    if (isMusic) (new Audio("assets/crash.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -987,6 +997,7 @@
                             newState.buses.some(v => v.x === s.x && v.y === s.y) ||
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
+                    if (isMusic) (new Audio("assets/crash.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -999,6 +1010,7 @@
                             newState.buses.some(v => v.x === s.x && v.y === s.y) ||
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
+                    if (isMusic) (new Audio("assets/crash.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -1011,6 +1023,7 @@
                             newState.buses.some(v => v.x === d.x && v.y === d.y) ||
                             (newState.isDriving && d.x === newState.playerPos.x && d.y === newState.playerPos.y);
                 if (hit) {
+                    if (isMusic) (new Audio("assets/crash.mp3")).play();
                     d.isDead = true;
                     d.deathTimer = DEATH_TIMER;
                     newState.deadDucks.push({ ...d });
@@ -1044,18 +1057,6 @@
 
         function checkItemPickup(newState) {
             const { x, y } = newState.playerPos;
-            /*if (newState.devicesOnBoard.R && x === newState.deviceLocations.R.x && y === newState.deviceLocations.R.y) {
-                newState.inventory.R++;
-                newState.devicesOnBoard.R = false;
-            }
-            if (newState.devicesOnBoard.E && x === newState.deviceLocations.E.x && y === newState.deviceLocations.E.y) {
-                newState.inventory.E++;
-                newState.devicesOnBoard.E = false;
-            }
-            if (newState.devicesOnBoard.T && x === newState.deviceLocations.T.x && y === newState.deviceLocations.T.y) {
-                newState.inventory.T++;
-                newState.devicesOnBoard.T = false;
-            }*/
             if (x === newState.flagLocation.x && y === newState.flagLocation.y) {
                 nextLevel();
                 return newState;
@@ -1142,6 +1143,7 @@
         }
 
         function triggerExplosion(bomb, state, R=2, pr=1,trTyp='bomb') {
+            if (isMusic && trTyp=='bomb') (new Audio("assets/exp.mp3")).play();
             for (let ex = -R; ex <= R; ex++) {
                 for (let ey = -R; ey <= R; ey++) {
                     if (Math.random() <= 1-pr) continue;

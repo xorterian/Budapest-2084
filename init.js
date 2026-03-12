@@ -137,6 +137,10 @@ var _ = () => {
     });
     //... TODO
     
+    
+    if (isMusic) document.getElementById("music").src = music[(currentLevel || 0) % music.length];
+    if (isMusic) document.getElementById("music").play();
+    
 
     drawGrid();
     updateStatsDisplay(levelData);
