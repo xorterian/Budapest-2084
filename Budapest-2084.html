@@ -30,6 +30,10 @@
             <source src="assets/music-01.mp3" type="audio/mpeg">
             No audio supported :(
         </audio>
+        <audio id="weather" controls autoplay loop>
+            <source src="assets/weatherRain.mp3" type="audio/mpeg">
+            No audio supported :(
+        </audio>
     </div>
     
     <div id="main-content-area">
@@ -358,6 +362,7 @@
         
         let isMusic = 1;
         let music = ['assets/music-01.mp3', 'assets/music-02.mp3', 'assets/music-03.mp3', 'assets/music-04.mp3', 'assets/music-05.mp3', 'assets/music-06.mp3', 'assets/music-07.mp3', 'assets/music-08.mp3', 'assets/music-09.mp3', 'assets/music-10.mp3', 'assets/music-11.mp3', 'assets/music-12.mp3', 'assets/music-13.mp3', 'assets/music-14.mp3', 'assets/music-15.mp3'];
+        let weatherMusic = ['assets/weatherBird.mp3', 'assets/weatherRain.mp3', 'assets/weatherWind.mp3', 'assets/weatherNight.mp3', 'assets/airRaid.mp3'];
         /* Sound list:
           already had: exp, boing, clang, HydraulicHiss, crash, clock, clock2, alarm, ambulance
           to-have: dog, pig, person-die, game-over, flag, item-up,
@@ -470,6 +475,7 @@
         }
 
         function showDefuseModal(bomb) {
+            (new Audio("assets/hmm.mp3")).play();
             activeBombToDefuse = bomb;
             defuseModal.style.display = 'block';
             document.removeEventListener('keydown', handleKeyDown);
@@ -494,7 +500,9 @@
             if (bomb) {
                 if (bomb.correctWire === chosenWire) {
                     currentState.bombs = currentState.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+                    (new Audio("assets/defuseBomb.mp3")).play();
                 } else {
+                    (new Audio("assets/defuseBombFailed.mp3")).play();
                     triggerExplosion(bomb, currentState);
                 }
             }
@@ -527,6 +535,7 @@
 
         function handleDealAttempt(chosenOpt) {
             //if (!activeBombToDefuse) return;
+            (new Audio("assets/deal.mp3")).play();
 
             const currentThreadId = threadIds[currentThreadIndex];
             const history = threadHistory[currentThreadId].history;
@@ -650,11 +659,13 @@
                     });
                 } else {
                     if (pcModalVars.n==-1){
+                        (new Audio("assets/airRaid.mp3")).play();
                         (new Audio("assets/alarm.mp3")).play();
                         for(let i=0;i!=12;i++){
                             currentState.radios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
                         }
                     } else if (pcModalVars.n==-2){
+                        (new Audio("assets/airRaid.mp3")).play();
                         (new Audio("assets/alarm.mp3")).play();
                         for(let i=0;i!=4;i++){
                             currentState.bios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
@@ -901,6 +912,7 @@
         function gameOver() {
             isGameOver = true;
             (new Audio("assets/ambulance.mp3")).play();
+            (new Audio("assets/gameOver.mp3")).play();
             gameOverMessage.style.display = 'block';
             gameWrapper.classList.add('game-over-backdrop');
             document.removeEventListener('keydown', handleKeyDown);
@@ -938,6 +950,7 @@
             if (newState.playerCar.occupied) return newState; 
             if (newState.cars.some(c => c.x === x && c.y === y) || newState.buses.some(b => b.x === x && b.y === y)) {
                 if (newState.playerStatus=='alive') (new Audio("assets/crash.mp3")).play();
+                if (newState.playerStatus=='alive') (new Audio("assets/death.mp3")).play();
                 newState.playerStatus = 'dead';
             }
             if (newState.strangers_blue.some(c => c.x === x && c.y === y && ! c.isDead)) {
@@ -948,7 +961,7 @@
             }
             if (newState.strangers_black.some(c => c.x === x && c.y === y && ! c.isDead)) {
                 newState.playerStatus = 'dead';
-                //if (newState.playerStatus=='alive') (new Audio("assets/crash.mp3")).play();TODO
+                if (newState.playerStatus=='alive') (new Audio("assets/death.mp3")).play();
             }
             return newState;
         }
@@ -961,6 +974,7 @@
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
                     if (isMusic) (new Audio("assets/crash.mp3")).play();
+                    (new Audio("assets/death.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -985,6 +999,7 @@
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
                     if (isMusic) (new Audio("assets/crash.mp3")).play();
+                    (new Audio("assets/death.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -998,6 +1013,7 @@
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
                     if (isMusic) (new Audio("assets/crash.mp3")).play();
+                    (new Audio("assets/death.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -1011,6 +1027,7 @@
                             (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
                 if (hit) {
                     if (isMusic) (new Audio("assets/crash.mp3")).play();
+                    (new Audio("assets/death.mp3")).play();
                     s.isDead = true;
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
@@ -1025,6 +1042,7 @@
                 if (hit) {
                     if (isMusic) (new Audio("assets/crash.mp3")).play();
                     d.isDead = true;
+                    (new Audio("assets/bark.mp3")).play();
                     d.deathTimer = DEATH_TIMER;
                     newState.deadDucks.push({ ...d });
                 }
@@ -1058,6 +1076,7 @@
         function checkItemPickup(newState) {
             const { x, y } = newState.playerPos;
             if (x === newState.flagLocation.x && y === newState.flagLocation.y) {
+                (new Audio("assets/levelWin.mp3")).play();
                 nextLevel();
                 return newState;
             }
@@ -1065,41 +1084,49 @@
             if (moneyIndex !== -1) {
                 newState.inventory.money++;
                 newState.devicesOnBoard.money.splice(moneyIndex, 1);
+                (new Audio("assets/money.mp3")).play();
             }
             const keyAIndex = newState.devicesOnBoard.keyA.findIndex(k => k.x === x && k.y === y);
             if (keyAIndex !== -1) {
                 newState.inventory.keyA=true;
                 newState.devicesOnBoard.keyA.splice(keyAIndex, 1);
+                (new Audio("assets/item.mp3")).play();
             }
             const keyBIndex = newState.devicesOnBoard.keyB.findIndex(k => k.x === x && k.y === y);
             if (keyBIndex !== -1) {
                 newState.inventory.keyB=true;
                 newState.devicesOnBoard.keyB.splice(keyBIndex, 1);
+                (new Audio("assets/item.mp3")).play();
             }
             const keyCIndex = newState.devicesOnBoard.keyC.findIndex(k => k.x === x && k.y === y);
             if (keyCIndex !== -1) {
                 newState.inventory.keyC=true;
                 newState.devicesOnBoard.keyC.splice(keyCIndex, 1);
+                (new Audio("assets/item.mp3")).play();
             }
             const RanIndex = newState.devicesOnBoard.R.findIndex(m => m.x === x && m.y === y);
             if (RanIndex !== -1) {
                 newState.inventory.R++;
                 newState.devicesOnBoard.R.splice(RanIndex, 1);
+                (new Audio("assets/item.mp3")).play();
             }
             const EigIndex = newState.devicesOnBoard.E.findIndex(m => m.x === x && m.y === y);
             if (EigIndex !== -1) {
                 newState.inventory.E++;
                 newState.devicesOnBoard.E.splice(EigIndex, 1);
+                (new Audio("assets/item.mp3")).play();
             }
             const ChronIndex = newState.devicesOnBoard.T.findIndex(m => m.x === x && m.y === y);
             if (ChronIndex !== -1) {
                 newState.inventory.T++;
                 newState.devicesOnBoard.T.splice(ChronIndex, 1);
+                (new Audio("assets/item.mp3")).play();
             }
             newState.infoLocations.forEach(m => {
                 if (m.x === x && m.y === y) {
                     showInfoModal(m.text);
                     newState.infoLocations.splice(newState.infoLocations.findIndex(w => w.x === x && w.y === y), 1);
+                    (new Audio("assets/hmm.mp3")).play();
                 }
             });
             const vacIndex = newState.devicesOnBoard.vac.findIndex(m => m.x === x && m.y === y);
@@ -1113,6 +1140,7 @@
                         if (newState.playerBioT<0) newState.playerBioT = 3; 
                     }
                     newState.devicesOnBoard.vac.splice(newState.devicesOnBoard.vac.findIndex(w => w.x === x && w.y === y), 1);
+                    (new Audio("assets/vac.mp3")).play();
                 }
             });
             }
@@ -1127,6 +1155,7 @@
                         if (newState.playerBioT<0) newState.playerBioT = 3; 
                     }
                     newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === x && w.y === y), 1);
+                    (new Audio("assets/med.mp3")).play();
                 }
             });
             }
@@ -1136,6 +1165,7 @@
                 if (m.x === x && m.y === y) {
                     newState.inventory.jacket = Math.random() < m.prEff;
                     newState.devicesOnBoard.jacket.splice(newState.devicesOnBoard.jacket.findIndex(w => w.x === x && w.y === y), 1);
+                    (new Audio("assets/jacket.mp3")).play();
                 }
             });
             }
@@ -1143,7 +1173,7 @@
         }
 
         function triggerExplosion(bomb, state, R=2, pr=1,trTyp='bomb') {
-            if (isMusic && trTyp=='bomb') (new Audio("assets/exp.mp3")).play();
+            //if (isMusic && trTyp=='bomb') (new Audio("assets/exp.mp3")).play();
             for (let ex = -R; ex <= R; ex++) {
                 for (let ey = -R; ey <= R; ey++) {
                     if (Math.random() <= 1-pr) continue;
@@ -1155,23 +1185,39 @@
                         }
                         if (state.playerPos.x === blastX && state.playerPos.y === blastY) {
                             if (trTyp=='bomb') state.playerStatus = 'dead';
+                            if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
                             if (trTyp=='bio' && state.playerBioT<0 && !state.inventory.vac) state.playerBioT = 9;
                             if (trTyp=='radio' && state.playerRadioT<0 && !state.inventory.jacket) state.playerRadioT = 7;
                         }
                         state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
                             if (trTyp=='bomb') s.isDead = true;
+                            if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
                             if (trTyp=='bio') s.isInfected = true;
+                            if (trTyp=='bio') (new Audio("assets/cough.mp3")).play();
                             if (s.isT<0 && !s.isDead) s.isT = 4;
                         }});
-                        state.strangers_blue.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
-                        state.strangers_black.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) s.isDead = true; });
+                        state.strangers_blue.forEach(s => {
+                            if (!s.isDead && s.x === blastX && s.y === blastY) {
+                                s.isDead = true;
+                                if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
+                            }
+                        });
+                        state.strangers_black.forEach(s => {
+                            if (!s.isDead && s.x === blastX && s.y === blastY) { 
+                                s.isDead = true;
+                                if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
+                            }
+                        });
                         state.strangers_gold.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
                             if (trTyp=='bomb') s.isDead = true;
+                            if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
                             if (trTyp=='bio') s.isInfected = true;
+                            if (trTyp=='bio') (new Audio("assets/cough.mp3")).play();
                             if (s.isT<0 && !s.isDead) s.isT = 6;
                         }});
                         state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) {
                             if (trTyp=='bomb') d.isDead = true;
+                            if (trTyp=='bomb') (new Audio("assets/bark.mp3")).play();
                             if (trTyp=='bio') d.isInfected = true;
                             if (d.isT<0 && !d.isDead) d.isT = 8; d.p=0.7;
                         }});
@@ -1209,6 +1255,7 @@
         }
 
         function showDefuseModal(bomb) {
+            (new Audio("assets/hmm.mp3")).play();
             activeBombToDefuse = bomb;
             defuseModal.style.display = 'block';
             document.removeEventListener('keydown', handleKeyDown);
@@ -1233,7 +1280,9 @@
             if (bomb) {
                 if (bomb.correctWire === chosenWire) {
                     currentState.bombs = currentState.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+                    (new Audio("assets/defuseBomb.mp3")).play();
                 } else {
+                    (new Audio("assets/defuseBombFailed.mp3")).play();
                     triggerExplosion(bomb, currentState);
                 }
             }
@@ -1266,6 +1315,7 @@
 
         function handleDealAttempt(chosenOpt) {
             //if (!activeBombToDefuse) return;
+            (new Audio("assets/deal.mp3")).play();
 
             const currentThreadId = threadIds[currentThreadIndex];
             const history = threadHistory[currentThreadId].history;
@@ -1399,6 +1449,7 @@
                                 showInfoModal("You're infected.");
                             } else {
                                 showInfoModal("You're healthy!");
+                                (new Audio("assets/hmm.mp3")).play();
                             }
                         } else {
                             handleCarInteraction();
@@ -1450,6 +1501,7 @@
                 }
             } else if (currentState.playerPos.x === currentState.playerCar.x && currentState.playerPos.y === currentState.playerCar.y) {
                 currentState.isDriving = true;
+                (new Audio("assets/honk.mp3")).play();
             }
 
             history.push(currentState);
@@ -1509,6 +1561,7 @@
             const currentState = deepClone(history.slice(-1)[0]);
             if (currentState.inventory.E > 0 && !currentState.eigengram.isOn) {
                 currentState.inventory.E--;
+                //(new Audio("assets/??.mp3")).play();TODO use eigengram sound
                 currentState.eigengram.isOn = true;
                 currentState.eigengram.lifetime = STARTING_LIFETIME;
                 history.push(currentState);
@@ -1524,6 +1577,7 @@
             const currentState = deepClone(history.slice(-1)[0]);
             if (currentState.inventory.T > 0 && !currentState.chronogram.isOn) {
                 currentState.inventory.T--;
+                (new Audio("assets/clock2.mp3")).play();
                 currentState.chronogram.isOn = true;
                 currentState.chronogram.lifetime = STARTING_LIFETIME;
                 currentState.chronogram.savedState = deepClone(currentState);
@@ -1557,6 +1611,8 @@
                 newThreadIds.push(newPresentId, newPastId);
                 threadIds = sortThreadIds(newThreadIds);
                 currentThreadIndex = threadIds.indexOf(newPastId);
+                
+                (new Audio("assets/bell.mp3")).play();
                 
                 updateThreadIdDisplay();
                 drawGrid();

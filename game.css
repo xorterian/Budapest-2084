@@ -5,6 +5,7 @@
     --primary-color: #4a5568;
     --secondary-color: #e2e8f0;
     --accent-color: #38a169;
+    --grass-color: #388e3c;
     --text-color: #2d3748;
     --shadow-light: rgba(0, 0, 0, 0.1);
     --shadow-medium: rgba(0, 0, 0, 0.2);
@@ -184,7 +185,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    background-color: #388e3c;
+    background-color: var(--grass-color);/*#388e3c;*/
     border: 1px solid #333;
     box-sizing: border-box;
     position: relative;

@@ -140,6 +140,36 @@ var _ = () => {
     
     if (isMusic) document.getElementById("music").src = music[(currentLevel || 0) % music.length];
     if (isMusic) document.getElementById("music").play();
+    weatherType = levels[currentLevel].weatherType || 0;
+    if (isMusic && weatherType) {
+        document.getElementById("weather").src = weatherMusic[(weatherType-1) % weatherMusic.length];
+        //alert(weatherMusic[weatherType % weatherMusic.length]);
+        switch (weatherType) {
+            case 1: 
+                document.querySelector(":root").style.setProperty("--grass-color","#388e3c");
+                break;
+            case 2: 
+                document.querySelector(":root").style.setProperty("--grass-color","#336e2c");
+                break;
+            case 3:
+                document.querySelector(":root").style.setProperty("--grass-color","darkgray");
+                break;
+            case 4: 
+                document.querySelector(":root").style.setProperty("--grass-color","#452121");
+                break;
+            case 5: 
+                document.querySelector(":root").style.setProperty("--grass-color","#1f1f1f");
+                break;
+            default:
+                document.querySelector(":root").style.setProperty("--grass-color","#388e3c");
+                break;
+        }
+        document.getElementById("weather").play();
+    } else {
+        document.querySelector(":root").style.setProperty("--grass-color","#388e3c");
+        document.getElementById("weather").src = "";
+        //document.getElementById("weather").stop();
+    }
     
 
     drawGrid();

@@ -17,6 +17,8 @@ if (playerDesiredMove) {
         updatedState.playerPos.x = newX;
         updatedState.playerPos.y = newY;
         updatedState.lastMoveDirection = { x: dx, y: dy };
+    } else {
+        (new Audio("assets/boing.mp3")).play();
     }
     if (updatedState.isDriving) {
         updatedState.playerCar.x = updatedState.playerPos.x;
@@ -66,6 +68,7 @@ if (updatedState.playerStatus !== 'dead') {
         const nX = s.x + s.dx, nY = s.y + s.dy;
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
+        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/sniffle.mp3")).play();
     });
     updatedState.strangers_blue.forEach(s => {
         if (s.isDead) return;
@@ -81,6 +84,7 @@ if (updatedState.playerStatus !== 'dead') {
         const nX = s.x + s.dx, nY = s.y + s.dy;
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
+        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/lipSmack.mp3")).play();
     });
     updatedState.strangers_black.forEach(s => {
         if (s.isDead) return;
@@ -111,6 +115,7 @@ if (updatedState.playerStatus !== 'dead') {
         const nX = s.x + s.dx, nY = s.y + s.dy;
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
+        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/dogSnarl.mp3")).play();
     });
     updatedState.ducks.forEach(d => {
         if (d.isDead) return;
@@ -139,6 +144,7 @@ if (updatedState.playerStatus !== 'dead') {
         } else {
             d.x = nX; d.y = nY;
         }
+        if (d.x==updatedState.playerPos.x && d.y==updatedState.playerPos.y) (new Audio("assets/dogBreath.mp3")).play();
     });
     updatedState.trapBuildings.forEach(tp => {
         if (!tp.stopped) {
@@ -148,7 +154,7 @@ if (updatedState.playerStatus !== 'dead') {
                 tp.stopDuration = 10;
                 tp.ranSource.shift();
                 tp.ranSource.push(Math.random()<tp.p);
-                (new Audio("assets/clock2.mp3")).play();
+                (new Audio("assets/clock.mp3")).play();
             }
         } else if (--tp.stopDuration <= 0) tp.stopped = false;
         
@@ -161,6 +167,7 @@ if (updatedState.playerStatus !== 'dead') {
     updatedState.bombs = updatedState.bombs.filter(b => {
         if (--b.timer <= 0) {
             explodingBombs.push(b);
+            (new Audio("assets/beepExp.mp3")).play();
             return false;
         }
         return true;
@@ -175,10 +182,12 @@ if (updatedState.playerStatus !== 'dead') {
 
 
     if (updatedState.eigengram.isOn && --updatedState.eigengram.lifetime <= 0) {
+        (new Audio("assets/discharge.mp3")).play();
         updatedState.eigengram.isOn = false;
         eigengramSourceThreadId = null;
     }
     if (updatedState.chronogram.isOn && --updatedState.chronogram.lifetime <= 0) {
+        (new Audio("assets/discharge.mp3")).play();
         updatedState.chronogram.isOn = false;
     }
 }
