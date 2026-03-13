@@ -979,6 +979,18 @@
                     s.deathTimer = DEATH_TIMER;
                     newState.deadStrangers.push({ ...s });
                 }
+                if (newState.devicesOnBoard.med.some(m => m.x === s.x && m.y === s.y)) {
+                    m = newState.devicesOnBoard.med[newState.devicesOnBoard.med.findIndex(w => w.x === s.x && w.y === s.y)];
+                    if (Math.random()<m.prSide) {
+                        s.isT = 3;
+                        s.isInfected = true;
+                    }
+                    if (Math.random()<m.prEff) {
+                        s.isT = -1;
+                        s.isInfected = false;
+                    }
+                    newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === s.x && w.y === s.y), 1);
+                }
                 if (s.isInfected) {
                     for(let dx=-1;dx!=1;dx++){for(let dy=-1;dy!=1;dy++){
                             if (Math.random()<.2) continue;
@@ -1192,9 +1204,15 @@
                         state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
                             if (trTyp=='bomb') s.isDead = true;
                             if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
-                            if (trTyp=='bio') s.isInfected = true;
-                            if (trTyp=='bio') (new Audio("assets/cough.mp3")).play();
-                            if (s.isT<0 && !s.isDead) s.isT = 4;
+                            if (trTyp=='bio' || trTyp=='radio') {
+                                s.isInfected = true;
+                                if (s.isT<0 && !s.isDead) {
+                                    (new Audio("assets/cough.mp3")).play();
+                                    s.isT = 50;
+                                    s.p = .7;
+                                }
+                            }
+                            //if (s.isT<0 && !s.isDead) s.isT = 4;
                         }});
                         state.strangers_blue.forEach(s => {
                             if (!s.isDead && s.x === blastX && s.y === blastY) {
@@ -1211,15 +1229,26 @@
                         state.strangers_gold.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
                             if (trTyp=='bomb') s.isDead = true;
                             if (isMusic && trTyp=='bomb') (new Audio("assets/death.mp3")).play();
-                            if (trTyp=='bio') s.isInfected = true;
-                            if (trTyp=='bio') (new Audio("assets/cough.mp3")).play();
-                            if (s.isT<0 && !s.isDead) s.isT = 6;
+                            if (trTyp=='bio' || trTyp=='radio') {
+                                s.isInfected = true;
+                                if (s.isT<0 && !s.isDead) {
+                                    (new Audio("assets/cough.mp3")).play();
+                                    s.isT = 15;
+                                }
+                            }
                         }});
                         state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) {
                             if (trTyp=='bomb') d.isDead = true;
                             if (trTyp=='bomb') (new Audio("assets/bark.mp3")).play();
-                            if (trTyp=='bio') d.isInfected = true;
-                            if (d.isT<0 && !d.isDead) d.isT = 8; d.p=0.7;
+                            if (trTyp=='bio' || trTyp=='radio') d.isInfected = true;
+                            if (trTyp=='bio' || trTyp=='radio') {
+                                d.isInfected = true;
+                                if (d.isT<0 && !d.isDead) {
+                                    d.isT = 15;
+                                    d.p=0.7;
+                                }
+                            }
+                            //if (d.isT<0 && !d.isDead) d.isT = 8; d.p=0.7;
                         }});
                     }
                 }

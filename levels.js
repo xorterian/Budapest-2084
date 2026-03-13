@@ -1,6 +1,38 @@
 // --- LEVELS DEFINITION ---
 const levels = [
-
+    /*
+    // Level 25: Hops in time
+    {
+        playerPos: { x: 3, y: 0 },
+        flagLocation: { x: 6, y: 6 },
+        roadLayout: [
+            { type: 'horizontal', y: 1 },
+            { type: 'horizontal', y: 3 }
+        ],
+        wallLayout: [
+            {x:0,y:0},{x:1,y:0},{x:2,y:0},{x:4,y:0},{x:6,y:0},{x:7,y:0},
+            {x:0,y:2},{x:1,y:2},{x:2,y:2},{x:3,y:2},{x:4,y:2},{x:5,y:2},{x:7,y:2},
+            {x:0,y:4},{x:2,y:4},{x:4,y:4},{x:6,y:4},
+            {x:0,y:5},{x:2,y:5},{x:3,y:5},{x:4,y:5},{x:5,y:5},{x:6,y:5},{x:7,y:5}
+            
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        houseLocations: [{ x: 7, y: 4 }],
+        initialMoneyLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
+        initialCarLocations: [
+            { x: 1, y: 1, dx: -1, isPlayerCar: false },
+            { x: 0, y: 1, dx: -1, isPlayerCar: false },
+            { x: 0, y: 3, dx: 1, isPlayerCar: false },
+            { x: 6, y: 3, dx: 1, isPlayerCar: false }
+        ],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x:5,y:0,t:10},{x:5,y:4,t:10},] },
+        infoLocations: []
+    },*/
     // Level 1: The ducg crossing the road. 
     {
         playerPos: { x: 1, y: 1 },
@@ -142,6 +174,7 @@ const levels = [
     },
     // Level 5: The Key 
     {
+        weatherType: 2,
         playerPos: { x: 1, y: 6 },
         flagLocation: { x: 6, y: 6 },
         roadLayout: [
@@ -222,6 +255,7 @@ const levels = [
     },
     // Level 7: The Deal
     {
+        weatherType: 3,
         playerPos: { x: 4, y: 0 },
         flagLocation: { x: 0, y: 7 },
         roadLayout: [
@@ -305,6 +339,7 @@ const levels = [
     },
     // Level 9: Keep your otherselves
     {
+        weatherType: 1,
         playerPos: { x: 4, y: 4 },
         flagLocation: { x: 6, y: 6 },
         roadLayout: [
@@ -349,6 +384,7 @@ const levels = [
     },
     // Level 10: The Three-door
     {
+        weatherType: 4,
         playerPos: { x: 3, y: 6 },
         flagLocation: { x: 3, y: 0 },
         roadLayout: [],
@@ -449,6 +485,7 @@ const levels = [
     },
     // Level 13: The Self-destruction Button
     {
+        weatherType: 3,
         playerPos: { x: 1, y: 1 },
         flagLocation: { x: 6, y: 1 },
         roadLayout: [],
@@ -466,6 +503,7 @@ const levels = [
     },
     // Level 14: The Gate-puzzle
     {
+        weatherType: 5,
         playerPos: { x: 7, y: 0 },
         flagLocation: { x: 0, y: 0 },
         roadLayout: [
@@ -543,6 +581,7 @@ const levels = [
     },
     // Level 16: The Medications
     {
+        weatherType: 2,
         playerPos: { x: 0, y: 1 },
         flagLocation: { x: 7, y: 1 },
         roadLayout: [],
@@ -581,6 +620,7 @@ const levels = [
     },
     // Level 17: Infected otherself's key
     {
+        weatherType: 3,
         playerPos: { x: 1, y: 1 },
         flagLocation: { x: 4, y: 0 },
         roadLayout: [],
@@ -605,6 +645,7 @@ const levels = [
     },
     // Level 18: The PCR test
     {
+        weatherType: 2,
         playerPos: { x: 5, y: 4 },
         flagLocation: { x: 7, y: 3 },
         roadLayout: [],
@@ -645,6 +686,7 @@ const levels = [
     },
     // Level 19: The Chronogram
     {
+        weatherType: 5,
         playerPos: { x: 5, y: 7 },
         flagLocation: { x: 4, y: 1 },
         roadLayout: [],
@@ -725,7 +767,7 @@ const levels = [
         initialDuckLocations: [],
         radios: [{x: 4, y: 6}],
         initialMedLocations: [
-            {x: 1, y: 7, prSide: .01, prEff: 0.99, color: "red", con: 1},{x: 1, y: 5, prSide: .01, prEff: 0.99, con: -1},
+            {x: 1, y: 7, prSide: .5, prEff: 0.5, color: "red", con: 1},{x: 1, y: 5, prSide: .5, prEff: 0.5, con: -1},
             {x: 7, y: 6, prSide: .01, prEff: 0.99, color: "white"}
         ],
         testers: [{x: 0, y: 7},{x: 0, y: 5}],
@@ -752,12 +794,12 @@ const levels = [
         ],
         desktopLayout: [{x: 4, y: 2, n: 1},{x: 4, y: 5, n: 3}],
         initialMedLocations: [
-            {x: 6, y: 1, prSide: .01, prEff: 0.99, color: "yellow", con: 1},
-            {x: 6, y: 6, prSide: .01, prEff: 0.99, color: "brown", con: -1}
+            {x: 6, y: 1, prSide: .5, prEff: .5, color: "yellow", con: 1},
+            {x: 6, y: 6, prSide: .5, prEff: .5, color: "brown", con: -1}
         ],
         initialVacLocations: [
-            {x: 4, y: 1, prSide: .01, prEff: 0.99, color: "yellow", con: 1},
-            {x: 4, y: 6, prSide: .01, prEff: 0.99, color: "brown", con: -1}
+            {x: 4, y: 1, prSide: .5, prEff: .5, color: "yellow", con: 1},
+            {x: 4, y: 6, prSide: .5, prEff: .5, color: "brown", con: -1}
         ],
         bios: [{x: 1, y: 7},{x: 1, y: 5},{x: 0, y: 3}],
         initialKeyALocations: [{x: 3, y: 2}],
@@ -799,6 +841,111 @@ const levels = [
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []
+    },
+    // Level 24: Experiment on yourself 
+    {
+        playerPos: { x: 1, y: 3 },
+        flagLocation: { x: 7, y: 5 },
+        roadLayout: [],
+        wallLayout: [
+            {x:2,y:1},{x:3,y:1},{x:4,y:1},{x:5,y:1},{x:6,y:1},
+            {x:2,y:2},{x:6,y:2},
+            {x:2,y:3},{x:4,y:3},{x:5,y:3},{x:6,y:3},
+            {x:2,y:4},{x:6,y:4},
+            {x:2,y:5},{x:4,y:5},{x:5,y:5},{x:6,y:5},
+            {x:2,y:6},{x:6,y:6},
+            {x:2,y:7},{x:3,y:7},{x:4,y:7},{x:5,y:7},{x:6,y:7}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [
+            {x:3,y:3,n:2},{x:3,y:5,n:3},
+            {x:4,y:4,n:1},{x:4,y:2,n:1},{x:4,y:6,n:1}
+        ],
+        desktopLayout: [{x:0,y:5,n:1},{x:0,y:6,n:2},{x:0,y:7,n:3}],
+        initialKeyALocations: [{x: 1, y: 5}],
+        initialKeyBLocations: [{x: 1, y: 6}],
+        initialKeyCLocations: [{x: 1, y: 7}],
+        initialStrangerLocations: [{x:3,y:4,dx:0,dy:0,isDead:false}],
+        bios: [{x:3,y:0},{x:3,y:0},{x:6,y:0},{x:7,y:1}],
+        radios: [{x:5,y:4}],
+        testers: [{x:1,y:1}],
+        initialMedLocations: [
+            {x: 0, y: 1, prSide: 0, prEff: .5, color: "pink", con: 1},
+            {x: 0, y: 2, prSide: 0, prEff: .5, color: "blue", con: -1},
+            {x: 3, y: 2, prSide: .5, prEff: .5, color: "pink", con: 1},
+            {x: 3, y: 6, prSide: .5, prEff: .5, color: "blue", con: -1},
+            {x: 5, y: 2, prSide: 0, prEff: .5, color: "yellow", con: 2},
+            {x: 5, y: 6, prSide: 0, prEff: .5, color: "cyan", con: -2}
+        ],
+        initialVacLocations: [
+            {x: 0, y: 3, prSide: 0, prEff: .5, color: "yellow", con: 2},
+            {x: 0, y: 4, prSide: 0, prEff: .5, color: "cyan", con: -2}
+        ],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: []
+    },
+    // Level 26: Optimization 
+    {
+        playerPos: { x: 2, y: 7 },
+        flagLocation: { x: 0, y: 1 },
+        roadLayout: [],
+        wallLayout: [
+            {x:0,y:2},{x:1,y:2},{x:2,y:2},{x:3,y:2},{x:4,y:2},{x:5,y:2},{x:6,y:2},
+            {x:2,y:1},{x:6,y:1},
+            {x:4,y:0}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
+        initialVacLocations: [
+            {x: 1, y: 4, prSide: .8, prEff: .8, color: "#1010cc"},
+                {x: 2, y: 5, prSide: .7, prEff: .7, color: "#1010aa"},
+            {x: 3, y: 4, prSide: .5, prEff: .5, color: "#101088"},
+                {x: 4, y: 5, prSide: .3, prEff: .3, color: "#101066"},
+            {x: 5, y: 4, prSide: .2, prEff: .2, color: "#101044"},
+        ],
+        radios: [{x:3,y:1},{x:5,y:1}],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x:5,y:7},{x:6,y:7}], 'E': [ ], 'T': [ ] },
+        infoLocations: [
+            {x:0,y:6, text:"The vaccinations shares the same probability for deadly side effects and efficiency from the strongest on the left side to the weakest on the right side. In percentages it means: 80%, 70%, 50%, 30% and 20%."},
+            {x:0,y:0, text:"You should have known the fact that there are no vaccinations for radiations but medications. Only the QRGs could increase your chances to go through alive. It's a special suit that can protect you from radiations!"}
+        ]
+    },
+    // Level 27: The Anti-radiation Suit
+    {
+        playerPos: { x: 3, y: 1 },
+        flagLocation: { x: 6, y: 1 },
+        roadLayout: [
+            { type: 'horizontal', y: 7 },
+            { type: 'horizontal', y: 6 },
+            { type: 'horizontal', y: 5 },
+            { type: 'horizontal', y: 4 }
+        ],
+        wallLayout: [
+            {x:0,y:4},{x:1,y:4},{x:2,y:4},{x:5,y:4},{x:6,y:4},{x:7,y:4},
+            {x:0,y:5},{x:1,y:5},{x:2,y:5},{x:5,y:5},{x:6,y:5},{x:7,y:5},
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [
+            {x:0,y:7},{x:1,y:6},{x:2,y:7},
+            {x:5,y:6},{x:6,y:7},{x:7,y:6}
+        ],
+        doorLayout: [],
+        desktopLayout: [],
+        initialDuckLocations: [],
+        radios: [{x:3,y:5},{x:4,y:6}],
+        initialJacketLocations: [{x: 1, y: 1, prSide: .01, prEff: .99}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x:2,y:2,text:"That suit can save you from the radiation indeed. Feel free to try it out."}]
     },
     // Level i: 
     {

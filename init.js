@@ -117,9 +117,14 @@ var _ = () => {
     levelData.con = [Math.random()<.5,Math.random()<.5,Math.random()<.5];
     levelData.devicesOnBoard.med.forEach(m => {
         if (m.con) {
-            m.prSide = levelData.con[Math.abs(m.con)];
-            if (m.con<0) m.prSide = 1-m.prSide;
-            m.prEff = 1-m.prSide;
+            if (m.prSide) {
+                m.prSide = levelData.con[Math.abs(m.con)];
+                if (m.con<0) m.prSide = 1-m.prSide;
+                m.prEff = 1-m.prSide;
+            } else {
+                m.prEff = levelData.con[Math.abs(m.con)];
+                if (m.con>0) m.prEff = 1-m.prEff; 
+            }
         } else {
             m.prEff = Math.random() < m.prEff;
             m.prSide = Math.random() < m.prSide;
