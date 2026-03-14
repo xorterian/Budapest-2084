@@ -18,7 +18,7 @@ if (playerDesiredMove) {
         updatedState.playerPos.y = newY;
         updatedState.lastMoveDirection = { x: dx, y: dy };
     } else {
-        (new Audio("assets/boing.mp3")).play();
+        (new Audio("assets/sound-effects/boing.mp3")).play();
     }
     if (updatedState.isDriving) {
         updatedState.playerCar.x = updatedState.playerPos.x;
@@ -35,7 +35,7 @@ if (updatedState.playerStatus !== 'dead') {
         c.y += c.dy || 0;
         if (c.y < 0) c.y = GRID_SIZE - 1;
         if (c.y >= GRID_SIZE) c.y = 0;
-        if (Math.abs(c.x-updatedState.playerPos.x)+Math.abs(c.y-updatedState.playerPos.y)==1) (new Audio("assets/WetDriveBy.mp3")).play();
+        if (Math.abs(c.x-updatedState.playerPos.x)+Math.abs(c.y-updatedState.playerPos.y)==1) (new Audio("assets/sound-effects/WetDriveBy.mp3")).play();
     });
     updatedState.buses.forEach(b => {
         if (!b.stopped) {
@@ -51,7 +51,7 @@ if (updatedState.playerStatus !== 'dead') {
             }
             b.ranSource.shift();
             b.ranSource.push(Math.random()<b.p);
-            if (Math.abs(b.x-updatedState.playerPos.x)+Math.abs(b.y-updatedState.playerPos.y)==1) (new Audio("assets/WetDriveBy.mp3")).play();
+            if (Math.abs(b.x-updatedState.playerPos.x)+Math.abs(b.y-updatedState.playerPos.y)==1) (new Audio("assets/sound-effects/WetDriveBy.mp3")).play();
         } else if (--b.stopDuration <= 0) b.stopped = false;
     });
     updatedState.strangers.forEach(s => {
@@ -68,7 +68,7 @@ if (updatedState.playerStatus !== 'dead') {
         const nX = s.x + s.dx, nY = s.y + s.dy;
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
-        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/sniffle.mp3")).play();
+        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/sound-effects/sniffle.mp3")).play();
     });
     updatedState.strangers_blue.forEach(s => {
         if (s.isDead) return;
@@ -84,7 +84,7 @@ if (updatedState.playerStatus !== 'dead') {
         const nX = s.x + s.dx, nY = s.y + s.dy;
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
-        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/lipSmack.mp3")).play();
+        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/sound-effects/lipSmack.mp3")).play();
     });
     updatedState.strangers_black.forEach(s => {
         if (s.isDead) return;
@@ -115,7 +115,7 @@ if (updatedState.playerStatus !== 'dead') {
         const nX = s.x + s.dx, nY = s.y + s.dy;
         if (isObstacle(nX, nY, updatedState.grid)) { s.dx *= -1; s.dy *= -1; }
         else { s.x = nX; s.y = nY; }
-        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/dogSnarl.mp3")).play();
+        if (s.x==updatedState.playerPos.x && s.y==updatedState.playerPos.y) (new Audio("assets/sound-effects/dogSnarl.mp3")).play();
     });
     updatedState.ducks.forEach(d => {
         if (d.isDead) return;
@@ -144,7 +144,7 @@ if (updatedState.playerStatus !== 'dead') {
         } else {
             d.x = nX; d.y = nY;
         }
-        if (d.x==updatedState.playerPos.x && d.y==updatedState.playerPos.y) (new Audio("assets/dogBreath.mp3")).play();
+        if (d.x==updatedState.playerPos.x && d.y==updatedState.playerPos.y) (new Audio("assets/sound-effects/dogBreath.mp3")).play();
     });
     updatedState.trapBuildings.forEach(tp => {
         if (!tp.stopped) {
@@ -154,7 +154,7 @@ if (updatedState.playerStatus !== 'dead') {
                 tp.stopDuration = 10;
                 tp.ranSource.shift();
                 tp.ranSource.push(Math.random()<tp.p);
-                (new Audio("assets/clock.mp3")).play();
+                (new Audio("assets/sound-effects/clock.mp3")).play();
             }
         } else if (--tp.stopDuration <= 0) tp.stopped = false;
         
@@ -167,7 +167,7 @@ if (updatedState.playerStatus !== 'dead') {
     updatedState.bombs = updatedState.bombs.filter(b => {
         if (--b.timer <= 0) {
             explodingBombs.push(b);
-            (new Audio("assets/beepExp.mp3")).play();
+            (new Audio("assets/sound-effects/beepExp.mp3")).play();
             return false;
         }
         return true;
@@ -182,12 +182,12 @@ if (updatedState.playerStatus !== 'dead') {
 
 
     if (updatedState.eigengram.isOn && --updatedState.eigengram.lifetime <= 0) {
-        (new Audio("assets/discharge.mp3")).play();
+        (new Audio("assets/sound-effects/discharge.mp3")).play();
         updatedState.eigengram.isOn = false;
         eigengramSourceThreadId = null;
     }
     if (updatedState.chronogram.isOn && --updatedState.chronogram.lifetime <= 0) {
-        (new Audio("assets/discharge.mp3")).play();
+        (new Audio("assets/sound-effects/discharge.mp3")).play();
         updatedState.chronogram.isOn = false;
     }
 }

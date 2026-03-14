@@ -170,9 +170,10 @@ var _ = () => {
                 break;
         }
         document.getElementById("weather").play();
+        document.getElementById("weather").volume = 1;
     } else {
         document.querySelector(":root").style.setProperty("--grass-color","#388e3c");
-        document.getElementById("weather").src = "";
+        document.getElementById("weather").volume = 0;
         //document.getElementById("weather").stop();
     }
     
