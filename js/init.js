@@ -61,7 +61,7 @@ var _ = () => {
     });
     levelData.strangers_blue.forEach(s => {
         s.p = .5;
-        s.ranSource = [{dx:s.dx, dy:s.dy}];
+        if (!s.ranSource) s.ranSource = [{dx:s.dx, dy:s.dy}];
         const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
         for(i=1;i!=30;i++){
             if (Math.random()<s.p){
@@ -73,7 +73,7 @@ var _ = () => {
     });
     levelData.strangers_black.forEach(s => {
         s.p = .6;
-        s.ranSource = [{dx:s.dx, dy:s.dy}];
+        if (!s.ranSource) s.ranSource = [{dx:s.dx, dy:s.dy}];
         const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
         for(i=1;i!=5;i++){
             if (Math.random()<s.p){
@@ -87,7 +87,7 @@ var _ = () => {
         s.p = .2;
         if (!s.isT) s.isT = -1;
         if (s.isInfected) s.p+=.1;
-        s.ranSource = [{dx:s.dx, dy:s.dy}];
+        if (!s.ranSource) s.ranSource = [{dx:s.dx, dy:s.dy}];
         const dirs = [{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}];
         for(i=1;i!=20;i++){
             if (Math.random()<s.p){
@@ -138,6 +138,12 @@ var _ = () => {
         } else {
             m.prEff = Math.random() < m.prEff;
             m.prSide = Math.random() < m.prSide;
+        }
+    });
+    levelData.desktopLayout.forEach(m => {
+        if (m.con) {
+            m.n = 1+levelData.con[Math.abs(m.con)];
+            if (m.con<0) m.n = 3-m.n; 
         }
     });
     //... TODO

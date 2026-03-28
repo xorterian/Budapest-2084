@@ -1,5 +1,48 @@
 // --- LEVELS DEFINITION ---
 const levels = [
+    // Level 30: 
+    {
+        playerPos: { x: 0, y: 1 },
+        flagLocation: { x: 6, y: 6 },
+        roadLayout: [],
+        wallLayout: [],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: []
+    },
+    // Level 31: 
+    {
+        playerPos: { x: 2, y: 2 },
+        flagLocation: { x: 7, y: 6 },
+        roadLayout: [],
+        wallLayout: [
+            {x:0,y:1},{x:1,y:1},{x:2,y:1},{x:3,y:1},{x:4,y:1},
+            {x:1,y:5},{x:3,y:5},
+            {x:5,y:4},{x:5,y:5},{x:5,y:6}//,{x:5,y:7}
+        ],
+        houseLocations: [{x:5,y:1}],
+        trapBuildingLayout: [{x:5,y:7}],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [{x:6,y:4,n:3},{x:7,y:4,n:3}],
+        desktopLayout: [{x:0,y:0,n:3}],
+        initialKeyCLocations: [{x: 2, y: 7}],        
+        initialStrangerBlackLocations: [
+            {x:1,y:4,dx:0,dy:0,isDead:false, ranSource: [{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0}, {dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0}]},
+            {x:3,y:4,dx:0,dy:0,isDead:false, ranSource: [{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0}, {dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:1},{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:-1,dy:0}]},
+            {x:3,y:0,dx:0,dy:0,isDead:false, ranSource: [{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0},{dx:1,dy:0}]}
+        ],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [{x:4,y:2}], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x:0,y:2,text:"From this point, the secret police applies eigengrams to catch you. Only one of the fake IDs can trick them but after you caught in a time-thread, they will seek for you in the others as well."}]
+    },
     /*
     // Level 25: Hops in time
     {
@@ -77,7 +120,7 @@ const levels = [
         ],
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
-        ],                        
+        ],
         initialCarLocations: [],
         initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
@@ -118,7 +161,7 @@ const levels = [
         initialDuckLocations: [],
         initialStrangerLocations: [
             { x: 4, y: 7, dx: 0, dy: -1, isDead: false }
-        ],                        
+        ],
         initialCarLocations: [
             { x: 7, y: 4, dx: -1, isPlayerCar: false },
             { x: 3, y: 3, dx: -1, isPlayerCar: false }
@@ -165,7 +208,7 @@ const levels = [
         initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [],                                
+        initialDuckLocations: [],        
         initialCarLocations: [],
         initialBusLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
@@ -201,7 +244,7 @@ const levels = [
         initialDuckLocations: [],        
         initialStrangerBlueLocations: [
                 { x: 6, y: 5, dx: -1, dy: 0, isDead: false }
-        ],                
+        ],
         initialCarLocations: [
             { x: 3, y: 3, dx: 0, dy: 1, isPlayerCar: false }
         ],
@@ -240,7 +283,7 @@ const levels = [
         initialMoneyLocations: [],
         doorLayout: [],
         desktopLayout: [],
-        initialDuckLocations: [],                
+        initialDuckLocations: [],
         initialStrangerBlackLocations: [
                 { x: 1, y: 6, dx: -1, dy: 0, isDead: false },
                 { x: 3, y: 7, dx: 0, dy: -1, isDead: false },
@@ -702,10 +745,10 @@ const levels = [
         doorLayout: [{x: 3, y: 6, n: 3},{x: 3, y: 5, n: 3},{x: 3, y: 4, n: 3}],
         initialKeyCLocations: [{x: 7, y: 2}],
         desktopLayout: [{x: 3, y: 7, n: 3},{x: 3, y: 3, n: 3}],
-        initialDuckLocations: [],                           
+        initialDuckLocations: [],   
         initialStrangerBlackLocations: [
-            { x: 0, y: 0, dx: 0, dy: 1, isDead: false },
-            { x: 0, y: 1, dx: 0, dy: 1, isDead: false }
+            { x: 0, y: 0, dx: 0, dy: 1, isDead: false, ranSource: [{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:1, dy:0},{dx:1, dy:0},{dx:1, dy:0},{dx:1, dy:0},{dx:1, dy:0},{dx:1, dy:0},{dx:1, dy:0},{dx:0, dy:-1},{dx:0, dy:-1},{dx:0, dy:-1},{dx:0, dy:-1},{dx:0, dy:-1},{dx:0, dy:-1},{dx:0, dy:-1}] },
+            { x: 0, y: 1, dx: 0, dy: 1, isDead: false, ranSource: [{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:0, dy:1},{dx:1, dy:0},{dx:1, dy:0},{dx:1, dy:0},{dx:0, dy:-1},{dx:1, dy:0},{dx:0, dy:-1},{dx:1, dy:0},{dx:0, dy:-1},{dx:1, dy:0},{dx:0, dy:-1}] }
         ],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x: 0, y: 7, t: 12}] },
@@ -947,6 +990,185 @@ const levels = [
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: [{x:2,y:2,text:"That suit can save you from the radiation indeed. Feel free to try it out."}]
     },
+    // Level 28: Turning into secret police 
+    {
+        playerPos: { x: 6, y: 0 },
+        flagLocation: { x: 3, y: 1 },
+        roadLayout: [
+            { type: 'vertical', x: 3 },
+            { type: 'horizontal', y: 2 },
+            { type: 'horizontal', y: 4 }
+        ],
+        wallLayout: [{x:4, y: 0},{x:2, y: 1},{x:4, y: 1},{x:2, y: 2},{x:4, y: 2},{x:2, y: 3},{x:4, y: 3},
+                {x:2, y: 4},{x:4, y: 4},{x:2, y: 5},{x:4, y: 5},
+                {x:1, y: 5},
+                {x:5, y: 1},{x:5, y: 3},{x:5, y: 5},
+                {x:7, y: 1},{x:7, y: 3},{x:7, y: 5},],
+        trapBuildingLayout: [{x:2, y: 0},{x:1, y: 1},{x:1, y: 3}],
+        fenceLayout: [],
+        initialMoneyLocations: [{x:0,y:1},{x:0,y:1},{x:0,y:1}],
+        doorLayout: [{x:3,y:2,n:3}],
+        desktopLayout: [{x:5,y:0,n:3}],
+        initialKeyCLocations: [{x: 1, y: 0}],
+        initialStrangerBlueLocations: [
+            { x: 0, y: 2, dx: 1, dy: 0, isDead: false, ranSource: [{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0}, {dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0}, {dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0}] },
+            { x: 1, y: 4, dx: 1, dy: 0, isDead: false, ranSource: [{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0}, {dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0} ,{dx:1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:-1,dy:0}] },
+            { x: 7, y: 2, dx: -1, dy: 0, isDead: false, ranSource: [{dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}] },
+            { x: 5, y: 4, dx: 1, dy: 0, isDead: false, ranSource: [{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}, {dx:-1,dy:0},{dx:-1,dy:0},{dx:1,dy:0},{dx:1,dy:0}]}
+        ],
+        initialStrangerGoldLocations: [
+            { x: 7, y: 0, dx: 0, dy: 0, isDead: false, ranSource: [{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}, {dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}, {dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0},{dx:0,dy:0}] }
+        ],
+        initialDuckLocations: [],
+        initialCarLocations: [
+            { x: 0, y: 6, dx: 1, isPlayerCar: false }
+        ],
+        initialBusLocations: [
+            { x: 6, y: 6, dx: -1, stopped: false, stopDuration: 0 }
+        ],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: []
+    },
+    // Level 29: Choose door wisely
+    {
+        playerPos: { x: 1, y: 1 },
+        flagLocation: { x: 6, y: 0 },
+        roadLayout: [],
+        wallLayout: [{x:7,y:0},{x:7,y:1},{x:7,y:2},{x:7,y:3},{x:7,y:4},{x:7,y:5},{x:7,y:6},{x:7,y:7},
+            {x:0,y:4},{x:1,y:4},{x:2,y:4}, {x:4,y:4},{x:5,y:4},{x:6,y:4},
+            {x:1,y:5},{x:5,y:5}, {x:1,y:6},{x:5,y:6},
+            {x:3,y:6},{x:3,y:7}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [{x:4,y:1},{x:4,y:2},{x:4,y:3}],
+        initialMoneyLocations: [{x:2,y:5},{x:3,y:5},{x:4,y:5},{x:3,y:4},{x:3,y:3},{x:6,y:6}],
+        doorLayout: [{x:4,y:0,n:1},{x:5,y:1,n:2},{x:6,y:1,n:2}],
+        desktopLayout: [{x:0,y:3,n:0,con:1},{x:1,y:3,n:0,con:-1}],
+        initialDuckLocations: [],
+        initialStrangerBlackLocations: [
+            { x: 5, y: 2, dx: 0, dy: 0, isDead: false },
+            { x: 6, y: 2, dx: 0, dy: 0, isDead: false },
+            { x: 5, y: 3, dx: 0, dy: 0, isDead: false },
+            { x: 6, y: 3, dx: 0, dy: 0, isDead: false }
+        ],
+        initialStrangerGoldLocations: [
+            { x: 3, y: 0, dx: 0, dy: 0, isDead: false, business: ['deal-qrg','deal-suit','deal-id'] }
+        ],
+        initialKeyALocations: [{x: 0, y: 5}],
+        initialKeyBLocations: [{x: 6, y: 5}],
+        radios: [{x: 3, y: 7},{x: 3, y: 7}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x: 0, y: 0, text: "You cannot be sure which station connected to which gate."}]
+    },
+    // Level 32: The final decision
+    {
+        playerPos: { x: 3, y: 7 },
+        flagLocation: { x: 0, y: 1 },
+        roadLayout: [],
+        wallLayout: [
+            {x:0,y:3},{x:1,y:3},
+            {x:0,y:6},{x:1,y:6},
+            {x:2,y:1},{x:3,y:1},{x:4,y:1},{x:4,y:0},{x:4,y:1},{x:5,y:1},
+            {x:5,y:2},{x:5,y:3},{x:5,y:4},{x:5,y:5},
+            {x:3,y:5},{x:4,y:5}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [
+            {x:1,y:4,n:1},{x:1,y:5,n:1},
+            {x:1,y:2,n:2},
+            {x:3,y:2,n:1},{x:3,y:3,n:1},{x:3,y:4,n:1}
+        ],
+        desktopLayout: [
+            {x:6,y:0,n:1},{x:7,y:0,n:2},{x:0,y:7,n:-3}
+        ],
+        initialKeyALocations: [{x: 6, y: 1}],
+        initialKeyBLocations: [{x: 7, y: 1}],        
+        initialStrangerBlackLocations: [
+                {x:0,y:4,dx:0,dy:1,isDead: false},{x:0,y:5,dx:0,dy:-1,isDead: false},
+                {x:4,y:2,dx:0,dy:0,isDead: false},{x:4,y:3,dx:0,dy:0,isDead: false},{x:4,y:4,dx:0,dy:0,isDead: false},
+                {x:4,y:6,dx:0,dy:0,isDead: false, ranSource: [{dx:1,dy:0},{dx:1,dy:0},{dx:0,dy:-1},{dx:0,dy:-1},{dx:0,dy:-1},{dx:0,dy:-1},{dx:0,dy:-1},{dx:0,dy:-1},{dx:0,dy:1},{dx:0,dy:1},{dx:0,dy:1},{dx:0,dy:1},{dx:0,dy:1},{dx:0,dy:1},{dx:-1,dy:0}]},
+        ],
+        initialDuckLocations: [{x:2,y:0,dx:-1,dy:0,isDead:false}],
+        initialJacketLocations: [{x: 2, y: 4, prSide: 0, prEff: .99}],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x:1,y:7,text:"That secret police officer will open the gates for the other ones. Before that you can grab that anti-radiant suit and launch the atomic self-destruction of the world at the station next to you."}]
+    },
+    // Level 33: Final level - A 
+    {
+        playerPos: { x: 2, y: 2 },
+        flagLocation: { x: 1, y: 5 },
+        roadLayout: [],
+        wallLayout: [
+            {x:0,y:0},{x:1,y:0},{x:2,y:0},{x:3,y:0},{x:4,y:0},{x:5,y:0},{x:6,y:0},{x:7,y:0},
+            {x:0,y:3},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:4,y:3},
+            {x:0,y:4},{x:1,y:4},{x:2,y:4},{x:3,y:4},{x:4,y:4},
+            {x:0,y:7},{x:1,y:7},{x:2,y:7},{x:3,y:7},{x:4,y:7},{x:5,y:7},{x:6,y:7},{x:7,y:7}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
+        bios: [{x:0,y:0},{x:4,y:0},{x:6,y:0},{x:3,y:7}],
+        radios: [{x:3,y:0},{x:7,y:1},{x:1,y:7},{x:5,y:7},{x:0,y:4}],
+        initialDuckLocations: [{x:7,y:1,dx:0,dy:0,isDead:true},{x:0,y:6,dx:0,dy:0,isDead:true}],
+        initialStrangerLocations: [
+            {x:1,y:1,dx:0,dy:0,isDead:true},
+            //{x:3,y:1,dx:0,dy:0,isDead:true},
+            {x:6,y:1,dx:0,dy:0,isDead:true},
+            {x:7,y:2,dx:0,dy:0,isDead:true},
+            {x:5,y:4,dx:0,dy:0,isDead:true},
+            {x:2,y:5,dx:0,dy:0,isDead:true}
+            //{x:4,y:6,dx:0,dy:0,isDead:true},
+            //{x:7,y:6,dx:0,dy:0,isDead:true}
+        ],
+        initialStrangerBlueLocations: [
+            {x:3,y:1,dx:0,dy:0,isDead:true},
+            {x:7,y:6,dx:0,dy:0,isDead:true}
+        ],
+        initialStrangerBlackLocations: [
+            {x:4,y:6,dx:0,dy:0,isDead:true}
+        ],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x:7,y:5,text:"You nuked the world only to get your goal easier. Look around. Deads everywhere. Congratulation. You have no more enemies in the world, nor more real goals :("}]
+    },
+    // Level 33: Final level - B 
+    {
+        playerPos: { x: 2, y: 2 },
+        flagLocation: { x: 1, y: 5 },
+        roadLayout: [],
+        wallLayout: [
+            {x:0,y:0},{x:1,y:0},{x:2,y:0},{x:3,y:0},{x:4,y:0},{x:5,y:0},{x:6,y:0},{x:7,y:0},
+            {x:0,y:3},{x:1,y:3},{x:2,y:3},{x:3,y:3},{x:4,y:3},
+            {x:0,y:4},{x:1,y:4},{x:2,y:4},{x:3,y:4},{x:4,y:4},
+            {x:0,y:7},{x:1,y:7},{x:2,y:7},{x:3,y:7},{x:4,y:7},{x:5,y:7},{x:6,y:7},{x:7,y:7}
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        initialMoneyLocations: [],
+        doorLayout: [],
+        desktopLayout: [],
+        initialDuckLocations: [{x:7,y:1,dx:0,dy:0,isDead:false},{x:0,y:6,dx:0,dy:0,isDead:false}],
+        initialStrangerLocations: [
+            //{x:1,y:1,dx:0,dy:0,isDead:true},
+            //{x:3,y:1,dx:0,dy:0,isDead:true},
+            {x:6,y:1,dx:0,dy:0,isDead:false},
+            //{x:7,y:2,dx:0,dy:0,isDead:true},
+            //{x:5,y:4,dx:0,dy:0,isDead:true},
+            {x:2,y:5,dx:0,dy:0,isDead:false}
+            //{x:4,y:6,dx:0,dy:0,isDead:true},
+            //{x:7,y:6,dx:0,dy:0,isDead:true}
+        ],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: [{x:7,y:5,text:"You made a good decision. Enjoy your last, easy level in this world :)"}]
+    }/*,
     // Level i: 
     {
         playerPos: { x: 0, y: 1 },
@@ -962,6 +1184,6 @@ const levels = [
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
         infoLocations: []
-    }
+    }*/
 ];
 
