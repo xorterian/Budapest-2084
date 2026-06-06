@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budapest 2084</title>
+    <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+
+<div id="game-wrapper">
+    <div id="stats-container" class="stats-container">
+        <div id="time-counter" class="stat-box">Time: 0</div>
+        <div id="thread-id-display" class="stat-box">
+            <button id="prev-thread" disabled><img style="width:1rem; height:1rem;" src="css/svg/minus.svg"></button>
+            <span>Thread ID:</span>
+            <span id="current-thread">∅</span>
+            <button id="next-thread" disabled><img style="width:1rem; height:1rem;" src="css/svg/plus.svg"></button>
+        </div>
+        <div id="money-counter" class="stat-box"><img style="width:1rem; height:1rem;" src="css/svg/money-bill-alt.svg"><span id="money-amount">0</span></div>
+        <div id="level-counter" class="stat-box">Level: 1</div>
+        <div class="stat-box">
+          <img src="css/svg/keyA.svg" id="keyA" style="opacity: 0.3; width:1rem; height:1rem;">
+          <img src="css/svg/keyB.svg" id="keyB" style="opacity: 0.3; width:1rem; height:1rem; margin: -.3rem;">
+          <img src="css/svg/keyC.svg" id="keyC" style="opacity: 0.3; width:1rem; height:1rem;">
+        </div>
+        <!--<button id="help">Help</button>-->
+        <button id="settings"><img style="width:1rem; height:1rem;" src="css/svg/cog.svg"></button>
+    </div>
+    
+    <div id="audio-panel" style="display: none;">
+        <audio id="music" controls autoplay loop>
+            <source src="assets/music/music-01.mp3" type="audio/mpeg">
+            No audio supported :(
+        </audio>
+        <audio id="weather" controls autoplay loop>
+            <source src="assets/sound-weather/weatherRain.mp3" type="audio/mpeg">
+            No audio supported :(
+        </audio>
+    </div>
+    
+    <div id="main-content-area">
+        <div id="game-board"></div>
+        <div class="device-panel" id="device-panel">
+            <div class="device-section">
+                <div class="device-header with-btn">
+                    <span id="qrg-label">QRG</span>
+                    <button id="random-generator-btn" disabled>Branch</button>
+                </div>
+            </div>
+            
+            <div class="device-section">
+                <div class="device-header">
+                    <span id="eigengram-label">Eigengram</span>
+                    <div class="device-controls">
+                        <span id="eigengram-bolt-icon" style="display: block; align-content: center;">
+                        <img style="height: 1.2rem; margin-right: -.3rem;" src="css/svg/bolt.svg">
+                        <!--<i class="fas fa-bolt" style="font-size: 1.2em; color: gray;"></i>-->
+                        </span>
+                        <span id="eigengram-lifetime" style="display: none; align-content: center; font-size: 1.2em; margin-left:1.2rem; margin-right: -.4rem;"></span>
+                        <!--<span>Lifetime: <span id="eigengram-lifetime">0</span></span>-->
+                        <button id="eigengram-on-btn" class="device-icon-btn" disabled>
+                            <img id="eigengram-icon" height="70%" src="css/svg/lightbulb.svg">
+                            <!--<i id="eigengram-icon" class="fas fa-"></i>-->
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-section">
+                <div class="device-header">
+                    <span id="chronogram-label">Chronogram</span>
+                    <div class="device-controls">
+                        <!-- <span id="chronogram-lifetime">0</span> -->
+                        <div id="chronogram-button-group">
+                            <button id="send-back-btn" class="device-icon-btn" disabled style="border: 1.2em; background: burlywood;
+  color: ivory; margin-right:.4rem;">
+                                <img id="chronogram-icon" style="padding: .2em; height: 60%;" src="css/svg/clock.svg">
+                                <!--<i id="chronogram-icon" class="fas fa-clock" style="padding: .2em;"></i>-->
+                            </button>
+                            <span id="chronogram-bolt-icon" style="display: block; align-content: center;">
+                            <img style="height: 50%;" src="css/svg/bolt.svg">
+                            <!--<i class="fas fa-bolt" style="font-size: 1.2em; color: gray;"></i>-->
+                            </span>
+                            <span id="chronogram-lifetime" style="display: block; align-content: center; font-size: 1.2em; margin-left:1.2rem;"></span>
+                            <button id="chronogram-on-btn" class="device-icon-btn" disabled>
+                                <img id="chronogram-icon" height="70%" src="css/svg/lightbulb.svg">
+                                <!--<i id="chronogram-icon" class="fas fa-lightbulb"></i>-->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-section">
+                 <button id="throw-thread-btn">Throw thread!</button>
+            </div>
+        </div>
+    </div>
+    <div id="game-over-message">GAME OVER</br></br><button id="retry" style="background-color: #333;">Retry</button></div>
+    <div id="game-win-message">YOU WIN!</div>
+    <div id="defuse-modal">
+        <h3>Which wire to cut?</h3>
+        <div>
+            <button id="cut-black-wire" style="background-color: #333;">Black (B)</button>
+            <button id="cut-green-wire" style="background-color: var(--accent-color);">Green (G)</button>
+        </div>
+    </div>
+    <div id="deal-modal">
+        <h3>What to invest?</h3>
+        <p id="deal-qrg" style="text-align: right; display: none;">QRG:
+        <button id="get-r" style="background-color: var(--accent-color);">Buy (1)</button>
+        <button id="sell-r" style="background-color: var(--accent-color);">Sell (1)</button>
+        </p>
+        <p id="deal-eigengram" style="text-align: right; display: none;">Eigengram:
+        <button id="get-e" style="background-color: var(--accent-color);">Buy (5)</button>
+        <button id="sell-e" style="background-color: var(--accent-color);">Sell (3)</button>
+        </p>
+        <p id="deal-chronogram" style="text-align: right; display: none;">Chronogram:
+        <button id="get-t" style="background-color: var(--accent-color);">Buy (10)</button>
+        <button id="sell-t" style="background-color: var(--accent-color);">Sell (7)</button>
+        </p>
+        <p id="deal-vac" style="text-align: right; display: none;">Vaccination:
+        <button id="get-v" style="background-color: var(--accent-color);">Buy (5)</button>
+        <button id="sell-v" style="background-color: var(--accent-color);">Sell (1)</button>
+        </p>
+        <p id="deal-suit" style="text-align: right; display: none;">Anti-radiant suit:
+        <button id="get-s" style="background-color: var(--accent-color);">Buy (5)</button>
+        <button id="sell-s" style="background-color: var(--accent-color);">Sell (2)</button>
+        </p>
+        <p id="deal-id" style="text-align: right; display: none;">Fake ID:
+        <button id="get-id" style="background-color: var(--accent-color);">Buy (30)</button>
+        <button id="sell-id" style="background-color: var(--accent-color);">Sell (25)</button>
+        </p>
+        <p id="deal-car" style="text-align: right; display: none;">Car:
+        <button id="get-c" style="background-color: var(--accent-color);">Buy (100)</button>
+        <button id="sell-c" style="background-color: var(--accent-color);">Sell (70)</button>
+        </p>
+        <div style="text-align: left;">
+            <button id="get-out">Quit (Q)</button>
+        </div>
+    </div>
+    <div id="info-modal">
+        <h3 id="info-modal-title">Information</h3>
+        <p id="info-modal-text"></p>
+        <button id="info-modal-ok">OK</button>
+    </div>
+    <div id="pc-modal">
+        <h3 id="pc-modal-title">Computer Station</h3>
+        <p id="pc-modal-text"></p>
+        <button id="pc-modal-a">Open</button><button id="pc-modal-b">Close</button>
+    </div>
+    <div id="settings-modal">
+        <h3 id="settings-modal-title">Settings</h3>
+        <div id="settings-buttons-modal" style="text-align: center;">
+            <button id="new-game" style="background-color: var(--accent-color);" onclick="alert('new game :)');">New Game</button>
+            <button id="retry" style="background-color: var(--accent-color);">Retry Level</button>
+            <button id="button-sound" style="background-color: var(--accent-color);">Sound</button>
+            <button id="button-score" style="background-color: var(--accent-color);">Score</button>
+            <button id="settings-help" style="background-color: var(--accent-color);">Help</button>
+            <button id="settings-credits" style="background-color: var(--accent-color);">Credits</button>
+        </div>
+        <div id="settings-sound" style="text-align: right;">
+            Music: <button id="vol-music" style="background-color: var(--accent-color);" onclick="">ON</button></br>
+            Sound effects: <button id="vol-sound" style="background-color: var(--accent-color);" onclick="">ON</button></br>
+        </div>
+        <div id="settings-credit" style="text-align: left;">
+            The music is from YouTube Studio having CC0 licences. Although I wish to highlight the name of user, Silent Partner, whose compositions inspired me.</br>
+            The sound effects are from pixibay with similar licences. Thank them for sharing their great works.</br>
+            All the visual element is an Awesome Font icon with similar licences. Thank their great team.</br>
+            In the concept of 2<sup>continuum</sup> time-tree I was inspired by Hugh Everett physician and the sci-fi series Fringe.</br>
+            In this time-thread I, Kristof Vörös, implemented this application. :)</br> 
+            I also wish to say sorry for the ads.</br>
+        </div>
+        <div id="score" style="text-align: center;">
+            <h3>Scores</h3>
+            Simply you're the best :)</br>
+        </div>
+        <div style="text-align: right;"><button id="settings-back">Back</button></div>
+        <div style="text-align: right;"><button id="sub-settings-ok">Okay</button></div>
+    </div>
+    <div id="help-modal" style="width: 70%; font-size: .8em; text-align: justify;">
+        <div id="help-choose-modal" style="text-align: center;">
+            <h3>Choose</h3>
+            <button id="h-w" style="background-color: var(--accent-color);">World (W)</button>
+            <button id="h-s" style="background-color: var(--accent-color);">Story (S)</button></br>
+            <button id="h-i" style="background-color: var(--accent-color);">Items (I)</button>
+            <button id="h-p" style="background-color: var(--accent-color);">People (P)</button>
+            <button id="h-o" style="background-color: var(--accent-color);">Objects (O)</button></br>
+            <button id="h-r" style="background-color: var(--accent-color);">QRG (R)</button>
+            <button id="h-e" style="background-color: var(--accent-color);">Eigengram (E)</button>
+            <button id="h-t" style="background-color: var(--accent-color);">Chronogram (T)</button></br>
+        </div>
+        <div>
+        <div id="help-items-modal">
+            <div style="text-align: center;">
+            <h3>Choose an item</h3>
+            <button id="h-b-i-1" style="background-color: #333; color: black;"><i class="fas fa-money-bill-wave"></i></button>
+            <button id="h-b-i-2" style="background-color: #333; color: black;"><i class="fas fa-flag-checkered"></i></button>
+            <button id="h-b-i-3" style="background-color: #333; color: black;"><i class="fas fa-info-circle"></i></button>
+            <button id="h-b-i-4" style="background-color: black; color: black;"><i class="fas fa-cube"></i></button>
+            </br>
+            <button id="h-b-i-5" style="background-color: gray; color: black;"><i class="fas fa-atom"></i></button>
+            <button id="h-b-i-6" style="background-color: darkgray; color: black;"><i class="fas fa-hourglass-half"></i></button>
+            <button id="h-b-i-7" style="background-color: #333; color: black;"><i class="fas fa-car"></i></button>
+            <button id="h-b-i-8" style="background-color: #333; color: black;"><i class="fas fa-key"></i></button>
+            </br>
+            <button id="h-b-i-9" style="background-color: gray; color: black;"><i class="fas fa-tablets"></i></button>
+            <button id="h-b-i-10" style="background-color: darkgray; color: black;"><i class="fas fa-syringe"></i></button>
+            <button id="h-b-i-11" style="background-color: #333; color: black;"><i class="fas fa-user-astronaut"></i></button>
+            <button id="h-b-i-12" style="background-color: #333; color: black;"><i class="fas fa-passport"></i></button>
+            </div>
+            </br>
+            <p id="h-i-1"><u>Money</u>: it is an item that means a single unit of money. If you collect enough amount of money, you can buy things from a dealer or even sell.</p>
+            <p id="h-i-2"><u>Flag</u>: your goal is to get to the flag on each level. Good luck!</p>
+            <p id="h-i-3"><u>Info point</u>: if you play for first, feel free to get to these points to get useful information.</p>
+            <p id="h-i-4"><u>QRG</u>: it stands for Quantum-Random Generator. This is a device with which you can split the time-tree. For more information, read the related article in main menu.</p>
+            <p id="h-i-5"><u>Eigengram</u>: with this device you can communicate with your otherselves in different time-threads. It can be useful when you have a hardware-key which opens gates. For more information, read the related article in main menu.</p>
+            <p id="h-i-6"><u>Chronogram</u>: with this device you can communicate with your pre-self from the past. It creates an extra thread in which, yes, you can avoid mistakes. For more information, read the related article in main menu.</p>
+            <p id="h-i-7"><u>Car</u>: nothing special. Just a car. Get in, and go.</p>
+            <p id="h-i-8"><u>Key</u>: which is a hardware key to be exact. When you use it at a proper station, it can open/close gates or nuke the city. The keys can be copied via the time-tree, that is, you can pass it to your otherselves.</p>
+            <p id="h-i-9"><u>Medication</u>s: you can cure yourself after an infection or radiation. Note that all of them has a probability for efficiency, that is, they indeed can cure you, and has a probability for deadly side effects as well.</p>
+            <p id="h-i-10"><u>Vaccination</u>: you can use it to prepare your body for possible infections. It has similarly probabilities for efficiency and deadly side effects. Note that it can work only before getting infected and not after that.</p>
+            <p id="h-i-11"><u>Anti-radiation suit</u>: it can protect you in radiactive area.</p>
+            <p id="h-i-12"><u>Fake ID</u>: you can hide from the police with a fake ID card.</p>
+        </div>
+        <div id="help-world-modal">
+            <h3>Explaining the world</h3>
+            <p>Our classic, physical world is said to be continuum in space and time. This world is played in 2<sup>continuum</sup> which means that you can create time-threads and you can play in these parallel worlds. The main goal of this game to present how a world like this could work.</br>
+            Your other version in the alternate time-threads is called <u>otherself</u>. To create new threads, you need a non-deterministic random source, for example QRGs. You can distinguish the threads by IDs as well that can be seen on the status bar. With a device, called eigengram, you can communicate with your otherselves and also send keys to them. With a device, called chronogram, you can communicate with your pre-self, that is, your version from the past.</br>
+            Although even this world has rules: no time-loops, no teleportation, only messages/keys can travel multiversal, objects or people cannot. After you died in a thread, just throw that thread away, and focus on the others you can continue. In some cases, you cannot avoid to sacrifice one of your otherselves' life to continue your way.</p>
+        </div>
+        <div id="help-story-modal">
+            <h3>Story</h3>
+            <p>We live in the post-war city, Budapest in 2084. We are just after the World War IV which was declared and escalated only in a few threads like ours. You're a Hungarian citizen of the city who tries to escape from this chaos. The technology does not serve the people but a regime who controls everything. If the secret police catch you in a single thread, they will catch in every threads. Gather devices that could help you to survive. Good luck!</p>
+        </div>
+        <div id="help-qrg-modal">
+            <h3>Explaining the QRGs</h3>
+            <p>The device QRG, that is, Quantum-Random Generator, is a non-deterministic randombit source. With its usage you can create time-threads. To be exact, in the 2<sup>continuum</sup> time-tree the time branches continuously, you just cannot notice it until you don't have these randombits that defines in which time-thread you just are.</br>
+            You also can switch between the threads (click on the proper buttons in the status bar). And you also can throw a thread away. In different branches, you can behave differently.</p>
+        </div>
+        <div id="help-eigengram-modal">
+            <h3>Explaining the Eigengrams</h3>
+            <p>It's possible that our real, physical world is 2<sup>continuum</sup>, too. We just cannot communicate between the threads. In this game you can. The device is called eigengram which branches the time and keeps a channel between them to use to send messages or a hardware key. It can be useful when one of your otherselves can get into a place for a key but cannot get out. Then the keys can be sent via eigengram to an otherself who could continue the game.</br>
+            Watch out! The secret police can use eigengrams, too. If they locate you once, they located you in all the threads.</p>
+        </div>
+        <div id="help-chronogram-modal">
+            <h3>Explaining the Chronograms</h3>
+            <p>The eigengram grants you not only multiversal communication but superluminal communication as well. If it can be combined with just a tiny time dilation, you could experience early phases in the messages. A device, that circulates a future message in an inside loop, can accumulate the early phases. It realizes the so-called chronogram. With this device you can branch a thread in the past and also send messages and keys.</br>
+            Don't forget! You can communicate with your pre-self/post-self only until the channel is hold. So from the point you activated the device and to the point you sent the message. It is a great resource but has limitation in time. And it is important that it will not undo the steps you made in the past. It just branches the time in the time-tree to give you new chances in parallel.</p>
+        </div>
+        <div id="help-people-modal">
+            <div style="text-align: center;">
+            <h3>People and animals</h3>
+            <button id="h-b-p-1" style="background-color: #333; color: blue;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-2" style="background-color: #333; color: black;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-3" style="background-color: #333; color: gold;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-4" style="background-color: #333; color: lightgray;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-5" style="background-color: #333; color: lightgray;"><i class="fas fa-person" style="transform: rotate(90deg);"></i></button>
+            </br>
+            <button id="h-b-p-6" style="background-color: #333;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-7" style="background-color: #333; color: white; opacity: 0.6;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-8" style="background-color: #333; color: white; opacity: 0.3;"><i class="fas fa-person"></i></button>
+            <button id="h-b-p-9" style="background-color: #333; color: brown;"><i class="fas fa-dog"></i></button>
+            <button id="h-b-p-10" style="background-color: #333; color: brown;"><i class="fas fa-dog" style="transform: rotate(90deg);"></i></button>
+            </div>
+            </br>
+            <p id="h-p-1"><u>Police officer</u> is a person with whom a meet means the halve of your money and taken quantum devices if had any.</p>
+            <p id="h-p-2"><u>Secret police officer</u> is a person who kills you when you behave suspicious.</p>
+            <p id="h-p-3"><u>Dealer</u> is a person who sells you quantum devices, or you can sell them as well. When you meet with them, press "P" for the deal ;)</p>
+            <p id="h-p-4"><u>Strangers</u> are the simple people of the street.</p>
+            <p id="h-p-5"><u>Dead strangers</u> are former strangers who died.</p>
+            <p id="h-p-6">This is you in the game, <u>yourself</u>.</p>
+            <p id="h-p-7">Your <u>pre-self</u> is just a shadow of your past. It is just a feature that helps you to orient in the space.</p>
+            <p id="h-p-8">Your <u>otherself</u> is the other version of your character. You, as a player, can see them in one layer. In real life you could not see them.</p>
+            <p id="h-p-9">A <u>dog</u> is an animal. Its behavior is similar to the strangers. Don't worry, it won't bite you. :)</p>
+            <p id="h-p-10"><u>Laying dog</u> on the floor... no comment.</p>
+        </div>
+        <div id="help-objects-modal">
+            <div style="text-align: center;">
+            <h3>Choose an object</h3>
+            <button id="h-b-o-1" style="background-color: #333; color: black;"><i class="fas fa-bomb"></i></button>
+            <button id="h-b-o-2" style="background-color: #333; color: blue;"><i class="fas fa-car"></i></button>
+            <button id="h-b-o-3" style="background-color: #333; color: yellow;"><i class="fas fa-bus"></i></button>
+            <button id="h-b-o-4" style="background-color: #333; color: white;"><i class="fas fa-key"></i></button>
+            <button id="h-b-o-5" style="background-color: #333; color: darkgray;"><i class="fas fa-door-closed"></i></button>
+            <button id="h-b-o-6" style="background-color: #333; color: black;"><i class="fas fa-desktop"></i></button>
+            <button id="h-b-o-7" style="background-color: #333; color: black;"><i class="fas fa-microscope"></i></button>
+            <!-- Continue -->
+            </div>
+            </br>
+            <p id="h-o-1">The <u>bomb</u> is an object the explodes and destroy everything within 3 moves and 3 steps. It means you can just run away after discovering it. If you decide to try to defuse it, then stay at the bomb and press "D". After that you can choose to cut a wire of two. Choose wisely!</p>
+            <p id="h-o-2">The <u>car</u> is a vehicle that moves. Watch out before stepping on the road, it can hit you.</p>
+            <p id="h-o-3">The <u>bus</u> is similar to the cars but with different determinism.</p>
+            <p id="h-o-4">The <u>key</u>s are hardware keys, so you cannot open doors directly. Get to a station which opens/closes doors with the key or does other things.</p>
+            <p id="h-o-5">It's 2084. We have no traditional keys. To open or close a <u>door</u> you have to use a hardware key on a proper station.</p>
+            <p id="h-o-6">At the <u>station</u>s you can control things if you have the proper keys, like opening/closing doors, initiating the self-destruction of the city, or ordering ice-cream.</p>
+            <p id="h-o-7">The <u>tester</u> is a special station when you can check if you're infected or got too much radiation.</p>
+        </div>
+        <!--<button id="h-b-main" style="background-color: #333;">Back</button>-->
+        <div style="text-align: right;"><button id="h-b-main" style="background-color: #333;">Back</button></div>
+        </div>
+    </div>
+</div>
+
+<script src="js/levels.js"></script>
+<script src="js/progressTurn.js"></script>
+<script src="js/init.js"></script>
+<script src="js/drawGrid.js"></script>
+<script src="js/drawEntities.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const gameWrapper = document.getElementById('game-wrapper');
+        const board = document.getElementById('game-board');
+        const gameOverMessage = document.getElementById('game-over-message');
+        const gameWinMessage = document.getElementById('game-win-message');
+        const timeCounterDisplay = document.getElementById('time-counter');
+        const levelCounterDisplay = document.getElementById('level-counter');
+        const moneyAmountDisplay = document.getElementById('money-amount');
+        const keyADisplay = document.getElementById('keyA');
+        const keyBDisplay = document.getElementById('keyB');
+        const keyCDisplay = document.getElementById('keyC');
+        const currentThreadDisplay = document.getElementById('current-thread');
+        
+        const prevThreadBtn = document.getElementById('prev-thread');
+        const nextThreadBtn = document.getElementById('next-thread');
+        const throwThreadBtn = document.getElementById('throw-thread-btn');
+        const randomGeneratorBtn = document.getElementById('random-generator-btn');
+
+        const qrgLabel = document.getElementById('qrg-label');
+        const eigengramLabel = document.getElementById('eigengram-label');
+        const chronogramLabel = document.getElementById('chronogram-label');
+
+        const eigengramOnBtn = document.getElementById('eigengram-on-btn');
+        const eigengramIcon = document.getElementById('eigengram-icon');
+        const eigengramLifetimeDisplay = document.getElementById('eigengram-lifetime');
+
+        const chronogramOnBtn = document.getElementById('chronogram-on-btn');
+        const chronogramIcon = document.getElementById('chronogram-icon');
+        const chronogramLifetimeDisplay = document.getElementById('chronogram-lifetime');
+        const chronogramBoltIcon = document.getElementById('chronogram-bolt-icon');
+        const sendBackBtn = document.getElementById('send-back-btn');
+
+        const defuseModal = document.getElementById('defuse-modal');
+        const cutBlackWireBtn = document.getElementById('cut-black-wire');
+        const cutGreenWireBtn = document.getElementById('cut-green-wire');
+        const dealModal = document.getElementById('deal-modal');
+        const getRBtn = document.getElementById('get-r');
+        const getEBtn = document.getElementById('get-e');
+        const getTBtn = document.getElementById('get-t');
+        const sellRBtn = document.getElementById('sell-r');
+        const sellEBtn = document.getElementById('sell-e');
+        const sellTBtn = document.getElementById('sell-t');
+        const getOutBtn = document.getElementById('get-out');
+
+        const infoModal = document.getElementById('info-modal');
+        const infoModalText = document.getElementById('info-modal-text');
+        const infoModalTitle = document.getElementById('info-modal-title');
+        const infoModalOkBtn = document.getElementById('info-modal-ok');
+        
+        const pcModal = document.getElementById('pc-modal');
+        const pcModalText = document.getElementById('pc-modal-text');
+        const pcModalABtn = document.getElementById('pc-modal-a');
+        const pcModalBBtn = document.getElementById('pc-modal-b');
+        
+        const helpModal = document.getElementById('help-modal');
+        //const helpBtn = document.getElementById('help');
+        const helpChooseModal = document.getElementById('help-choose-modal');
+        const helpItemsModal = document.getElementById('help-items-modal');
+        const helpWorldModal = document.getElementById('help-world-modal');
+        const helpStoryModal = document.getElementById('help-story-modal');
+        const helpQRGModal = document.getElementById('help-qrg-modal');
+        const helpEigengramModal = document.getElementById('help-eigengram-modal');
+        const helpChronogramModal = document.getElementById('help-chronogram-modal');
+        const helpPeopleModal = document.getElementById('help-people-modal');
+        const helpObjectsModal = document.getElementById('help-objects-modal');
+        const helpModalIBtn = document.getElementById('h-i');
+        const helpModalWBtn = document.getElementById('h-w');
+        const helpModalSBtn = document.getElementById('h-s');
+        const helpModalRBtn = document.getElementById('h-r');
+        const helpModalEBtn = document.getElementById('h-e');
+        const helpModalTBtn = document.getElementById('h-t');
+        const helpModalPBtn = document.getElementById('h-p');
+        const helpModalOBtn = document.getElementById('h-o');
+        const helpModalI1Btn = document.getElementById('h-b-i-1');
+        const helpModalI2Btn = document.getElementById('h-b-i-2');
+        const helpModalI3Btn = document.getElementById('h-b-i-3');
+        const helpModalP1Btn = document.getElementById('h-b-p-1');
+        const helpModalP2Btn = document.getElementById('h-b-p-2');
+        const helpModalP3Btn = document.getElementById('h-b-p-3');
+        const helpModalO1Btn = document.getElementById('h-b-o-1');
+        const helpModalO2Btn = document.getElementById('h-b-o-2');
+        const helpModalO3Btn = document.getElementById('h-b-o-3');
+        const helpModalO4Btn = document.getElementById('h-b-o-4');
+        const helpModalO5Btn = document.getElementById('h-b-o-5');
+        const helpModalO6Btn = document.getElementById('h-b-o-6');
+        const helpModalBackBtn = document.getElementById('h-b-main');
+
+        const GRID_SIZE = 8;
+        const CELL_TYPES = {
+            road: 'road',
+            grass: 'grass',
+            wall: 'wall',
+            fence: 'fence',
+            flag: 'flag',
+            trapBuilding: 'trapBuilding',
+            tower: 'broadcast-tower', 
+            uni: 'university',
+            doorA: 'door-a-closed',
+            doorB: 'door-b-closed',
+            doorC: 'door-c-closed',
+            doorAOpen: 'door-a-open',
+            doorBOpen: 'door-b-open',
+            doorCOpen: 'door-c-open',
+            gate: 'torii-gate',
+            city: 'city',
+            panel: 'solar-panel',
+            warehouse: 'warehouse',
+            gas: 'gas-pump',
+            desktop: 'desktop',
+            tree: 'tree',
+            plant: 'seedling',
+            death: 'skull-crossbones',
+            eye: 'eye',
+            bio: 'biohazard',
+            radios: 'radiation',
+            tester: 'tester',
+            danger: 'exclamation-triangle'
+        };
+
+        const DEATH_TIMER = 3;
+        const BOMB_TIMER = 3;
+        
+        let isMusic = 1;
+        let isSound = 1;
+        let music = ['assets/music/music-01.mp3', 'assets/music/music-02.mp3', 'assets/music/music-03.mp3', 'assets/music/music-04.mp3', 'assets/music/music-05.mp3', 'assets/music/music-06.mp3', 'assets/music/music-07.mp3', 'assets/music/music-08.mp3', 'assets/music/music-09.mp3', 'assets/music/music-10.mp3', 'assets/music/music-11.mp3', 'assets/music/music-12.mp3', 'assets/music/music-13.mp3', 'assets/music/music-14.mp3', 'assets/music/music-15.mp3'];
+        let weatherMusic = ['assets/sound-weather/weatherBird.mp3', 'assets/sound-weather/weatherRain.mp3', 'assets/sound-weather/weatherWind.mp3', 'assets/sound-weather/weatherNight.mp3', 'assets/sound-effects/airRaid.mp3'];
+
+        const flagTexts = ['Bravo!', 'Nice job!', 'Excellent!', 'Great!', 'You\'re the best!', 'Congrat!', 'Congratulation!', 'That\'s it!', 'Yes, you did it!', 'Brilliant!', 'Clever!', 'Ingenious!', 'Very good!'];
+        let STARTING_LIFETIME = 5;
+        let currentLevel = 0;
+        let threadIds = [];
+        let currentThreadIndex = 0;
+        let threadHistory = {};
+        let eigengramSourceThreadId = null;
+        let isGameOver = false;
+        let playerDesiredMove = null;
+        let activeBombToDefuse = null;
+
+        //levels (imported)
+
+        const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
+
+        function showInfoModal(text) {
+            infoModalText.textContent = text;
+            infoModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', hideInfoModalOnKeyPress);
+        }
+
+        function hideInfoModal() {
+            infoModal.style.display = 'none';
+            document.removeEventListener('keydown', hideInfoModalOnKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function hideInfoModalOnKeyPress(e) {
+            e.preventDefault();
+            hideInfoModal();
+        }
+
+        function showNextLevelModal(text,title="") {
+            showInfoModal('');
+            infoModalTitle.textContent = title;
+            infoModalText.textContent = text;
+            infoModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', hideNextLevelModalOnKeyPress);
+        }
+
+        function hideNextLevelModal() {
+            infoModal.style.display = 'none';
+            infoModalTitle.textContent = 'Information';
+            document.removeEventListener('keydown', hideNextLevelModalOnKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+            document.getElementById('music').volume=1;
+            nextLevel();
+        }
+
+        function hideNextLevelModalOnKeyPress(e) {
+            e.preventDefault();
+            hideNextLevelModal();
+            //document.getElementById('music').volume=1;
+            //nextLevel();
+        }
+        
+        function showPCModal(text,n=0,keyA=false,keyB=false,keyC=false) {
+            pcModalVars = {'n': n, 'keyA': keyA, 'keyB': keyB, 'keyC': keyC };
+            pcModalText.textContent = text;
+            if (text) {
+                pcModal.style.display = 'block';
+            } else {
+                hidePCModal(n);
+            }
+        }
+
+        function hidePCModal(x=0,state=0) {
+            if (state) {
+                currentState = state;
+            } else {
+                currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            }
+            if (x) {
+                if ((pcModalVars.n==1 && pcModalVars.keyA) || (pcModalVars.n==2 && pcModalVars.keyB) || (pcModalVars.n==3 && pcModalVars.keyC)) {
+                    currentState.doorLayout.forEach(d => { 
+                        if(Math.abs(d.n)==pcModalVars.n) {
+                            d.n *= -1;
+                            switch(Math.abs(d.n)){
+                                case 1: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorA : CELL_TYPES.doorAOpen;break;
+                                case 2: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorB : CELL_TYPES.doorBOpen;break;
+                                case 3: currentState.grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorC : CELL_TYPES.doorCOpen;break;
+                            }
+                            if (d.n>0 && (currentState.strangers.some(s => s.x==d.x && s.y==d.y) || currentState.strangers_blue.some(s => s.x==d.x && s.y==d.y) || currentState.strangers_black.some(s => s.x==d.x && s.y==d.y) || currentState.strangers_gold.some(s => s.x==d.x && s.y==d.y) || currentState.ducks.some(s => s.x==d.x && s.y==d.y))){
+                                currentState.strangers.forEach(s => {
+                                    if (s.x==d.x && s.y==d.y) {
+                                        s.isDead = true;
+                                        if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                                    }
+                                });
+                                let isPolDeath = false;
+                                currentState.strangers_blue.forEach(s => {
+                                    if (s.x==d.x && s.y==d.y) {
+                                        if (!s.isDead) s.isDead = true;
+                                        if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                                        isPolDeath = true;
+                                    }
+                                });
+                                if (isPolDeath) {
+                                    while(currentState.strangers_blue.some(r => !r.isDead)) {
+                                        currentState.strangers_blue.forEach(r => {
+                                            if (!r.isDead) {
+                                                currentState.strangers_black.push({ ...r });
+                                                currentState.strangers_blue.splice(currentState.strangers_blue.findIndex(t => t.x === r.x && t.y === r.y && !t.isDead), 1);
+                                            }
+                                        });
+                                    }
+                                };
+                                
+                                currentState.strangers_black.forEach(s => {
+                                    if (s.x==d.x && s.y==d.y) {
+                                        s.isDead = true;
+                                        if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                                    }
+                                });
+                                currentState.strangers_gold.forEach(s => {
+                                    if (s.x==d.x && s.y==d.y) {
+                                        s.isDead = true;
+                                        if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                                    }
+                                });
+                                currentState.ducks.forEach(s => {
+                                    if (s.x==d.x && s.y==d.y) {
+                                        s.isDead = true;
+                                        if (isSound) (new Audio("assets/sound-effects/bark.mp3")).play();
+                                    }
+                                });
+                            }
+                            if (isSound) (new Audio("assets/sound-effects/HydraulicHiss.mp3")).play();
+                        }
+                    });
+                } else {
+                    if (pcModalVars.n==-1){
+                        if (isSound) (new Audio("assets/sound-effects/airRaid.mp3")).play();
+                        if (isSound) (new Audio("assets/sound-effects/alarm.mp3")).play();
+                        for(let i=0;i!=12;i++){
+                            currentState.radios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
+                        }
+                    } else if (pcModalVars.n==-2){
+                        if (isSound) (new Audio("assets/sound-effects/airRaid.mp3")).play();
+                        if (isSound) (new Audio("assets/sound-effects/alarm.mp3")).play();
+                        for(let i=0;i!=4;i++){
+                            currentState.bios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
+                        }
+                    } else if (pcModalVars.n==-3){
+                        if (isSound) (new Audio("assets/sound-effects/airRaid.mp3")).play();
+                        if (isSound) (new Audio("assets/sound-effects/alarm.mp3")).play();
+                        for(let i=0;i!=4;i++){
+                            currentState.radios.push({x: Math.floor(Math.random()*8), y: Math.floor(Math.random()*8), timer: Math.floor(Math.random()*8)});
+                        }
+                        currentLevel = -1;
+                    }
+                }
+            }
+            
+            drawGrid();
+            pcModal.style.display = 'none';
+            document.removeEventListener('keydown', hidePCModalOnKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function hidePCModalOnKeyPress(e) {
+            e.preventDefault();
+            hidePCModal(0);
+        }
+        
+        
+        function showSettingsModal(n=0) {
+            if (n==-1) {
+                  if (document.getElementById('settings-modal').style.display=='block') {
+                        hideSettingsModal();
+                        return;
+                  } else {
+                        n = 0;
+                  }
+            }
+            document.getElementById('settings-modal').style.display = n==2 ? 'none' : 'block';
+            document.getElementById('settings-buttons-modal').style.display = n==0 ? 'block' : 'none';
+            document.getElementById('settings-sound').style.display = n==1 ? 'block' : 'none';
+            document.getElementById('score').style.display = n==3 ? 'block' : 'none';
+            document.getElementById('settings-credit').style.display = n==4 ? 'block' : 'none';
+            document.getElementById('sub-settings-ok').style.display = (n==0 && n!=3) ? 'none' : 'block';
+            document.getElementById('settings-back').style.display = (n==0 && n!=3) ? 'block' : 'none';
+         }
+         
+        function hideSettingsModal() {
+            document.getElementById('settings-modal').style.display = 'none';
+        }
+         
+
+        function showHelpModal(n=0,m=0) {
+            if (n==-1) {
+                  if (helpChooseModal.style.display=='block') {
+                        hideHelpModal();
+                        return;
+                  } else {
+                        n = 0;
+                  }
+            }
+            helpModal.style.display = 'block';
+            document.getElementById('h-b-main').textContent= n==0 ? "Quit" : "Back";
+            helpChooseModal.style.display = n==0 ? 'block' : 'none';
+            helpItemsModal.style.display = n==1 ? 'block' : 'none';
+            document.getElementById('h-i-1').style.display = (n==1 && m==1) ? 'block' : 'none';
+            document.getElementById('h-i-2').style.display = (n==1 && m==2) ? 'block' : 'none';
+            document.getElementById('h-i-3').style.display = (n==1 && m==3) ? 'block' : 'none';
+            document.getElementById('h-i-4').style.display = (n==1 && m==4) ? 'block' : 'none';
+            document.getElementById('h-i-5').style.display = (n==1 && m==5) ? 'block' : 'none';
+            document.getElementById('h-i-6').style.display = (n==1 && m==6) ? 'block' : 'none';
+            document.getElementById('h-i-7').style.display = (n==1 && m==7) ? 'block' : 'none';
+            document.getElementById('h-i-8').style.display = (n==1 && m==8) ? 'block' : 'none';
+            document.getElementById('h-i-9').style.display = (n==1 && m==9) ? 'block' : 'none';
+            document.getElementById('h-i-10').style.display = (n==1 && m==10) ? 'block' : 'none';
+            document.getElementById('h-i-11').style.display = (n==1 && m==11) ? 'block' : 'none';
+            document.getElementById('h-i-12').style.display = (n==1 && m==12) ? 'block' : 'none';
+            helpWorldModal.style.display = n==2 ? 'block' : 'none';
+            helpStoryModal.style.display = n==3 ? 'block' : 'none';
+            helpQRGModal.style.display = n==4 ? 'block' : 'none';
+            helpEigengramModal.style.display = n==5 ? 'block' : 'none';
+            helpChronogramModal.style.display = n==6 ? 'block' : 'none';
+            helpPeopleModal.style.display = n==7 ? 'block' : 'none';
+            document.getElementById('h-p-1').style.display = (n==7 && m==1) ? 'block' : 'none';
+            document.getElementById('h-p-2').style.display = (n==7 && m==2) ? 'block' : 'none';
+            document.getElementById('h-p-3').style.display = (n==7 && m==3) ? 'block' : 'none';
+            document.getElementById('h-p-4').style.display = (n==7 && m==4) ? 'block' : 'none';
+            document.getElementById('h-p-5').style.display = (n==7 && m==5) ? 'block' : 'none';
+            document.getElementById('h-p-6').style.display = (n==7 && m==6) ? 'block' : 'none';
+            document.getElementById('h-p-7').style.display = (n==7 && m==7) ? 'block' : 'none';
+            document.getElementById('h-p-8').style.display = (n==7 && m==8) ? 'block' : 'none';
+            document.getElementById('h-p-9').style.display = (n==7 && m==9) ? 'block' : 'none';
+            document.getElementById('h-p-10').style.display = (n==7 && m==10) ? 'block' : 'none';
+            helpObjectsModal.style.display = n==8 ? 'block' : 'none';
+            document.getElementById('h-o-1').style.display = (n==8 && m==1) ? 'block' : 'none';
+            document.getElementById('h-o-2').style.display = (n==8 && m==2) ? 'block' : 'none';
+            document.getElementById('h-o-3').style.display = (n==8 && m==3) ? 'block' : 'none';
+            document.getElementById('h-o-4').style.display = (n==8 && m==4) ? 'block' : 'none';
+            document.getElementById('h-o-5').style.display = (n==8 && m==5) ? 'block' : 'none';
+            document.getElementById('h-o-6').style.display = (n==8 && m==6) ? 'block' : 'none';
+            document.getElementById('h-o-7').style.display = (n==8 && m==7) ? 'block' : 'none';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', hideHelpModalOnKeyPress);
+        }
+
+        function hideHelpModal() {
+            helpModal.style.display = 'none';
+            helpChooseModal.style.display = 'none';
+            helpItemsModal.style.display = 'none';
+            helpWorldModal.style.display = 'none';
+            helpStoryModal.style.display = 'none';
+            helpQRGModal.style.display = 'none';
+            helpEigengramModal.style.display = 'none';
+            helpChronogramModal.style.display = 'none';
+            helpPeopleModal.style.display = 'none';
+            helpObjectsModal.style.display = 'none';
+            document.removeEventListener('keydown', hideHelpModalOnKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function hideHelpModalOnKeyPress(e) {
+            e.preventDefault();
+            hideHelpModal();
+        }
+        
+        // --- GAME LOGIC ---
+
+        function createLevelState(levelIndex) {
+            const level = levels[levelIndex];
+            if (!level) {
+                return null;
+            }
+
+            let grid = Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(CELL_TYPES.grass));
+            
+            if (level.roadLayout) level.roadLayout.forEach(road => {
+                if (road.type === 'horizontal') {
+                    for (let i = 0; i < GRID_SIZE; i++) grid[road.y][i] = CELL_TYPES.road;
+                } else if (road.type === 'vertical') {
+                    for (let i = 0; i < GRID_SIZE; i++) grid[i][road.x] = CELL_TYPES.road;
+                }
+            });
+
+            if (level.wallLayout) level.wallLayout.forEach(wall => grid[wall.y][wall.x] = CELL_TYPES.wall);
+
+            const trapBuildings = level.trapBuildingLayout.map(trap => ({...trap}));
+            trapBuildings.forEach(trap => grid[trap.y][trap.x] = CELL_TYPES.trapBuilding);
+
+            if (level.fenceLayout) level.fenceLayout.forEach(fence => grid[fence.y][fence.x] = CELL_TYPES.fence);
+            if (level.doorLayout) level.doorLayout.forEach(d => {
+              switch(Math.abs(d.n)){
+                  case 1: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorA : CELL_TYPES.doorAOpen;break;
+                  case 2: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorB : CELL_TYPES.doorBOpen;break;
+                  case 3: grid[d.y][d.x] = d.n>0 ? CELL_TYPES.doorC : CELL_TYPES.doorCOpen;break;
+              }});
+            if (level.desktopLayout) level.desktopLayout.forEach(d => grid[d.y][d.x] = CELL_TYPES.desktop);
+            if (level.testers) level.testers.forEach(d => grid[d.y][d.x] = CELL_TYPES.tester);
+            //TODO
+            grid[level.flagLocation.y][level.flagLocation.x] = CELL_TYPES.flag;
+
+
+            return {
+                grid: grid,
+                playerPos: deepClone(level.playerPos),
+                playerStatus: 'alive',
+                playerBioT: (level.playerBioT) ? deepClone(level.playerBioT) : -1,
+                playerRadioT: (level.playerRadioT) ? deepClone(level.playerRadioT) : -1,
+                isDriving: false,
+                lastMoveDirection: {x: 0, y: 0},
+                cars: (level.initialCarLocations) ? deepClone(level.initialCarLocations) : [],
+                buses: (level.initialBusLocations) ? deepClone(level.initialBusLocations) : [],
+                playerCar: (level.playerCar) ? deepClone(level.playerCar) : { x: -1, y: -1, occupied: false },//?
+                strangers: (level.initialStrangerLocations) ? deepClone(level.initialStrangerLocations) : [],
+                strangers_blue: (level.initialStrangerBlueLocations) ? deepClone(level.initialStrangerBlueLocations) : [],
+                strangers_black: (level.initialStrangerBlackLocations) ? deepClone(level.initialStrangerBlackLocations) : [],
+                strangers_gold: (level.initialStrangerGoldLocations) ? deepClone(level.initialStrangerGoldLocations) : [],
+                ducks: (level.initialDuckLocations) ? deepClone(level.initialDuckLocations) : [],
+                deadStrangers: [],
+                deadDucks: [],
+                bombs: (level.bombs) ? deepClone(level.bombs) : [],
+                radios: (level.radios) ? deepClone(level.radios) : [],
+                bios: (level.bios) ? deepClone(level.bios) : [],
+                testers: (level.testers) ? deepClone(level.testers) : [],
+                explosions: [],
+                destroyedTiles: [],
+                wallLayout: (level.wallLayout) ? deepClone(level.wallLayout) : [],
+                fenceLayout: (level.fenceLayout) ? deepClone(level.fenceLayout) : [],
+                doorLayout: (level.doorLayout) ? deepClone(level.doorLayout) : [],
+                desktopLayout: (level.desktopLayout) ? deepClone(level.desktopLayout) : [],
+                trapBuildings: (level.trapBuildingLayout) ? deepClone(level.trapBuildingLayout) : [],//trapBuildings,
+                inventory: { 'R': 0, 'E': 0, 'T': 0, 'money': 0, 'id': 0, 'keyA': false, 'keyB': false, 'keyC': false, 'vac': 0, 'med': 0, 'jacket': 0 },
+                devicesOnBoard: { 'R': deepClone(level.deviceLocations.R), 'E': deepClone(level.deviceLocations.E), 'T': deepClone(level.deviceLocations.T),
+                    'money': deepClone(level.initialMoneyLocations),
+                    'id': (level.initialIDLocations) ? deepClone(level.initialIDLocations) : [],
+                    'keyA': (level.initialKeyALocations) ? deepClone(level.initialKeyALocations) : [],
+                    'keyB': (level.initialKeyBLocations) ? deepClone(level.initialKeyBLocations) : [],
+                    'keyC': (level.initialKeyCLocations) ? deepClone(level.initialKeyCLocations) : [],
+                    'vac': (level.initialVacLocations) ? deepClone(level.initialVacLocations) : [],
+                    'med': (level.initialMedLocations) ? deepClone(level.initialMedLocations) : [],
+                    'jacket': (level.initialJacketLocations) ? deepClone(level.initialJacketLocations) : []
+                },
+                deviceLocations: (level.deviceLocations) ? deepClone(level.deviceLocations) : { 'R': [ ], 'E': [ ], 'T': [ ], 'vac': [], 'med': [], 'jacket': [], 'id': [] },
+                infoLocations: (level.infoLocations) ? deepClone(level.infoLocations) : [],
+                flagLocation: deepClone(level.flagLocation),
+                houseLocations: (level.houseLocations) ? deepClone(level.houseLocations) : [],
+                initialIDLocations: (level.initialIDLocations) ? deepClone(level.initialIDLocations) : [],  
+                eigengram: { isOn: false, lifetime: 0 },
+                chronogram: { isOn: false, lifetime: 0, savedState: null },
+                moveCount: 0
+            };
+        }
+        
+        const initGame = eval(initGameString);
+
+        const drawGrid = eval(drawGridString);
+
+        const drawEntities = eval(drawEntitiesString);
+
+        function updateStatsDisplay(currentState) {
+            timeCounterDisplay.textContent = `Time: ${currentState.moveCount}`;
+            moneyAmountDisplay.textContent = `${currentState.inventory.money}`;
+            keyADisplay.style.opacity = currentState.inventory.keyA ? '1' : '0.3';
+            keyBDisplay.style.opacity = currentState.inventory.keyB ? '1' : '0.3';
+            keyCDisplay.style.opacity = currentState.inventory.keyC ? '1' : '0.3';
+            levelCounterDisplay.textContent = `Level: ${currentLevel + 1}`;
+        }
+        
+        function updateThreadIdDisplay() {
+            const currentThreadId = threadIds[currentThreadIndex];
+            currentThreadDisplay.textContent = currentThreadId === '' ? '∅' : currentThreadId;
+        }
+        
+        function getLivingThreads() {
+            return threadIds.filter(id => id !== '' && threadHistory[id].status === 'alive');
+        }
+
+        function updateThreadNavButtons() {
+            prevThreadBtn.disabled = getLivingThreads().length <= 1;
+            nextThreadBtn.disabled = getLivingThreads().length <= 1;
+        }
+
+        function updateDevicePanel(currentState) {
+            qrgLabel.textContent = `QRG${currentState.inventory.R > 0 ? ` x ${currentState.inventory.R}` : ''}`;
+            randomGeneratorBtn.disabled = currentState.inventory.R === 0;
+
+            eigengramLabel.textContent = `Eigengram${currentState.inventory.E > 0 ? ` x ${currentState.inventory.E}` : ''}`;
+            eigengramLifetimeDisplay.textContent = currentState.eigengram.isOn ? currentState.eigengram.lifetime : (currentState.inventory.E > 0 ? STARTING_LIFETIME : 0);
+            eigengramOnBtn.classList.toggle('active', currentState.eigengram.isOn);
+            eigengramOnBtn.disabled = currentState.inventory.E === 0 || currentState.eigengram.isOn || isGameOver;
+            //alert(currentState.inventory.keyA);//TODO
+            for(let i=0;i!=getLivingThreads().length;i++) {
+                w = getLivingThreads()[i];
+                if (threadHistory[w]["history"][threadHistory[w]["history"].length-1]["eigengram"]["isOn"]) {
+                    currentState.inventory.keyA ||= threadHistory[w]["history"][threadHistory[w]["history"].length-1]["inventory"]["keyA"];
+                    currentState.inventory.keyB ||= threadHistory[w]["history"][threadHistory[w]["history"].length-1]["inventory"]["keyB"];
+                    currentState.inventory.keyC ||= threadHistory[w]["history"][threadHistory[w]["history"].length-1]["inventory"]["keyC"];
+                    if (currentState.inventory.keyA && currentState.inventory.keyB && currentState.inventory.keyC) break;
+                }
+            }
+            //getLivingThreads()
+            //currentState.inventory.keyA ||= currentState.eigengram.isOn ? threadHistory[""].forEach(w => {alert(w.history.inventory.keyA);}) : false;
+            // threadHistory[""]["history"][1]["inventory"]["keyA"]
+            // threadHistory["1"]["history"][threadHistory["1"]["history"].length-1]["inventory"]["keyA"]
+            //currentState.inventory.keyB ||= currentState.eigengram.isOn ? threadHistory.some(w => {return w.inventory.keyB;}) : false;
+            //currentState.inventory.keyC ||= currentState.eigengram.isOn ? threadHistory.some(w => {return w.inventory.keyC;}) : false;
+            
+            
+
+            chronogramLabel.textContent = `Chronogram${currentState.inventory.T > 0 ? ` x ${currentState.inventory.T}` : ''}`;
+            chronogramLifetimeDisplay.textContent = currentState.chronogram.isOn ? currentState.chronogram.lifetime : (currentState.inventory.T > 0 ? STARTING_LIFETIME : "");
+            chronogramBoltIcon.style.display = (currentState.inventory.T > 0 || currentState.chronogram.isOn) ? "none" : "block";
+            chronogramOnBtn.classList.toggle('active', currentState.chronogram.isOn);
+            chronogramOnBtn.disabled = currentState.inventory.T === 0 || currentState.chronogram.isOn || isGameOver;
+            sendBackBtn.disabled = isGameOver || !currentState.chronogram.isOn || currentState.chronogram.lifetime <= 0;
+            
+            throwThreadBtn.disabled = false;
+        }
+
+        function flashLightning() {
+            board.classList.add('lightning-flash');
+            setTimeout(() => board.classList.remove('lightning-flash'), 200);
+        }
+        
+        function gameOver() {
+            isGameOver = true;
+            if (isSound) (new Audio("assets/sound-effects/ambulance.mp3")).play();
+            //(new Audio("assets/sound-effects/gameOver.mp3")).play();
+            gameOverMessage.style.display = 'block';
+            gameWrapper.classList.add('game-over-backdrop');
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleRestart);
+            updateDevicePanel({
+                inventory: { R: 0, E: 0, T: 0, money: 0, id: 0, keyA: false, keyB: false, keyC: false, vac: 0, med: 0, jacket: 0 },
+                eigengram: { isOn: false, lifetime: 0 },
+                chronogram: { isOn: false, lifetime: 0, savedState: null },
+            });
+            prevThreadBtn.disabled = true;
+            nextThreadBtn.disabled = true;
+            board.innerHTML = '';
+        }
+
+        function nextLevel() {
+            if (currentLevel==-1) {
+                // If you made a bad decision on your last before level
+                currentLevel=31;
+                initGame();
+                currentLevel=32;
+            } else if (currentLevel==30) {
+                // If you made a good decision on your last before level
+                currentLevel=32;
+                initGame();
+            } else {
+                currentLevel++;
+                initGame();
+            }
+        }
+        
+        function handleRestart(e) {
+            if(e.key === 'r' || e.key === 'R') initGame();
+        }
+        
+        function isObstacle(x, y, grid) {
+            if (x < 0 || x >= GRID_SIZE || y < 0 || y >= GRID_SIZE) return true;
+            const cellType = grid[y][x];
+            const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            let isSolid = cellType === CELL_TYPES.wall || cellType === CELL_TYPES.fence || cellType === CELL_TYPES.trapBuilding || cellType === CELL_TYPES.doorA || cellType === CELL_TYPES.doorB || cellType === CELL_TYPES.doorC;
+            const isHouse = currentState.houseLocations.some(h => h.x === x && h.y === y);
+            return isSolid || isHouse;
+        }
+
+        function checkPlayerCollisions(newState) {
+            const { x, y } = newState.playerPos;
+            if (newState.playerCar.occupied) return newState; 
+            if (newState.cars.some(c => c.x === x && c.y === y) || newState.buses.some(b => b.x === x && b.y === y)) {
+                if (newState.playerStatus=='alive') (new Audio("assets/sound-effects/crash.mp3")).play();
+                if (newState.playerStatus=='alive') (new Audio("assets/sound-effects/death.mp3")).play();
+                newState.playerStatus = 'dead';
+            }
+            if (newState.strangers_blue.some(c => c.x === x && c.y === y && ! c.isDead)) {
+                if (newState.inventory.id<1) newState.inventory.money = Math.floor(newState.inventory.money/2);
+                newState.inventory.R = 0;
+                newState.inventory.E = 0;
+                newState.inventory.T = 0;
+            }
+            if (newState.inventory.id<1 && newState.strangers_black.some(c => c.x === x && c.y === y && ! c.isDead)) {
+                //alert(newState.inventory.id);
+                newState.playerStatus = 'dead';
+                if (newState.playerStatus=='alive') (new Audio("assets/sound-effects/death.mp3")).play();
+            }
+            return newState;
+        }
+
+        function checkStrangerCollisions(newState) {
+            newState.strangers.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    if (isSound) (new Audio("assets/sound-effects/crash.mp3")).play();
+                    if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+                if (newState.devicesOnBoard.med.some(m => m.x === s.x && m.y === s.y)) {
+                    m = newState.devicesOnBoard.med[newState.devicesOnBoard.med.findIndex(w => w.x === s.x && w.y === s.y)];
+                    if (Math.random()<m.prSide) {
+                        s.isT = 3;
+                        s.isInfected = true;
+                    }
+                    if (Math.random()<m.prEff) {
+                        s.isT = -1;
+                        s.isInfected = false;
+                    }
+                    newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === s.x && w.y === s.y), 1);
+                }
+                if (s.isInfected) {
+                    for(let dx=-1;dx!=1;dx++){for(let dy=-1;dy!=1;dy++){
+                            if (Math.random()<.2) continue;
+                            newState.explosions.push({ x: Math.abs(s.x+dx)%8, y: Math.abs(s.y+dy)%8, typ: 'bio' });
+                    }}
+                    if (--s.isT==0) {
+                        s.isDead = true;
+                        s.deathTimer = DEATH_TIMER;
+                        newState.deadStrangers.push({ ...s });
+                    }
+                }
+            });
+            
+            newState.strangers_blue.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    if (isSound) (new Audio("assets/sound-effects/crash.mp3")).play();
+                    if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                    s.isDead = true;
+                    //TODO turn others into secret police
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+            });
+            
+            newState.strangers_black.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    if (isSound) (new Audio("assets/sound-effects/crash.mp3")).play();
+                    if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+                newState.desktopLayout.forEach(pc => {
+                    if (pc.x === s.x && pc.y === s.y) {
+                        pcModalVars = {'n': pc.n, 'keyA': true, 'keyB': true, 'keyC': true };
+                        hidePCModal(pc.n, newState);
+                    }
+                });
+            });
+            
+            newState.strangers_gold.forEach(s => {
+                if (s.isDead) return;
+                const hit = newState.cars.some(v => v.x === s.x && v.y === s.y) ||
+                            newState.buses.some(v => v.x === s.x && v.y === s.y) ||
+                            (newState.isDriving && s.x === newState.playerPos.x && s.y === newState.playerPos.y);
+                if (hit) {
+                    if (isSound) (new Audio("assets/sound-effects/crash.mp3")).play();
+                    if (isSound) (new Audio("assets/sound-effects/death.mp3")).play();
+                    s.isDead = true;
+                    s.deathTimer = DEATH_TIMER;
+                    newState.deadStrangers.push({ ...s });
+                }
+            });
+            
+            newState.ducks.forEach(d => {
+                if (d.isDead) return;
+                const hit = newState.cars.some(v => v.x === d.x && v.y === d.y) ||
+                            newState.buses.some(v => v.x === d.x && v.y === d.y) ||
+                            (newState.isDriving && d.x === newState.playerPos.x && d.y === newState.playerPos.y);
+                if (hit) {
+                    if (isSound) (new Audio("assets/sound-effects/crash.mp3")).play();
+                    d.isDead = true;
+                    if (isSound) (new Audio("assets/sound-effects/bark.mp3")).play();
+                    d.deathTimer = DEATH_TIMER;
+                    newState.deadDucks.push({ ...d });
+                }
+                if (newState.devicesOnBoard.med.some(m => m.x === d.x && m.y === d.y)) {
+                    m = newState.devicesOnBoard.med[newState.devicesOnBoard.med.findIndex(w => w.x === d.x && w.y === d.y)];
+                    if (Math.random()<m.prSide) {
+                        d.isT = 3;
+                        d.isInfected = true;
+                    }
+                    if (Math.random()<m.prEff) {
+                        d.isT = -1;
+                        d.isInfected = false;
+                    }
+                    newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === d.x && w.y === d.y), 1);
+                }
+                if (d.isInfected) {
+                    for(let dx=-1;dx!=1;dx++){for(let dy=-1;dy!=1;dy++){
+                            if (Math.random()<.2) continue;
+                            newState.explosions.push({ x: Math.abs(d.x+dx)%8, y: Math.abs(d.y+dy)%8, typ: 'bio' });
+                    }}
+                    if (--d.isT==0) {
+                        d.isDead = true;
+                        d.deathTimer = DEATH_TIMER;
+                        newState.deadStrangers.push({ ...d });
+                    }
+                }
+            });
+            return newState;
+        }
+
+        function checkItemPickup(newState) {
+            const { x, y } = newState.playerPos;
+            if (x === newState.flagLocation.x && y === newState.flagLocation.y) {
+                if (isSound) (new Audio("assets/sound-effects/levelWin.mp3")).play();
+                document.getElementById('music').volume=0;
+                txt = (currentLevel+1 == 13) ? 'Okay!' : flagTexts[Math.floor(Math.random()*flagTexts.length)];
+                //if (currentLevel == 30) {
+                //    alert(newState.levels.length);
+                //    levels = [levels[levels.length]];
+                //}
+                showNextLevelModal(txt,'LEVEL COMPLETED');
+                //nextLevel();
+                return newState;
+            }
+            const moneyIndex = newState.devicesOnBoard.money.findIndex(m => m.x === x && m.y === y);
+            if (moneyIndex !== -1) {
+                newState.inventory.money++;
+                newState.devicesOnBoard.money.splice(moneyIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/money.mp3")).play();
+            }
+            const keyAIndex = newState.devicesOnBoard.keyA.findIndex(k => k.x === x && k.y === y);
+            if (keyAIndex !== -1) {
+                newState.inventory.keyA=true;
+                newState.devicesOnBoard.keyA.splice(keyAIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/item.mp3")).play();
+            }
+            const keyBIndex = newState.devicesOnBoard.keyB.findIndex(k => k.x === x && k.y === y);
+            if (keyBIndex !== -1) {
+                newState.inventory.keyB=true;
+                newState.devicesOnBoard.keyB.splice(keyBIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/item.mp3")).play();
+            }
+            const keyCIndex = newState.devicesOnBoard.keyC.findIndex(k => k.x === x && k.y === y);
+            if (keyCIndex !== -1) {
+                newState.inventory.keyC=true;
+                newState.devicesOnBoard.keyC.splice(keyCIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/item.mp3")).play();
+            }
+            const RanIndex = newState.devicesOnBoard.R.findIndex(m => m.x === x && m.y === y);
+            if (RanIndex !== -1) {
+                newState.inventory.R++;
+                newState.devicesOnBoard.R.splice(RanIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/item.mp3")).play();
+            }
+            const EigIndex = newState.devicesOnBoard.E.findIndex(m => m.x === x && m.y === y);
+            if (EigIndex !== -1) {
+                newState.inventory.E++;
+                newState.devicesOnBoard.E.splice(EigIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/item.mp3")).play();
+            }
+            const ChronIndex = newState.devicesOnBoard.T.findIndex(m => m.x === x && m.y === y);
+            if (ChronIndex !== -1) {
+                newState.inventory.T++;
+                newState.devicesOnBoard.T.splice(ChronIndex, 1);
+                if (isSound) (new Audio("assets/sound-effects/item.mp3")).play();
+            }
+            newState.infoLocations.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    showInfoModal(m.text);
+                    newState.infoLocations.splice(newState.infoLocations.findIndex(w => w.x === x && w.y === y), 1);
+                    if (isSound) (new Audio("assets/sound-effects/hmm.mp3")).play();
+                }
+            });
+            const vacIndex = newState.devicesOnBoard.vac.findIndex(m => m.x === x && m.y === y);
+            if (vacIndex !== -1) {
+                newState.devicesOnBoard.vac.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    if (Math.random() < m.prEff) {
+                        newState.inventory.vac=true;
+                    }
+                    if (Math.random() < m.prSide) {
+                        if (newState.playerBioT<0) newState.playerBioT = 3; 
+                    }
+                    newState.devicesOnBoard.vac.splice(newState.devicesOnBoard.vac.findIndex(w => w.x === x && w.y === y), 1);
+                    if (isSound) (new Audio("assets/sound-effects/vac.mp3")).play();
+                }
+            });
+            }
+            const medIndex = newState.devicesOnBoard.med.findIndex(m => m.x === x && m.y === y);
+            if (medIndex !== -1) {
+                newState.devicesOnBoard.med.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    if (Math.random() < m.prEff) {
+                        newState.playerBioT = -1; newState.playerRadioT = -1;
+                    }
+                    if (Math.random() < m.prSide) {
+                        if (newState.playerBioT<0) newState.playerBioT = 3; 
+                    }
+                    newState.devicesOnBoard.med.splice(newState.devicesOnBoard.med.findIndex(w => w.x === x && w.y === y), 1);
+                    if (isSound) (new Audio("assets/sound-effects/med.mp3")).play();
+                }
+            });
+            }
+            const jacIndex = newState.devicesOnBoard.jacket.findIndex(m => m.x === x && m.y === y);
+            if (jacIndex !== -1) {
+                newState.devicesOnBoard.jacket.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    newState.inventory.jacket = Math.random() < m.prEff;
+                    newState.devicesOnBoard.jacket.splice(newState.devicesOnBoard.jacket.findIndex(w => w.x === x && w.y === y), 1);
+                    if (isSound) (new Audio("assets/sound-effects/jacket.mp3")).play();
+                }
+            });
+            }
+            const IDIndex = newState.devicesOnBoard.id.findIndex(m => m.x === x && m.y === y);
+            if (IDIndex !== -1) {
+                newState.devicesOnBoard.id.forEach(m => {
+                if (m.x === x && m.y === y) {
+                    newState.inventory.id += m.n;
+                    newState.devicesOnBoard.id.splice(newState.devicesOnBoard.id.findIndex(w => w.x === x && w.y === y), 1);
+                    if (isSound) (new Audio("assets/sound-effects/money.mp3")).play();
+                }
+            });
+            }
+            return newState;
+        }
+
+        function triggerExplosion(bomb, state, R=2, pr=1,trTyp='bomb') {
+            //if (isSound && trTyp=='bomb') (new Audio("assets/sound-effects/exp.mp3")).play();
+            for (let ex = -R; ex <= R; ex++) {
+                for (let ey = -R; ey <= R; ey++) {
+                    if (Math.random() <= 1-pr) continue;
+                    const blastX = bomb.x + ex;
+                    const blastY = bomb.y + ey;
+                    if (blastX >= 0 && blastX < GRID_SIZE && blastY >= 0 && blastY < GRID_SIZE) {
+                        if (!state.explosions.some(exp => exp.x === blastX && exp.y === blastY)) {
+                            state.explosions.push({ x: blastX, y: blastY, typ: trTyp });
+                        }
+                        if (state.playerPos.x === blastX && state.playerPos.y === blastY) {
+                            if (trTyp=='bomb') state.playerStatus = 'dead';
+                            if (isSound && trTyp=='bomb') (new Audio("assets/sound-effects/death.mp3")).play();
+                            if (trTyp=='bio' && state.playerBioT<0 && !state.inventory.vac) state.playerBioT = 9;
+                            if (trTyp=='radio' && state.playerRadioT<0 && !state.inventory.jacket) state.playerRadioT = 7;
+                        }
+                        state.strangers.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
+                            if (trTyp=='bomb') {
+                                s.isDead = true;
+                                state.deadStrangers.push({ ...s });
+                            }
+                            if (isSound && trTyp=='bomb') (new Audio("assets/sound-effects/death.mp3")).play();
+                            if (trTyp=='bio' || trTyp=='radio') {
+                                s.isInfected = true;
+                                if (s.isT<0 && !s.isDead) {
+                                    if (isSound) (new Audio("assets/sound-effects/cough.mp3")).play();
+                                    s.isT = 50;
+                                    s.p = .7;
+                                }
+                            }
+                            //if (s.isT<0 && !s.isDead) s.isT = 4;
+                        }});
+                        let isPolDeath = false;
+                        state.strangers_blue.forEach(s => {
+                            if (!s.isDead && s.x === blastX && s.y === blastY) {
+                                s.isDead = true;
+                                isPolDeath = true;
+                                state.deadStrangers.push({ ...s });
+                                if (isSound && trTyp=='bomb') (new Audio("assets/sound-effects/death.mp3")).play();
+                            }
+                        });
+                        if (trTyp=='bomb' && isPolDeath) {
+                            while(state.strangers_blue.some(r => !r.isDead)) {
+                                state.strangers_blue.forEach(r => {
+                                    if (!r.isDead) {
+                                        state.strangers_black.push({ ...r });
+                                        state.strangers_blue.splice(state.strangers_blue.findIndex(t => t.x === r.x && t.y === r.y && !t.isDead), 1);
+                                    }
+                                });
+                            }
+                        };
+                        
+                        state.strangers_black.forEach(s => {
+                            if (!s.isDead && s.x === blastX && s.y === blastY) { 
+                                s.isDead = true;
+                                state.deadStrangers.push({ ...s });
+                                if (isSound && trTyp=='bomb') (new Audio("assets/sound-effects/death.mp3")).play();
+                            }
+                        });
+                        state.strangers_gold.forEach(s => { if (!s.isDead && s.x === blastX && s.y === blastY) {
+                            if (trTyp=='bomb') {
+                                s.isDead = true;
+                                state.deadStrangers.push({ ...s });
+                            }
+                            if (isSound && trTyp=='bomb') (new Audio("assets/sound-effects/death.mp3")).play();
+                            if (trTyp=='bio' || trTyp=='radio') {
+                                s.isInfected = true;
+                                if (s.isT<0 && !s.isDead) {
+                                    if (isSound) (new Audio("assets/sound-effects/cough.mp3")).play();
+                                    s.isT = 15;
+                                }
+                            }
+                        }});
+                        state.ducks.forEach(d => { if (!d.isDead && d.x === blastX && d.y === blastY) {
+                            if (trTyp=='bomb') {
+                                d.isDead = true;
+                                state.deadDucks.push({ ...d });
+                            }
+                            if (trTyp=='bomb') (new Audio("assets/sound-effects/bark.mp3")).play();
+                            if (trTyp=='bio' || trTyp=='radio') d.isInfected = true;
+                            if (trTyp=='bio' || trTyp=='radio') {
+                                d.isInfected = true;
+                                if (d.isT<0 && !d.isDead) {
+                                    d.isT = 15;
+                                    d.p=0.7;
+                                }
+                            }
+                            //if (d.isT<0 && !d.isDead) d.isT = 8; d.p=0.7;
+                        }});
+                    }
+                }
+            }
+            if (trTyp=='bomb'){
+                state.bombs = state.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+            }
+        }
+         
+        const progressTurn = eval(progressTurnString);
+
+        function sortThreadIds(ids) {
+            return ids.sort((a, b) => {
+                if (a === '') return -1; if (b === '') return 1;
+                if (a.length !== b.length) return a.length - b.length;
+                return a.localeCompare(b);
+            });
+        }
+        
+        function switchThread(direction) {
+            const livingThreads = getLivingThreads();
+            if (livingThreads.length <= 1) return;
+            const currentId = threadIds[currentThreadIndex];
+            const currentIndexInLiving = livingThreads.indexOf(currentId);
+            let newIndexInLiving = direction === 'next' ? (currentIndexInLiving + 1) % livingThreads.length : (currentIndexInLiving - 1 + livingThreads.length) % livingThreads.length;
+            currentThreadIndex = threadIds.indexOf(livingThreads[newIndexInLiving]);
+            document.documentElement.style.setProperty('--switch-color',(currentThreadIndex==threadIds.indexOf(livingThreads[0]) && threadIds.length>1) ? '#444444' : '#222222');
+            document.documentElement.style.setProperty('--player-dx', '0px');
+            document.documentElement.style.setProperty('--player-dy', '0px');
+            flashLightning();
+            updateThreadIdDisplay();
+            drawGrid();
+        }
+
+        function showDefuseModal(bomb) {
+            if (isSound) (new Audio("assets/sound-effects/hmm.mp3")).play();
+            activeBombToDefuse = bomb;
+            defuseModal.style.display = 'block';
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleDefuseKeyPress);
+        }
+
+        function hideDefuseModal() {
+            activeBombToDefuse = null;
+            defuseModal.style.display = 'none';
+            document.removeEventListener('keydown', handleDefuseKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleDefuseAttempt(chosenWire) {
+            if (!activeBombToDefuse) return;
+
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
+
+            if (bomb) {
+                if (bomb.correctWire === chosenWire) {
+                    currentState.bombs = currentState.bombs.filter(b => b.x !== bomb.x || b.y !== bomb.y);
+                    if (isSound) (new Audio("assets/sound-effects/defuseBomb.mp3")).play();
+                } else {
+                    if (isSound) (new Audio("assets/sound-effects/defuseBombFailed.mp3")).play();
+                    triggerExplosion(bomb, currentState);
+                }
+            }
+
+            history.push(currentState);
+            hideDefuseModal();
+            drawGrid();
+        }
+
+        function handleDefuseKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'b') {
+                handleDefuseAttempt('b');
+            } else if (key === 'g') {
+                handleDefuseAttempt('g');
+            }
+        }
+        
+        function showDealModal(money, business=['deal-qrg','deal-eigengram','deal-chronogram']) {
+            dealModal.style.display = 'block';
+            document.getElementById('deal-qrg').style.display = 'none';
+            document.getElementById('deal-eigengram').style.display = 'none';
+            document.getElementById('deal-chronogram').style.display = 'none';
+            document.getElementById('deal-vac').style.display = 'none';
+            document.getElementById('deal-suit').style.display = 'none';
+            document.getElementById('deal-id').style.display = 'none';
+            document.getElementById('deal-car').style.display = 'none';
+            for(let i=0; i!=business.length; i++) {
+                document.getElementById(business[i]).style.display = 'block';
+            }
+            document.removeEventListener('keydown', handleKeyDown);
+            document.addEventListener('keydown', handleDealKeyPress);
+        }
+
+        function hideDealModal() {
+            dealModal.style.display = 'none';
+            document.removeEventListener('keydown', handleDealKeyPress);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleDealAttempt(chosenOpt) {
+            //if (!activeBombToDefuse) return;
+            //(new Audio("assets/sound-effects/deal.mp3")).play();
+
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            //const bomb = currentState.bombs.find(b => b.x === activeBombToDefuse.x && b.y === activeBombToDefuse.y);
+
+            m=currentState.inventory.money;
+            r=currentState.inventory.R;
+            e=currentState.inventory.E;
+            t=currentState.inventory.T;
+            vac=currentState.inventory.vac;
+            suit=currentState.inventory.jacket;
+            fakeid=currentState.inventory.id;
+            car=currentState.playerCar.occupied;
+            switch(chosenOpt) {
+                case 'r':
+                  if (m>0){
+                    r+=1;
+                    m-=1;
+                  }
+                  ;break;
+                case 'e':
+                  if (m>4){
+                    e+=1;
+                    m-=5;
+                  }
+                ;break;
+                case 't':
+                  if (m>9){
+                    t+=1;
+                    m-=10;
+                  }
+                  ;break;
+                case 'x':
+                  if (m>4){
+                    vac+=1;
+                    m-=5;
+                  }
+                  ;break;
+                case 'n':
+                  if (m>4){
+                    suit+=1;
+                    m-=5;
+                  }
+                  ;break;
+                case 'i':
+                  if (m>29){
+                    fakeid+=1;
+                    m-=30;
+                  }
+                  ;break;
+                case 'c':
+                  if (m>99){
+                    car+=1;
+                    m-=100;
+                  }
+                  ;break;
+                case 'f':
+                  if (r){
+                    r-=1;
+                    m+=1;
+                  }
+                  ;break;
+                case 'd':
+                  if (e){
+                    e-=1;
+                    m+=3;
+                  }
+                  ;break;
+                case 'g':
+                  if (t){
+                    t-=1;
+                    m+=7;
+                  }
+                case 'y':
+                  if (vac){
+                    vac-=1;
+                    m+=1;
+                  }
+                case 'm':
+                  if (suit){
+                    suit-=1;
+                    m+=2;
+                  }
+                case 'o':
+                  if (fakeid){
+                    fakeid-=1;
+                    m+=25;
+                  }
+                  ;break;
+                case 'p':
+                  if (car){
+                    car-=1;//TODO
+                    m+=70;
+                  }
+                case 'q':break;
+            }
+            if (isSound && currentState.inventory.money!=m) (new Audio("assets/sound-effects/deal.mp3")).play();
+            currentState.inventory.money=m;
+            currentState.inventory.R=r;
+            currentState.inventory.E=e;
+            currentState.inventory.T=t;
+            currentState.inventory.vac=vac;
+            currentState.inventory.jacket=suit;
+            currentState.inventory.id=fakeid;
+            currentState.playerCar.occupied=car;//TODO
+
+            history.push(currentState);
+            hideDealModal();
+            drawGrid();
+        }
+
+        function handleDealKeyPress(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'r') {
+                handleDealAttempt('r');
+            } else if (key === 'e') {
+                handleDealAttempt('e');
+            } else if (key === 't') {
+                handleDealAttempt('t');
+            } else if (key === 'f') {
+                handleDealAttempt('f');
+            } else if (key === 'd') {
+                handleDealAttempt('d');
+            } else if (key === 'g') {
+                handleDealAttempt('g');
+            } else if (key === 'q') {
+                handleDealAttempt('q');
+            }
+        }
+        
+        function handleKeyDown(e) {
+            if (isGameOver) {
+                handleRestart(e);
+                return;
+            }
+            const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            if (currentState.playerStatus === 'dead') {
+                progressTurn();
+                return;
+            }
+            
+            //document.addEventListener('touchstart', handleTouch('start',currentState));
+            //document.addEventListener('touchend', handleTouch('end',currentState));
+
+            const keyMap = {
+                'ArrowUp': {x:0, y:-1}, 'ArrowDown': {x:0, y:1},
+                'ArrowLeft': {x:-1, y:0}, 'ArrowRight': {x:1, y:0}
+            };
+
+            if (keyMap[e.key]) {
+                e.preventDefault();
+                playerDesiredMove = keyMap[e.key];
+                var styl = window.getComputedStyle(document.body);
+                const grid_dx = parseInt(styl.getPropertyValue('--grid-window-dim'),10)/styl.getPropertyValue('--grid-dnx');
+                const grid_dy = parseInt(styl.getPropertyValue('--grid-window-dim'),10)/styl.getPropertyValue('--grid-dny');
+                if (playerDesiredMove.x==-1){
+                    document.documentElement.style.setProperty('--player-dx', grid_dx.toString()+'px');
+                }else if (playerDesiredMove.x==1){
+                    document.documentElement.style.setProperty('--player-dx', '-30px');
+                }else{
+                    document.documentElement.style.setProperty('--player-dx', '0px');
+                }
+                if (playerDesiredMove.y==-1){
+                    document.documentElement.style.setProperty('--player-dy', '30px');
+                }else if (playerDesiredMove.y==1){
+                    document.documentElement.style.setProperty('--player-dy', '-30px');
+                }else{
+                    document.documentElement.style.setProperty('--player-dy', '0px');
+                }
+                progressTurn();
+            } else {
+                const playerPos = currentState.playerPos;
+                switch (e.key.toLowerCase()) {
+                    case 'd':
+                        e.preventDefault();
+                        const bombOnCell = currentState.bombs.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        const pcrOnCell = currentState.testers.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        if (bombOnCell) {
+                            showDefuseModal(bombOnCell);
+                        } else if (pcrOnCell) {
+                            if (currentState.playerBioT>0 && currentState.playerRadioT>0) {
+                                showInfoModal("You're infected and got too much radiation as well.");
+                            } else if (currentState.playerBioT<0 && currentState.playerRadioT>0) {
+                                showInfoModal("You got too much radiation.");
+                            } else if (currentState.playerBioT>0 && currentState.playerRadioT<0) {
+                                showInfoModal("You're infected.");
+                            } else {
+                                showInfoModal("You're healthy!");
+                                if (isSound) (new Audio("assets/sound-effects/hmm.mp3")).play();
+                            }
+                        } else {
+                            handleCarInteraction();
+                        }
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        const dealerOnCell = currentState.strangers_gold.find(b => b.x === playerPos.x && b.y === playerPos.y);
+                        if (dealerOnCell) {
+                            if (dealerOnCell.business) {
+                                showDealModal(currentState.inventory.money, dealerOnCell.business);
+                            } else {
+                                showDealModal(currentState.inventory.money);
+                            }
+                        }
+                        break;
+                    case 'o':
+                        e.preventDefault();
+                        currentState.desktopLayout.forEach(pc => {
+                        if (pc.x === playerPos.x && pc.y === playerPos.y){
+                            showPCModal(pc.text, pc.n, currentState.inventory.keyA, currentState.inventory.keyB, currentState.inventory.keyC);
+                        }});
+                        break;
+                    case ' ': e.preventDefault(); progressTurn(); flashLightning(); break;
+                    case 'r': e.preventDefault(); randomGeneratorBtn.click(); break;
+                    case '5': e.preventDefault(); nextLevel(); break;
+                    case 'e': e.preventDefault(); if (!eigengramOnBtn.disabled) eigengramOnBtn.click(); break;
+                    case 'c': e.preventDefault();
+                        const state = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                        if (state.chronogram.isOn && !sendBackBtn.disabled) sendBackBtn.click();
+                        else if (!chronogramOnBtn.disabled) chronogramOnBtn.click();
+                        break;
+                }
+            }
+        }
+        
+
+        function handleCarInteraction() {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            
+            if (currentState.isDriving) {
+                const { x, y } = currentState.playerPos;
+                const directions = [{x:currentState.lastMoveDirection.x, y:currentState.lastMoveDirection.y},{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+                for (const dir of directions) {
+                    const newX = x + dir.x, newY = y + dir.y;
+                    if (!isObstacle(newX, newY, currentState.grid)) {
+                        currentState.isDriving = false;
+                        currentState.playerPos = {x: newX, y: newY};
+                        break;
+                    }
+                }
+            } else if (currentState.playerPos.x === currentState.playerCar.x && currentState.playerPos.y === currentState.playerCar.y) {
+                currentState.isDriving = true;
+                if (isSound) (new Audio("assets/sound-effects/honk.mp3")).play();
+            }
+
+            history.push(currentState);
+            drawGrid();
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        prevThreadBtn.addEventListener('click', () => switchThread('prev'));
+        nextThreadBtn.addEventListener('click', () => switchThread('next'));
+        
+        throwThreadBtn.addEventListener('click', () => {
+            const currentThreadId = threadIds[currentThreadIndex];
+            if (isSound) (new Audio("assets/sound-effects/gameOver.mp3")).play();
+            if (!threadHistory[currentThreadId] || threadHistory[currentThreadId].status === 'dead') {
+                const living = getLivingThreads();
+                if (living.length > 0) {
+                    currentThreadIndex = threadIds.indexOf(living[0]);
+                    updateThreadIdDisplay();
+                    drawGrid();
+                } else gameOver();
+                return;
+            }
+
+            threadHistory[currentThreadId].status = 'dead';
+            const living = getLivingThreads();
+            if (living.length > 0) {
+                currentThreadIndex = threadIds.indexOf(living[0]);
+                updateThreadIdDisplay();
+                drawGrid();
+            } else gameOver();
+        });
+
+        randomGeneratorBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const currentState = threadHistory[currentThreadId].history.slice(-1)[0];
+            if (currentState.inventory.R > 0) {
+                const newId0 = currentThreadId + '0', newId1 = currentThreadId + '1';
+                const parentState = deepClone(currentState);
+                parentState.inventory.R--;
+                threadHistory[newId0] = {status: 'alive', history: [deepClone(parentState)]};
+                threadHistory[newId1] = {status: 'alive', history: [deepClone(parentState)]};
+                
+                const newThreadIds = threadIds.filter(id => id !== currentThreadId);
+                newThreadIds.push(newId0, newId1);
+                threadIds = sortThreadIds(newThreadIds);
+                currentThreadIndex = threadIds.indexOf(newId0);
+                
+                updateThreadIdDisplay();
+                drawGrid();
+            }
+        });
+        
+        eigengramOnBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            if (currentState.inventory.E > 0 && !currentState.eigengram.isOn) {
+                currentState.inventory.E--;
+                //(new Audio("assets/sound-effects/??.mp3")).play();TODO use eigengram sound
+                currentState.eigengram.isOn = true;
+                currentState.eigengram.lifetime = STARTING_LIFETIME;
+                history.push(currentState);
+                eigengramSourceThreadId = currentThreadId;
+                drawGrid();
+            }
+        });
+
+        chronogramOnBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const history = threadHistory[currentThreadId].history;
+            const currentState = deepClone(history.slice(-1)[0]);
+            if (currentState.inventory.T > 0 && !currentState.chronogram.isOn) {
+                currentState.inventory.T--;
+                if (isSound) (new Audio("assets/sound-effects/clock2.mp3")).play();
+                currentState.chronogram.isOn = true;
+                currentState.chronogram.lifetime = STARTING_LIFETIME;
+                currentState.chronogram.savedState = deepClone(currentState);
+                history.push(currentState);
+                drawGrid();
+            }
+        });
+
+        sendBackBtn.addEventListener('click', () => {
+            if (isGameOver) return;
+            const currentThreadId = threadIds[currentThreadIndex];
+            const currentState = threadHistory[currentThreadId].history.slice(-1)[0];
+            if (currentState.chronogram.isOn && currentState.chronogram.lifetime > 0) {
+                const { savedState } = currentState.chronogram;
+                const newPresentId = currentThreadId + '0', newPastId = currentThreadId + '1';
+                
+                const newPresentHistory = deepClone(threadHistory[currentThreadId].history);
+                const newPresentState = newPresentHistory.slice(-1)[0];
+                newPresentState.chronogram = { isOn: false, lifetime: 0, savedState: null };
+                threadHistory[newPresentId] = {status: 'alive', history: newPresentHistory};
+                
+                const pastState = deepClone(savedState);
+                pastState.chronogram = { isOn: false, lifetime: 0, savedState: null };
+                //pastState.inventory.T ++;
+                pastState.inventory.keyA ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyA"];
+                pastState.inventory.keyB ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyB"];
+                pastState.inventory.keyC ||= threadHistory[currentThreadId]["history"][threadHistory[currentThreadId]["history"].length-1]["inventory"]["keyC"];
+                threadHistory[newPastId] = {status: 'alive', history: [pastState]};
+
+                const newThreadIds = threadIds.filter(id => id !== currentThreadId);
+                newThreadIds.push(newPresentId, newPastId);
+                threadIds = sortThreadIds(newThreadIds);
+                currentThreadIndex = threadIds.indexOf(newPastId);
+                
+                if (isSound) (new Audio("assets/sound-effects/bell.mp3")).play();
+                
+                updateThreadIdDisplay();
+                drawGrid();
+            }
+        });
+        
+        document.getElementById('retry').addEventListener('click', () => initGame());
+        
+        cutBlackWireBtn.addEventListener('click', () => handleDefuseAttempt('b'));
+        cutGreenWireBtn.addEventListener('click', () => handleDefuseAttempt('g'));
+        
+        getRBtn.addEventListener('click', () => handleDealAttempt('r'));
+        getEBtn.addEventListener('click', () => handleDealAttempt('e'));
+        getTBtn.addEventListener('click', () => handleDealAttempt('t'));
+        sellRBtn.addEventListener('click', () => handleDealAttempt('f'));
+        sellEBtn.addEventListener('click', () => handleDealAttempt('d'));
+        sellTBtn.addEventListener('click', () => handleDealAttempt('g'));
+        getOutBtn.addEventListener('click', () => handleDealAttempt('q'));
+        document.getElementById('get-v').addEventListener('click', () => handleDealAttempt('x'));
+        document.getElementById('sell-v').addEventListener('click', () => handleDealAttempt('y'));//TODO
+        document.getElementById('get-s').addEventListener('click', () => handleDealAttempt('n'));
+        document.getElementById('sell-s').addEventListener('click', () => handleDealAttempt('m'));
+        document.getElementById('get-id').addEventListener('click', () => handleDealAttempt('i'));
+        document.getElementById('sell-id').addEventListener('click', () => handleDealAttempt('o'));
+        document.getElementById('get-c').addEventListener('click', () => handleDealAttempt('c'));
+        document.getElementById('sell-c').addEventListener('click', () => handleDealAttempt('v'));
+
+        //helpBtn.addEventListener('click', () => showHelpModal());
+        document.getElementById('settings').addEventListener('click', () => showSettingsModal(0));;
+        infoModalOkBtn.addEventListener('click', () => {
+            if (infoModalTitle.textContent=="Information") {
+                hideInfoModal();
+            } else if (infoModalTitle.textContent=="LEVEL COMPLETED") {
+                hideNextLevelModal();
+            }
+        });
+        
+        document.getElementById('h-i').addEventListener('click', () => showHelpModal(1));
+        document.getElementById('h-w').addEventListener('click', () => showHelpModal(2));
+        document.getElementById('h-s').addEventListener('click', () => showHelpModal(3));
+        document.getElementById('h-r').addEventListener('click', () => showHelpModal(4));
+        document.getElementById('h-e').addEventListener('click', () => showHelpModal(5));
+        document.getElementById('h-t').addEventListener('click', () => showHelpModal(6));
+        document.getElementById('h-p').addEventListener('click', () => showHelpModal(7));
+        document.getElementById('h-o').addEventListener('click', () => showHelpModal(8));
+        
+        document.getElementById('h-b-i-1').addEventListener('click', () => showHelpModal(1,1));
+        document.getElementById('h-b-i-2').addEventListener('click', () => showHelpModal(1,2));
+        document.getElementById('h-b-i-3').addEventListener('click', () => showHelpModal(1,3));
+        document.getElementById('h-b-i-4').addEventListener('click', () => showHelpModal(1,4));
+        document.getElementById('h-b-i-5').addEventListener('click', () => showHelpModal(1,5));
+        document.getElementById('h-b-i-6').addEventListener('click', () => showHelpModal(1,6));
+        document.getElementById('h-b-i-7').addEventListener('click', () => showHelpModal(1,7));
+        document.getElementById('h-b-i-8').addEventListener('click', () => showHelpModal(1,8));
+        document.getElementById('h-b-i-9').addEventListener('click', () => showHelpModal(1,9));
+        document.getElementById('h-b-i-10').addEventListener('click', () => showHelpModal(1,10));
+        document.getElementById('h-b-i-11').addEventListener('click', () => showHelpModal(1,11));
+        document.getElementById('h-b-i-12').addEventListener('click', () => showHelpModal(1,12));
+        
+        document.getElementById('h-b-p-1').addEventListener('click', () => showHelpModal(7,1));
+        document.getElementById('h-b-p-2').addEventListener('click', () => showHelpModal(7,2));
+        document.getElementById('h-b-p-3').addEventListener('click', () => showHelpModal(7,3));
+        document.getElementById('h-b-p-4').addEventListener('click', () => showHelpModal(7,4));
+        document.getElementById('h-b-p-5').addEventListener('click', () => showHelpModal(7,5));
+        document.getElementById('h-b-p-6').addEventListener('click', () => showHelpModal(7,6));
+        document.getElementById('h-b-p-7').addEventListener('click', () => showHelpModal(7,7));
+        document.getElementById('h-b-p-8').addEventListener('click', () => showHelpModal(7,8));
+        document.getElementById('h-b-p-9').addEventListener('click', () => showHelpModal(7,9));
+        document.getElementById('h-b-p-10').addEventListener('click', () => showHelpModal(7,10));
+        
+        document.getElementById('h-b-o-1').addEventListener('click', () => showHelpModal(8,1));
+        document.getElementById('h-b-o-2').addEventListener('click', () => showHelpModal(8,2));
+        document.getElementById('h-b-o-3').addEventListener('click', () => showHelpModal(8,3));
+        document.getElementById('h-b-o-4').addEventListener('click', () => showHelpModal(8,4));
+        document.getElementById('h-b-o-5').addEventListener('click', () => showHelpModal(8,5));
+        document.getElementById('h-b-o-6').addEventListener('click', () => showHelpModal(8,6));
+        document.getElementById('h-b-o-7').addEventListener('click', () => showHelpModal(8,7));
+
+        document.getElementById('h-b-main').addEventListener('click', () => showHelpModal(-1));
+        
+        document.getElementById('pc-modal-a').addEventListener('click', () => hidePCModal(1));
+        document.getElementById('pc-modal-b').addEventListener('click', () => hidePCModal(2));
+        
+        document.getElementById('new-game').addEventListener('click', () => {
+            currentLevel=0;
+            initGame();
+            hideSettingsModal();
+        });
+        document.getElementById('retry').addEventListener('click', () => {
+            initGame();
+            hideSettingsModal();
+        });
+        document.getElementById('button-sound').addEventListener('click', () => showSettingsModal(1));
+        document.getElementById('vol-music').addEventListener('click', () => {
+            if (isMusic) document.getElementById('vol-music').innerHTML="OFF";
+            if (!isMusic) document.getElementById('vol-music').innerHTML="ON";
+            isMusic = 1-isMusic;
+            document.getElementById("weather").volume = isMusic;
+            document.getElementById("music").volume = isMusic;
+        });
+        document.getElementById('vol-sound').addEventListener('click', () => {
+            if (isSound) document.getElementById('vol-sound').innerHTML="OFF";
+            if (!isSound) document.getElementById('vol-sound').innerHTML="ON";
+            isSound = 1-isSound;
+        });
+        document.getElementById('settings-help').addEventListener('click', () => showSettingsModal(2));
+        document.getElementById('button-score').addEventListener('click', () => showSettingsModal(3));
+        document.getElementById('settings-credits').addEventListener('click', () => showSettingsModal(4));
+        document.getElementById('sub-settings-ok').addEventListener('click', () => showSettingsModal(0));
+        document.getElementById('settings-back').addEventListener('click', () => showSettingsModal(-1));
+        hideSettingsModal();
+        
+        /*
+         settings-modal settings-buttons-modal (new-game retry button-score sound settings-help settings-credits settings-ok settings-back) settings-sound (vol-music vol-sound) settings-credit score sub-settings-ok sub-settings-back*/
+        
+        initGame();
+            
+        function handleTouch(point,currentState={}) {
+            //document.removeEventListener('touchstart', handleTouch);
+            //document.removeEventListener('touchend', handleTouch);
+            if (!point) return;
+            if (helpModal.style.display=='block' || defuseModal.style.display=='block' || dealModal.style.display=='block' || pcModal.style.display=='block' || infoModal.style.display=='block' || helpChooseModal.style.display=='block' || helpItemsModal.style.display=='block' || helpWorldModal.style.display=='block' || helpStoryModal.style.display=='block' || helpQRGModal.style.display=='block' || helpEigengramModal.style.display=='block' || helpChronogramModal.style.display=='block' || helpPeopleModal.style.display=='block' || helpObjectsModal.style.display=='block') return;
+            //const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+            if (currentState.status=='dead') return;
+            if (point=='start') document.addEventListener('touchstart',e => {
+                const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                touchStartX = e.changedTouches[0].clientX;//screenX;
+                touchStartY = e.changedTouches[0].clientY;//screenY;
+            });
+            if (point=='end') document.addEventListener('touchend',e => {
+                const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
+                let dx = touchStartX - e.changedTouches[0].clientX;//screenX;
+                let dy = touchStartY - e.changedTouches[0].clientY;//screenY;
+                //touchEndY = e.changedTouches[0].screenY;
+                //alert(touchStartX-touchEndX);
+                //alert(touchStartY-touchEndY);
+                playerDesiredMove = {
+                  x: -((Math.abs(dx)>Math.abs(dy)) ? dx/Math.abs(dx) : 0),
+                  y: -((Math.abs(dy)>Math.abs(dx)) ? dy/Math.abs(dy) : 0)
+                };
+                var styl = window.getComputedStyle(document.body);
+                let grid_dx = document.getElementById("game-board").getBoundingClientRect().width;
+                let grid_dy = document.getElementById("game-board").getBoundingClientRect().height;
+                let grid_x0 = document.getElementsByClassName("grid-cell")[0].getBoundingClientRect().x;
+                let grid_y0 = document.getElementsByClassName("grid-cell")[0].getBoundingClientRect().y;
+                if (Math.abs(dx)+Math.abs(dy)<cell_dx/2) {
+                    if (grid_x0<touchStartX && touchStartX<grid_x0+grid_dx && grid_y0<touchStartY && touchStartY<grid_y0+grid_dy) {
+                        x = Math.floor((touchStartX-grid_x0)/cell_dx);
+                        y = Math.floor((touchStartY-grid_y0)/cell_dy);
+                        if (currentState.grid[x][y] === CELL_TYPES.doorAOpen || currentState.grid[x][y] === CELL_TYPES.doorBOpen || currentState.grid[x][y] === CELL_TYPES.doorCOpen) {
+                            showInfoModal("This door is open. You can go through or close it from the station.");
+                        } else if (currentState.grid[x][y] === CELL_TYPES.doorA || currentState.grid[x][y] === CELL_TYPES.doorB || currentState.grid[x][y] === CELL_TYPES.doorC) {
+                            showInfoModal("This is a closed door. You can open it with a key from its station.");
+                        } else if (currentState.grid[x][y] === CELL_TYPES.fence) {
+                            showInfoModal("This is a fence.");
+                        } else if (currentState.grid[x][y] === CELL_TYPES.flag) {
+                            showInfoModal("This flag is your goal. Get here!");
+                        } else {
+                            if (currentState.devicesOnBoard.money.some(m => m.x === x && m.y === y)) showInfoModal("This is 1 Eurasian Forint. Collect all of them.");
+                            if (currentState.devicesOnBoard.id.some(m => m.x === x && m.y === y)) showInfoModal("This is a fake ID. If you're lucky, you can go through between police officers with this.");
+                            if (currentState.devicesOnBoard.keyA.some(m => m.x === x && m.y === y) || currentState.devicesOnBoard.keyB.some(m => m.x === x && m.y === y) || currentState.devicesOnBoard.keyC.some(m => m.x === x && m.y === y)) showInfoModal("This is a key. After you take it, you can open/close doors from the proper station.");
+                            if (currentState.devicesOnBoard.R.some(m => m.x === x && m.y === y)) showInfoModal("This is a QRG, that is, a Quantum Random-Generator. You can branch the time with this.");
+                            if (currentState.devicesOnBoard.E.some(m => m.x === x && m.y === y)) showInfoModal("This is an eigengram. Take it before branching the time, and after a branch you can communicate for a short time (sharing hardware keys) with your otherselves cross the time-tree.");
+                            if (currentState.devicesOnBoard.T.some(m => m.x === x && m.y === y)) showInfoModal("This is a chronogram. After switching it on, it branches the time and causes a short time-dilation (for a few moves) which means that you can jump back in time to the other branch and to have communication (sharing hardware keys) between your pre-self and post-self.");
+                            if (currentState.infoLocations.some(m => m.x === x && m.y === y)) showInfoModal("For useful information, get here.");
+                            if (currentState.houseLocations.some(m => m.x === x && m.y === y)) showInfoModal("Nothing special, just a house.");
+                            if (currentState.deadDucks.some(m => m.x === x && m.y === y)) showInfoModal("It was a duck :(");
+                            if (currentState.deadStrangers.some(m => m.x === x && m.y === y)) showInfoModal("It was a civil...");
+                            if (currentState.ducks.some(m => m.x === x && m.y === y)) showInfoModal("It must be a duck.");
+                            if (currentState.strangers.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a civil.");
+                            if (currentState.strangers_blue.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a police officer.");
+                            if (currentState.strangers_black.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a secret police officer.");
+                            if (currentState.strangers_gold.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a dealer.");
+                            if (currentState.buses.some(m => m.x === x && m.y === y)) showInfoModal("It is either a bicycle or a bus. Not sure... But watch out before stepping on the road.");
+                            if (currentState.cars.some(m => m.x === x && m.y === y)) showInfoModal("It is car with no brakes.");
+                            if (currentState.bombs.some(m => m.x === x && m.y === y)) { 
+                                if (currentState.playerPos.x == x && currentState.playerPos.y == y) {
+                                    b = currentState.bombs.find(b => b.x === x && b.y === y);
+                                    showDefuseModal(b);
+                                } else {
+                                    showInfoModal("It's a bomb. If you don't try to defuse it, run straight away!");
+                                }
+                            }
+                            if (currentState.desktopLayout) currentState.desktopLayout.forEach(pc => {
+                                if (pc.x == x && pc.y == y){
+                                    if (pc.x == currentState.playerPos.x && pc.y == currentState.playerPos.y){
+                                        showPCModal(pc.text, pc.n, currentState.inventory.keyA, currentState.inventory.keyB, currentState.inventory.keyC);
+                                    } else {
+                                        showInfoModal("This is a station. With the correct keys you can open/close doors or launch things.");
+                                    }
+                                }
+                            });
+                            //if (level.testers) level.testers.forEach(d => grid[d.y][d.x] = CELL_TYPES.tester);
+                            if (currentState.testers) currentState.testers.forEach(t => {
+                                if (t.x == x && t.y == y) {
+                                    if (t.x == currentState.playerPos.x && t.y == currentState.playerPos.y) {
+                                        if (currentState.playerBioT>0 && currentState.playerRadioT>0) {
+                                            showInfoModal("You're infected and got too much radiation as well.");
+                                        } else if (currentState.playerBioT<0 && currentState.playerRadioT>0) {
+                                            showInfoModal("You got too much radiation.");
+                                        } else if (currentState.playerBioT>0 && currentState.playerRadioT<0) {
+                                            showInfoModal("You're infected.");
+                                        } else {
+                                            showInfoModal("You're healthy!");
+                                            if (isSound) (new Audio("assets/sound-effects/hmm.mp3")).play();
+                                        }
+                                    } else {
+                                        showInfoModal("This is a microbiology tester. With this, you can test if you're infected or got too much radiation.");
+                                    }
+                                }
+                            });
+                        }
+                        if (!(helpModal.style.display=='block' || defuseModal.style.display=='block' || dealModal.style.display=='block' || pcModal.style.display=='block' || infoModal.style.display=='block' || helpChooseModal.style.display=='block' || helpItemsModal.style.display=='block' || helpWorldModal.style.display=='block' || helpStoryModal.style.display=='block' || helpQRGModal.style.display=='block' || helpEigengramModal.style.display=='block' || helpChronogramModal.style.display=='block' || helpPeopleModal.style.display=='block' || helpObjectsModal.style.display=='block')) {
+                            if (currentState.playerPos.x == x && currentState.playerPos.y != y){
+                                if (currentState.playerPos.y < y){
+                                    playerDesiredMove = {x:0, y:1};
+                                } else {
+                                    playerDesiredMove = {x:0, y:-1};
+                                }
+                            }
+                            if (currentState.playerPos.y == y && currentState.playerPos.x != x){
+                                if (currentState.playerPos.x < x){
+                                    playerDesiredMove = {x:1, y:0};
+                                } else {
+                                    playerDesiredMove = {x:-1, y:0};
+                                }
+                            }
+                        } else {
+                            return;
+                        }
+                    }
+                }
+                if (currentState.status=='dead') playerDesiredMove=0;//{x:0,y:0};
+                if (!playerDesiredMove) return;
+                if (!playerDesiredMove.x && !playerDesiredMove.y) return;
+                if (playerDesiredMove.x==-1){
+                    document.documentElement.style.setProperty('--player-dx', grid_dx.toString()+'px');
+                }else if (playerDesiredMove.x==1){
+                    document.documentElement.style.setProperty('--player-dx', '-30px');
+                }else{
+                    document.documentElement.style.setProperty('--player-dx', '0px');
+                }
+                if (playerDesiredMove.y==-1){
+                    document.documentElement.style.setProperty('--player-dy', '30px');
+                }else if (playerDesiredMove.y==1){
+                    document.documentElement.style.setProperty('--player-dy', '-30px');
+                }else{
+                    document.documentElement.style.setProperty('--player-dy', '0px');
+                }
+                progressTurn();
+                return;
+                //playerDesiredMove = {x:0,y:0};
+            });
+        }
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        playerDesiredMove = {x:0, y:0};
+        let grid_x0 = document.getElementsByClassName("grid-cell")[0].getBoundingClientRect().x;
+        let grid_y0 = document.getElementsByClassName("grid-cell")[0].getBoundingClientRect().y;
+        let cell_dx = document.getElementsByClassName("grid-cell")[0].getBoundingClientRect().width;
+        let cell_dy = document.getElementsByClassName("grid-cell")[0].getBoundingClientRect().height;
+        document.addEventListener('touchstart', handleTouch('start'));
+        document.addEventListener('touchend', handleTouch('end'));
+    });
+</script>
+</body>
+</html>
+
