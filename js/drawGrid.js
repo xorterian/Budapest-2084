@@ -16,6 +16,7 @@ var _ = () => {
     for (let row = 0; row < GRID_SIZE; row++) {
         for (let col = 0; col < GRID_SIZE; col++) {
             const cell = document.createElement('div');
+            //cell.style="";
             cell.classList.add('grid-cell', currentState.grid[row][col]);
             
             if (currentState.grid[row][col] === CELL_TYPES.trapBuilding) {
@@ -24,10 +25,10 @@ var _ = () => {
             }
 
             const isDeadStrangerCell = currentState.deadStrangers.some(s => s.x === col && s.y === row);
-            if (isDeadStrangerCell) cell.classList.add('dead-stranger-cell');
+            if (isDeadStrangerCell) cell.style.cssText+='transform: rotate(90deg);';
             
             const isDeadDuckCell = currentState.deadDucks.some(d => d.x === col && d.y === row);
-            if (isDeadDuckCell) cell.classList.add('dead-stranger-cell');
+            if (isDeadDuckCell) cell.style.cssText+='transform: rotate(90deg);';
             
             if (currentState.grid[row][col] === CELL_TYPES.flag) {
                 cell.classList.remove(CELL_TYPES.flag);
@@ -36,108 +37,135 @@ var _ = () => {
 
             const isHouse = currentState.houseLocations.some(h => h.x === col && h.y === row);
             if (isHouse) {
-                const houseIcon = document.createElement('i');
-                houseIcon.classList.add('fas', 'fa-house');
+                const houseIcon = document.createElement('img');
+                houseIcon.src="css/svg/house.svg";
+                //houseIcon.classList.add('fas', 'fa-house');
                 cell.appendChild(houseIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.wall || currentState.grid[row][col] === CELL_TYPES.trapBuilding) {
-                const wallIcon = document.createElement('i');
-                wallIcon.classList.add('fas', 'fa-building', 'wall-icon');
+                const wallIcon = document.createElement('img');
+                wallIcon.src="css/svg/building.svg";
+                //wallIcon.classList.add('fas', 'fa-building', 'wall-icon');
                 cell.appendChild(wallIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorA) {
-                const doorIcon = document.createElement('i');
-                doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-icon');
+                const doorIcon = document.createElement('img');
+                doorIcon.src="css/svg/doorA.svg";
+                doorIcon.style.opacity="0.8";
+                //doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorAOpen) {
-                const doorIcon = document.createElement('i');
-                doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-open-icon');
+                const doorIcon = document.createElement('img');
+                doorIcon.src="css/svg/doorA.svg";
+                doorIcon.style.opacity="0.4";
+                //doorIcon.classList.add('fas', 'fa-door-closed', 'door-a-open-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorB) {
-                const doorIcon = document.createElement('i');
-                doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-icon');
+                const doorIcon = document.createElement('img');
+                doorIcon.src="css/svg/doorB.svg";
+                doorIcon.style.opacity="0.8";
+                //doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorBOpen) {
-                const doorIcon = document.createElement('i');
-                doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-open-icon');
+                const doorIcon = document.createElement('img');
+                doorIcon.src="css/svg/doorB.svg";
+                doorIcon.style.opacity="0.4";//TODO Is this correct?
+                //doorIcon.classList.add('fas', 'fa-door-closed', 'door-b-open-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorC) {
-                const doorIcon = document.createElement('i');
-                doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-icon');
+                const doorIcon = document.createElement('img');
+                doorIcon.src="css/svg/doorC.svg";
+                doorIcon.style.opacity="0.8";
+                //doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.doorCOpen) {
-                const doorIcon = document.createElement('i');
-                doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-open-icon');
+                const doorIcon = document.createElement('img');
+                doorIcon.src="css/svg/doorC.svg";
+                doorIcon.style.opacity="0.4";
+                //doorIcon.classList.add('fas', 'fa-door-closed', 'door-c-open-icon');
                 cell.appendChild(doorIcon);
             }
             
             if (currentState.grid[row][col] === CELL_TYPES.desktop) {
-                const desktopIcon = document.createElement('i');
-                desktopIcon.classList.add('fas', 'fa-desktop', 'desktop-icon');
+                const desktopIcon = document.createElement('img');
+                desktopIcon.src="css/svg/desktop.svg";
                 cell.appendChild(desktopIcon);
             }
 
             if (currentState.grid[row][col] === CELL_TYPES.fence) {
-                const fenceIcon = document.createElement('i');
-                fenceIcon.classList.add('fas', 'fa-ruler-horizontal', 'fence-icon');
+                const fenceIcon = document.createElement('img');
+                fenceIcon.src="css/svg/road-barrier.svg";
                 cell.appendChild(fenceIcon);
             }
 
             if (currentState.grid[row][col] === CELL_TYPES.flag) {
-                const flagIcon = document.createElement('i');
-                flagIcon.classList.add('fas', 'fa-flag-checkered', 'flag-icon');
+                const flagIcon = document.createElement('img');
+                flagIcon.src="css/svg/flag-checkered.svg";
                 cell.appendChild(flagIcon);
             }
             
             if (currentState.devicesOnBoard.money.some(m => m.x === col && m.y === row)) {
-                 const moneyIcon = document.createElement('i');
-                 moneyIcon.classList.add('fas', 'fa-money-bill-wave', 'money-icon');
+                 const moneyIcon = document.createElement('img');
+                 moneyIcon.src="css/svg/money-bill-wave.svg";
+                 //moneyIcon.classList.add('fas', 'fa-money-bill-wave', 'money-icon');
                  cell.appendChild(moneyIcon);
+            }
+            
+            if (currentState.devicesOnBoard.id.some(m => m.x === col && m.y === row)) {
+                 const IDIcon = document.createElement('img');
+                 IDIcon.src="css/svg/passport.svg";
+                 cell.appendChild(IDIcon);
             }
 
             if (currentState.devicesOnBoard.keyA.some(k => k.x === col && k.y === row)) {
-                 const keyIcon = document.createElement('i');
-                 keyIcon.classList.add('fas', 'fa-key', 'key-a-icon');
+                 const keyIcon = document.createElement('img');
+                 keyIcon.src="css/svg/keyA.svg";
+                 //keyIcon.classList.add('fas', 'fa-key', 'key-a-icon');
                  cell.appendChild(keyIcon);
             }
 
             if (currentState.devicesOnBoard.keyB.some(k => k.x === col && k.y === row)) {
-                 const keyIcon = document.createElement('i');
+                 const keyIcon = document.createElement('img');
+                 keyIcon.src="css/svg/keyB.svg";
                  keyIcon.classList.add('fas', 'fa-key', 'key-b-icon');
                  cell.appendChild(keyIcon);
             }
 
             if (currentState.devicesOnBoard.keyC.some(k => k.x === col && k.y === row)) {
-                 const keyIcon = document.createElement('i');
-                 keyIcon.classList.add('fas', 'fa-key', 'key-c-icon');
+                 const keyIcon = document.createElement('img');
+                 keyIcon.src="css/svg/keyC.svg";
+                 //keyIcon.classList.add('fas', 'fa-key', 'key-c-icon');
                  cell.appendChild(keyIcon);
             }
             
             if (currentState.devicesOnBoard.R.some(m => m.x === col && m.y === row)) {
-                 const RanIcon = document.createElement('i');
-                 RanIcon.classList.add('fas', 'fa-cube', 'item-r-icon');
+                 const RanIcon = document.createElement('img');
+                 RanIcon.src="css/svg/cube.svg";
+                 //RanIcon.classList.add('fas', 'fa-cube', 'item-r-icon');
                  cell.appendChild(RanIcon);
             }
             if (currentState.devicesOnBoard.E.some(m => m.x === col && m.y === row)) {
-                 const EigIcon = document.createElement('i');
-                 EigIcon.classList.add('fas', 'fa-atom', 'item-e-icon');
+                 const EigIcon = document.createElement('img');
+                 EigIcon.src="css/svg/atom.svg";
+                 //EigIcon.classList.add('fas', 'fa-atom', 'item-e-icon');
                  cell.appendChild(EigIcon);
             }
             if (currentState.devicesOnBoard.T.some(m => m.x === col && m.y === row)) {
-                 const ChronIcon = document.createElement('i');
-                 ChronIcon.classList.add('fas', 'fa-hourglass-half', 'item-t-icon');
+                 const ChronIcon = document.createElement('img');
+                 ChronIcon.src="css/svg/hourglass-half.svg";
+                 //ChronIcon.classList.add('fas', 'fa-hourglass-half', 'item-t-icon');
                  cell.appendChild(ChronIcon);
             }
 
@@ -152,8 +180,9 @@ var _ = () => {
             }
             
             if (currentState.infoLocations.some(inf => inf.x === col && inf.y === row)) {
-                 const infoIcon = document.createElement('i');
-                 infoIcon.classList.add('fas', 'fa-info-circle', 'info-icon');
+                 const infoIcon = document.createElement('img');
+                 infoIcon.src="css/svg/info-circle.svg";
+                 //infoIcon.classList.add('fas', 'fa-info-circle', 'info-icon');
                  cell.appendChild(infoIcon);
             }
             //...
@@ -164,8 +193,10 @@ var _ = () => {
 
     if (currentHistory.length > 1) {
         const previousState = currentHistory[currentHistory.length - 2];
-        const previousPlayer = document.createElement('i');
-        previousPlayer.classList.add('fas', 'fa-person', 'past-player-one-step-back');
+        const previousPlayer = document.createElement('img');
+        previousPlayer.src="css/svg/person.svg";
+        previousPlayer.style.opacity="0.6";
+        //previousPlayer.classList.add('fas', 'fa-person', 'past-player-one-step-back');
         const prevCell = board.children[previousState.playerPos.y * GRID_SIZE + previousState.playerPos.x];
         if(prevCell) prevCell.appendChild(previousPlayer);
     }
@@ -174,18 +205,49 @@ var _ = () => {
     for (const otherThreadId of otherLivingThreads) {
         if (threadHistory[otherThreadId].history.length > 0) {
             const otherState = threadHistory[otherThreadId].history[threadHistory[otherThreadId].history.length - 1];
-            const otherPlayerIcon = document.createElement('i');
-            otherPlayerIcon.classList.add('fas', 'fa-person', 'other-thread-player');
+            const otherPlayerIcon = document.createElement('img');
+            otherPlayerIcon.src="css/svg/person.svg";
+            otherPlayerIcon.style.opacity="0.3";
+            //otherPlayerIcon.classList.add('fas', 'fa-person', 'other-thread-player');
             const otherCell = board.children[otherState.playerPos.y * GRID_SIZE + otherState.playerPos.x];
             if(otherCell) otherCell.appendChild(otherPlayerIcon);
         }
     }
     
     drawEntities(currentState);
-    
     updateDevicePanel(currentState);
     updateStatsDisplay(currentState);
     updateThreadNavButtons();
+    
+    
+    function rearrangeScreen() {
+        const main = document.getElementById('main-content-area');
+        const board = document.getElementById('game-board');
+        const panel = document.getElementById('device-panel');
+        document.body.style.width=window.screen.width+'px';
+        document.body.style.height=window.screen.height+'px';
+        if (screen.orientation.type.includes('landscape')) {
+            main.style.cssText.replace('flex-direction: column;','');
+            main.style.cssText+='flex-direction: row;';
+            x=String(Number(document.body.style.height.replace('px',''))*.75)+"px";
+            board.style.width=x; board.style.height=x;
+            panel.style.width="fit-content";
+            panel.style.heigth=x;
+        } else {
+            main.style.cssText.replace('flex-direction: row;','');
+            main.style.cssText+='flex-direction: column;';
+            x=String(Number(document.body.style.width.replace('px',''))*.75)+"px";
+            board.style.heigth=x; board.style.width=x;
+            panel.style.width="fit-content";
+            panel.style.heigth="auto";
+        }
+        x=String(Number(board.style.width.replace('px',''))/8)+"px";
+        for(let i=0;i<64;i++){
+            document.getElementsByClassName("grid-cell")[i].style.width=x;
+            document.getElementsByClassName("grid-cell")[i].style.height=x;
+        }
+    }
+    rearrangeScreen();
 }
 
 drawGridString = _.toString();
