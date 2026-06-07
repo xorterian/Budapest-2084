@@ -1,6 +1,7 @@
 // --- LEVELS DEFINITION ---
 const levels = [
-    // Level 30: 
+    // Level n:
+    /*
     {
         playerPos: { x: 0, y: 1 },
         flagLocation: { x: 6, y: 6 },
@@ -15,39 +16,6 @@ const levels = [
         initialDuckLocations: [],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
-        infoLocations: []
-    },
-    /*
-    // Level 25: Hops in time
-    {
-        playerPos: { x: 3, y: 0 },
-        flagLocation: { x: 6, y: 6 },
-        roadLayout: [
-            { type: 'horizontal', y: 1 },
-            { type: 'horizontal', y: 3 }
-        ],
-        wallLayout: [
-            {x:0,y:0},{x:1,y:0},{x:2,y:0},{x:4,y:0},{x:6,y:0},{x:7,y:0},
-            {x:0,y:2},{x:1,y:2},{x:2,y:2},{x:3,y:2},{x:4,y:2},{x:5,y:2},{x:7,y:2},
-            {x:0,y:4},{x:2,y:4},{x:4,y:4},{x:6,y:4},
-            {x:0,y:5},{x:2,y:5},{x:3,y:5},{x:4,y:5},{x:5,y:5},{x:6,y:5},{x:7,y:5}
-            
-        ],
-        trapBuildingLayout: [],
-        fenceLayout: [],
-        houseLocations: [{ x: 7, y: 4 }],
-        initialMoneyLocations: [],
-        doorLayout: [],
-        desktopLayout: [],
-        initialCarLocations: [
-            { x: 1, y: 1, dx: -1, isPlayerCar: false },
-            { x: 0, y: 1, dx: -1, isPlayerCar: false },
-            { x: 0, y: 3, dx: 1, isPlayerCar: false },
-            { x: 6, y: 3, dx: 1, isPlayerCar: false }
-        ],
-        initialDuckLocations: [],
-        playerCar: { x: -1, y: -1, occupied: false },
-        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x:5,y:0,t:10},{x:5,y:4,t:10},] },
         infoLocations: []
     },*/
     // Level 1: The ducg crossing the road. 
@@ -902,6 +870,47 @@ const levels = [
         ],
         playerCar: { x: -1, y: -1, occupied: false },
         deviceLocations: { 'R': [ ], 'E': [ ], 'T': [ ] },
+        infoLocations: []
+    },
+    // Level 25: Hops in time
+    {
+        playerPos: { x: 3, y: 0 },
+        flagLocation: { x: 6, y: 6 },
+        roadLayout: [
+            { type: 'horizontal', y: 1 },
+            { type: 'horizontal', y: 3 }
+        ],
+        wallLayout: [
+            {x:0,y:0},{x:1,y:0},{x:2,y:0},{x:4,y:0},{x:6,y:0},{x:7,y:0},
+            {x:0,y:2},{x:1,y:2},{x:2,y:2},{x:3,y:2},{x:4,y:2},{x:5,y:2},//{x:7,y:2},
+            {x:0,y:4},{x:2,y:4},{x:4,y:4},{x:6,y:4},
+            {x:0,y:5},{x:2,y:5},{x:3,y:5},{x:4,y:5},{x:5,y:5},{x:6,y:5},{x:7,y:5}
+            
+        ],
+        trapBuildingLayout: [],
+        fenceLayout: [],
+        houseLocations: [{ x: 7, y: 4 }],
+        initialMoneyLocations: [],
+        doorLayout: [
+            {x: 1, y: 4, n: 1},
+            {x: 3, y: 4, n: 3}
+        ],
+        desktopLayout: [
+            {x:6 ,y: 2, n: 1, text: ""},
+            {x:7 ,y: 2, n: 3, text: ""}
+        ],
+        initialMoneyLocations: [{x:2, y: 7}, {x:3, y: 7}, {x:4, y: 7}],
+        initialKeyALocations: [{x:0, y: 1}],
+        initialKeyCLocations: [{x:2, y: 3}],
+        initialCarLocations: [
+            { x: 1, y: 1, dx: -1, isPlayerCar: false },
+            { x: 0, y: 1, dx: -1, isPlayerCar: false },
+            { x: 0, y: 3, dx: -1, isPlayerCar: false },
+            { x: 6, y: 3, dx: 1, isPlayerCar: false }
+        ],
+        initialDuckLocations: [],
+        playerCar: { x: -1, y: -1, occupied: false },
+        deviceLocations: { 'R': [ ], 'E': [ ], 'T': [{x:5,y:0,t:10},{x:5,y:4,t:10},] },
         infoLocations: []
     },
     // Level 26: Optimization 

@@ -176,7 +176,7 @@ var _ = () => {
                 document.querySelector(":root").style.setProperty("--grass-color","#452121");
                 break;
             case 5: 
-                document.querySelector(":root").style.setProperty("--grass-color","#1f1f1f");
+                document.querySelector(":root").style.setProperty("--grass-color","#251f2f");
                 break;
             default:
                 document.querySelector(":root").style.setProperty("--grass-color","#388e3c");
