@@ -102,8 +102,8 @@
     <div id="defuse-modal">
         <h3>Which wire to cut?</h3>
         <div>
-            <button id="cut-black-wire" style="background-color: #333;">Black (B)</button>
-            <button id="cut-green-wire" style="background-color: var(--accent-color);">Green (G)</button>
+            <button id="cut-black-wire" style="background-color: #333;">Black</button>
+            <button id="cut-green-wire" style="background-color: var(--accent-color);">Green</button>
         </div>
     </div>
     <div id="deal-modal">
@@ -137,7 +137,7 @@
         <button id="sell-c" style="background-color: var(--accent-color);">Sell (70)</button>
         </p>
         <div style="text-align: left;">
-            <button id="get-out">Quit (Q)</button>
+            <button id="get-out">Quit</button>
         </div>
     </div>
     <div id="info-modal">
@@ -153,8 +153,8 @@
     <div id="settings-modal">
         <h3 id="settings-modal-title">Settings</h3>
         <div id="settings-buttons-modal" style="text-align: center;">
-            <button id="new-game" style="background-color: var(--accent-color);" onclick="alert('new game :)');">New Game</button>
-            <button id="retry" style="background-color: var(--accent-color);">Retry Level</button>
+            <button id="new-game" style="background-color: var(--accent-color);">New Game</button>
+            <button id="retry-game" style="background-color: var(--accent-color);">Retry Level</button>
             <button id="button-sound" style="background-color: var(--accent-color);">Sound</button>
             <button id="button-score" style="background-color: var(--accent-color);">Score</button>
             <button id="settings-help" style="background-color: var(--accent-color);">Help</button>
@@ -168,9 +168,9 @@
             The music is from YouTube Studio having CC0 licences. Although I wish to highlight the name of user, Silent Partner, whose compositions inspired me.</br>
             The sound effects are from pixibay with similar licences. Thank them for sharing their great works.</br>
             All the visual element is an Awesome Font icon with similar licences. Thank their great team.</br>
-            In the concept of 2<sup>continuum</sup> time-tree I was inspired by Hugh Everett physician and the sci-fi series Fringe.</br>
+            In the concept of 2<sup>continuum</sup> time-tree I was inspired by Hugh Everett physicist and the sci-fi series Fringe.</br>
             In this time-thread I, Kristof Vörös, implemented this application. :)</br> 
-            I also wish to say sorry for the ads.</br>
+            And last but not least, this is a proudly ad-free game!</br>
         </div>
         <div id="score" style="text-align: center;">
             <h3>Scores</h3>
@@ -182,14 +182,14 @@
     <div id="help-modal" style="width: 70%; font-size: .8em; text-align: justify;">
         <div id="help-choose-modal" style="text-align: center;">
             <h3>Choose</h3>
-            <button id="h-w" style="background-color: var(--accent-color);">World (W)</button>
-            <button id="h-s" style="background-color: var(--accent-color);">Story (S)</button></br>
-            <button id="h-i" style="background-color: var(--accent-color);">Items (I)</button>
-            <button id="h-p" style="background-color: var(--accent-color);">People (P)</button>
-            <button id="h-o" style="background-color: var(--accent-color);">Objects (O)</button></br>
-            <button id="h-r" style="background-color: var(--accent-color);">QRG (R)</button>
-            <button id="h-e" style="background-color: var(--accent-color);">Eigengram (E)</button>
-            <button id="h-t" style="background-color: var(--accent-color);">Chronogram (T)</button></br>
+            <button id="h-w" style="background-color: var(--accent-color);">World</button>
+            <button id="h-s" style="background-color: var(--accent-color);">Story</button></br>
+            <button id="h-i" style="background-color: var(--accent-color);">Items</button>
+            <button id="h-p" style="background-color: var(--accent-color);">People</button>
+            <button id="h-o" style="background-color: var(--accent-color);">Objects</button></br>
+            <button id="h-r" style="background-color: var(--accent-color);">QRG</button>
+            <button id="h-e" style="background-color: var(--accent-color);">Eigengram</button>
+            <button id="h-t" style="background-color: var(--accent-color);">Chronogram</button></br>
         </div>
         <div>
         <div id="help-items-modal">
@@ -1811,7 +1811,7 @@
             initGame();
             hideSettingsModal();
         });
-        document.getElementById('retry').addEventListener('click', () => {
+        document.getElementById('retry-game').addEventListener('click', () => {
             initGame();
             hideSettingsModal();
         });
@@ -1846,7 +1846,7 @@
             if (!point) return;
             if (helpModal.style.display=='block' || defuseModal.style.display=='block' || dealModal.style.display=='block' || pcModal.style.display=='block' || infoModal.style.display=='block' || helpChooseModal.style.display=='block' || helpItemsModal.style.display=='block' || helpWorldModal.style.display=='block' || helpStoryModal.style.display=='block' || helpQRGModal.style.display=='block' || helpEigengramModal.style.display=='block' || helpChronogramModal.style.display=='block' || helpPeopleModal.style.display=='block' || helpObjectsModal.style.display=='block') return;
             //const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
-            if (currentState.status=='dead') return;
+            if (currentState.playerStatus=='dead') return;
             if (point=='start') document.addEventListener('touchstart',e => {
                 const currentState = threadHistory[threadIds[currentThreadIndex]].history.slice(-1)[0];
                 touchStartX = e.changedTouches[0].clientX;//screenX;
@@ -1872,7 +1872,7 @@
                     if (grid_x0<touchStartX && touchStartX<grid_x0+grid_dx && grid_y0<touchStartY && touchStartY<grid_y0+grid_dy) {
                         x = Math.floor((touchStartX-grid_x0)/cell_dx);
                         y = Math.floor((touchStartY-grid_y0)/cell_dy);
-                        if (currentState.grid[x][y] === CELL_TYPES.doorAOpen || currentState.grid[x][y] === CELL_TYPES.doorBOpen || currentState.grid[x][y] === CELL_TYPES.doorCOpen) {
+                        if (true) {/* (currentState.grid[x][y] === CELL_TYPES.doorAOpen || currentState.grid[x][y] === CELL_TYPES.doorBOpen || currentState.grid[x][y] === CELL_TYPES.doorCOpen) {
                             showInfoModal("This door is open. You can go through or close it from the station.");
                         } else if (currentState.grid[x][y] === CELL_TYPES.doorA || currentState.grid[x][y] === CELL_TYPES.doorB || currentState.grid[x][y] === CELL_TYPES.doorC) {
                             showInfoModal("This is a closed door. You can open it with a key from its station.");
@@ -1880,7 +1880,8 @@
                             showInfoModal("This is a fence.");
                         } else if (currentState.grid[x][y] === CELL_TYPES.flag) {
                             showInfoModal("This flag is your goal. Get here!");
-                        } else {
+                        } else {*/
+                            /*
                             if (currentState.devicesOnBoard.money.some(m => m.x === x && m.y === y)) showInfoModal("This is 1 Eurasian Forint. Collect all of them.");
                             if (currentState.devicesOnBoard.id.some(m => m.x === x && m.y === y)) showInfoModal("This is a fake ID. If you're lucky, you can go through between police officers with this.");
                             if (currentState.devicesOnBoard.keyA.some(m => m.x === x && m.y === y) || currentState.devicesOnBoard.keyB.some(m => m.x === x && m.y === y) || currentState.devicesOnBoard.keyC.some(m => m.x === x && m.y === y)) showInfoModal("This is a key. After you take it, you can open/close doors from the proper station.");
@@ -1895,9 +1896,10 @@
                             if (currentState.strangers.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a civil.");
                             if (currentState.strangers_blue.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a police officer.");
                             if (currentState.strangers_black.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a secret police officer.");
-                            if (currentState.strangers_gold.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a dealer.");
+                            //if (currentState.strangers_gold.some(m => m.x === x && m.y === y)) showInfoModal("He/She is a dealer.");
                             if (currentState.buses.some(m => m.x === x && m.y === y)) showInfoModal("It is either a bicycle or a bus. Not sure... But watch out before stepping on the road.");
                             if (currentState.cars.some(m => m.x === x && m.y === y)) showInfoModal("It is car with no brakes.");
+                            */
                             if (currentState.bombs.some(m => m.x === x && m.y === y)) { 
                                 if (currentState.playerPos.x == x && currentState.playerPos.y == y) {
                                     b = currentState.bombs.find(b => b.x === x && b.y === y);
@@ -1913,8 +1915,35 @@
                                     } else {
                                         showInfoModal("This is a station. With the correct keys you can open/close doors or launch things.");
                                     }
+                                    x=playerPos.x;y=playerPos.y;
+                                    playerDesiredMove={x:0,y:0};
+                                    return;
                                 }
                             });
+                            if (currentState.strangers_gold.some(d => d.x === x && d.y === y)) currentState.strangers_gold.forEach(d => {
+                                if (d.x == currentState.playerPos.x && d.y == currentState.playerPos.y){
+                                    playerDesiredMove={x:0,y:0};
+                                    if (d.business) {
+                                        showDealModal(currentState.inventory.money, d.business);
+                                    } else {
+                                        showDealModal(currentState.inventory.money);
+                                    }
+                                } else {
+                                    showInfoModal("He/She is a dealer.");
+                                }
+                                x=playerPos.x;y=playerPos.y;
+                                playerDesiredMove={x:0,y:0};
+                                return;
+                            });
+                            if (currentState.playerCar.x == x && currentState.playerCar.x == currentState.playerPos.x && currentState.playerCar.y == y && currentState.playerCar.y == currentState.playerPos.y) {
+                                playerDesiredMove={x:0,y:0}; 
+                                currentState.playerCar.occupied = !currentState.playerCar.occupied;
+                                currentState.isDriving = !currentState.isDriving;
+                                if (isSound) (new Audio("assets/sound-effects/honk.mp3")).play();
+                                x=playerPos.x;y=playerPos.y;
+                                playerDesiredMove={x:0,y:0};
+                                return;
+                            }
                             //if (level.testers) level.testers.forEach(d => grid[d.y][d.x] = CELL_TYPES.tester);
                             if (currentState.testers) currentState.testers.forEach(t => {
                                 if (t.x == x && t.y == y) {
@@ -1932,10 +1961,13 @@
                                     } else {
                                         showInfoModal("This is a microbiology tester. With this, you can test if you're infected or got too much radiation.");
                                     }
+                                    playerDesiredMove={x:0,y:0};
+                                    return;
                                 }
                             });
                         }
                         if (!(helpModal.style.display=='block' || defuseModal.style.display=='block' || dealModal.style.display=='block' || pcModal.style.display=='block' || infoModal.style.display=='block' || helpChooseModal.style.display=='block' || helpItemsModal.style.display=='block' || helpWorldModal.style.display=='block' || helpStoryModal.style.display=='block' || helpQRGModal.style.display=='block' || helpEigengramModal.style.display=='block' || helpChronogramModal.style.display=='block' || helpPeopleModal.style.display=='block' || helpObjectsModal.style.display=='block')) {
+                            if (currentState.playerPos.x == x && currentState.playerPos.y == y) return;
                             if (currentState.playerPos.x == x && currentState.playerPos.y != y){
                                 if (currentState.playerPos.y < y){
                                     playerDesiredMove = {x:0, y:1};
@@ -1955,7 +1987,7 @@
                         }
                     }
                 }
-                if (currentState.status=='dead') playerDesiredMove=0;//{x:0,y:0};
+                if (currentState.playerStatus=='dead') return;
                 if (!playerDesiredMove) return;
                 if (!playerDesiredMove.x && !playerDesiredMove.y) return;
                 if (playerDesiredMove.x==-1){
